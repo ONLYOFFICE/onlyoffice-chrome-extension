@@ -30,6 +30,9 @@ chrome.extension.onConnect.addListener(function (port) {
 
 var settings = null;
 
+var platformOS;
+chrome.runtime.getPlatformInfo((p) => { platformOS = p; });
+
 function getSettings(callback) {
     callback(settings);
 }

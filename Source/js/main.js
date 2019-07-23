@@ -39,6 +39,10 @@ window.onload = function () {
         }
     });
 
+    if (chrome.extension.getBackgroundPage().platformOS.os == chrome.runtime.PlatformOs.LINUX) {
+        uploadBtn.classList.add(displayNoneClass);
+    }
+
     function fillHtml() {
         background.postMessage({
             function: "isUploading",
