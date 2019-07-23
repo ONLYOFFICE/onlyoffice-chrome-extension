@@ -4,7 +4,7 @@
     "version": "11.0",
     "description": "__MSG_appDesc__",
     "default_locale": "en",
-    "short_name": "ONLYOFFICE",
+    "short_name": "TeamLab",
     "icons": {
         "16": "icon_16.png",
         "48": "icon_48.png",
@@ -31,7 +31,7 @@
         "storage"
     ],
     "host_permissions": [
-        "https://personal.onlyoffice.com/",
+        "https://personal.teamlab.info/",
         "http://*/",
         "https://*/"
     ]

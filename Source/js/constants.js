@@ -1,5 +1,5 @@
 var defaultSettings = {
-    domain: "personal.onlyoffice.com",
+    domain: "personal.teamlab.info",
     protocol: "https"
 };
 

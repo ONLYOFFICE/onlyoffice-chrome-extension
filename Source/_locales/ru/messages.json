@@ -1,6 +1,6 @@
 ﻿{
   "appName": {
-    "message": "ONLYOFFICE",
+    "message": "TeamLab",
     "description": "Название приложения, отображаемое в интернет-магазине."
   },
   "appDesc": {
@@ -11,7 +11,7 @@
     "message": "Просматривайте, редактируйте и создавайте файлы DOCX, XLSX, PPTX в своем браузере"
   },
   "loginBtn": {
-    "message": "Войти в ONLYOFFICE Personal"
+    "message": "Войти в TeamLab Personal"
   },
   "logOutBtn": {
     "message": "Выйти"

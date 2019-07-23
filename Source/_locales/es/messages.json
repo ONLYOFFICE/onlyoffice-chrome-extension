@@ -1,6 +1,6 @@
 ﻿{
   "appName": {
-    "message": "ONLYOFFICE",
+    "message": "TeamLab",
     "description": "El título de la aplicación, mostrado en la tienda web."
   },
   "appDesc": {
@@ -11,7 +11,7 @@
     "message": "Vea, modifique y cree archivos DOCX, XLSX, PPTX utilizando su navegador"
   },
   "loginBtn": {
-    "message": "Inicie sesión ONLYOFFICE Personal"
+    "message": "Inicie sesión TeamLab Personal"
   },
   "logOutBtn": {
     "message": "Cerrar sesión"
