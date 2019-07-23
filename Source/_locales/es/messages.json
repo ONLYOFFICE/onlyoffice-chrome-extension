@@ -1,0 +1,10 @@
+﻿{
+  "appName": {
+    "message": "ONLYOFFICE Personal",
+    "description": "The title of the application, displayed in the web store."
+  },
+  "appDesc": {
+    "message": "El procesador más avanzado para sus documentos", 
+    "description":"The description of the application, displayed in the web store."
+  }
+}
