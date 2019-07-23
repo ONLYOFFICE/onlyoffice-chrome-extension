@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "__MSG_appName__",
+    "version": "9.6.2.6",
+    "description": "__MSG_appDesc__",
+    "default_locale": "en",
+    "short_name": "ONLYOFFICE Personal",
+    "icons": {
+        "128": "icon_128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "icon_16.png",
+            "32": "icon_32.png"
+        },
+        "default_title": "__MSG_appName__"
+    },
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": ["tabs"]
+}

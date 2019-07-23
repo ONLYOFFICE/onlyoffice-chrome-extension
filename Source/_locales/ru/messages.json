@@ -1,0 +1,10 @@
+﻿{
+  "appName": {
+    "message": "ONLYOFFICE Personal",
+    "description": "The title of the application, displayed in the web store."
+  },
+  "appDesc": {
+    "message": "Самый продвинутый редактор для ваших документов", 
+    "description":"The description of the application, displayed in the web store."
+  }
+}
