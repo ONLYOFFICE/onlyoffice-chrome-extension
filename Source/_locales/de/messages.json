@@ -1,10 +1,70 @@
 ﻿{
   "appName": {
     "message": "ONLYOFFICE Personal",
-    "description": "The title of the application, displayed in the web store."
+    "description": "Der Titel der Anwendung, angezeigt im Webshop."
   },
   "appDesc": {
     "message": "Der weltweit fortschrittlichste Editor für Ihre Dokumente", 
-    "description":"The description of the application, displayed in the web store."
+    "description":"Die Beschreibung der Anwendung, angezeigt im Webshop."
+  },
+  "loginDesc": {
+    "message": "Durchsehen, bearbeiten und erstellen Sie DOCX -, XLSX -, PPTX-Dateien mit Ihrem Browser"
+  },
+  "loginBtn": {
+    "message": "Bei ONLYOFFICE Personal anmelden"
+  },
+  "logOutBtn": {
+    "message": "Abmelden"
+  },
+  "createFiles": {
+    "message": "Dateien erstellen"
+  },
+  "newTextDoc": {
+    "message": "Neues Dokument"
+  },
+  "newCellDoc": {
+    "message": "Neue Tabelle"
+  },
+  "newSlideDoc": {
+    "message": "Neue Präsentation"
+  },
+  "recentFiles": {
+    "message": "Kürzlich"
+  },
+  "viewMoreRecentFiles": {
+    "message": "Mehr anzeigen"
+  },
+  "uploadFilesBtn": {
+    "message": "Lokale Dateien hochladen"
+  },
+  "errorBigFile": {
+    "message": "Datei ist zu groß"
+  },
+  "errorFilesCount": {
+    "message": "Es kann pro Arbeitsschritt nur eine einzige Datei hochgeladen werden"
+  },
+  "errorWrongExtensions": {
+    "message": "Diese Datei kann nicht hochgeladen werden"
+  },
+  "errorCreateNew": {
+    "message": "Datei kann nicht erstellt werden"
+  },
+  "errorUploadFile": {
+    "message":  "Fehler beim Hochladen der Datei"
+  },
+  "saveBtn": {
+    "message": "Speichern"
+  },
+  "portalDomain": {
+    "message": "Domäne"
+  },
+  "portalProtocol": {
+    "message": "Protokoll"
+  },
+  "savedSettings": {
+    "message":  "Gespeichert!"
+  },
+  "failedSaveSettings": {
+    "message": "Fehler."
   }
 }

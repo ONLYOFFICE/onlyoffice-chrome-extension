@@ -4,7 +4,67 @@
     "description": "The title of the application, displayed in the web store."
   },
   "appDesc": {
-    "message": "The most advanced processor for your documents", 
-    "description":"The description of the application, displayed in the web store."
+    "message": "The most advanced processor for your documents",
+    "description": "The description of the application, displayed in the web store."
+  },
+  "loginDesc": {
+    "message": "View, modify and create DOCX, XLSX, PPTX files using your browser"
+  },
+  "loginBtn": {
+    "message": "Login ONLYOFFICE Personal"
+  },
+  "logOutBtn": {
+    "message": "Log Out"
+  },
+  "createFiles": {
+    "message": "Create files"
+  },
+  "newTextDoc": {
+    "message": "New Document"
+  },
+  "newCellDoc": {
+    "message": "New Spreadsheet"
+  },
+  "newSlideDoc": {
+    "message": "New Presentation"
+  },
+  "recentFiles": {
+    "message": "Recent"
+  },
+  "viewMoreRecentFiles": {
+    "message": "View More"
+  },
+  "uploadFilesBtn": {
+    "message": "Upload Local Files"
+  },
+  "errorBigFile": {
+    "message": "File size is too big"
+  },
+  "errorFilesCount": {
+    "message": "Only 1 file can be uploaded at a time"
+  },
+  "errorWrongExtensions": {
+    "message": "Selected file can't be uploaded"
+  },
+  "errorCreateNew": {
+    "message": "Couldn't create file"
+  },
+  "errorUploadFile": {
+    "message":  "An error occurred while uploading a file"
+  },
+  "saveBtn": {
+    "message": "Save"
+  },
+  "portalDomain": {
+    "message": "Domain"
+  },
+  "portalProtocol": {
+    "message": "Protocol"
+  },
+  "savedSettings": {
+    "message":  "Saved!"
+  },
+  "failedSaveSettings": {
+    "message": "Failed."
   }
 }

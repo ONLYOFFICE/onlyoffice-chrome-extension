@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>ONLYOFFICE Personal Settings Page</title>
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="/js/i18n.js"></script>
+        <script src="/js/options.js"></script>
+    </head>
+
+    <body class="cont">
+        <label for="domain"><span data-i18n="portalDomain"></span></label>
+        <input id="domain" />
+        <div class="splitter"></div>
+
+        <label for="protocol"><span data-i18n="portalProtocol"></span></label>
+        <select id="protocol">
+            <option value="http">http://</option>
+            <option value="https">https://</option>
+        </select>
+        <div class="splitter"></div>
+
+        <div id="status"></div>
+        <div class="splitter medium"></div>
+
+        <span id="save" class="btn orange"><span data-i18n="saveBtn"></span></span>
+        <div class="splitter medium"></div>
+    </body>
+</html>

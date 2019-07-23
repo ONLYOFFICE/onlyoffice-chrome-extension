@@ -1,10 +1,70 @@
 ﻿{
   "appName": {
     "message": "ONLYOFFICE Personal",
-    "description": "The title of the application, displayed in the web store."
+    "description": "Le titre du logiciel affiché dans la boutique en ligne."
   },
   "appDesc": {
     "message": "L'application la plus avancée pour le traitement des documents", 
-    "description":"The description of the application, displayed in the web store."
+    "description":"La description du logiciel affichée dans la boutique en ligne."
+   },
+  "loginDesc": {
+    "message": "Voir, éditer et créer les fichiers DOCX, XLSX, PPTX en utilisant votre navigateur"
+  },
+  "loginBtn": {
+    "message": "Connexion à ONLYOFFICE Personal"
+  },
+  "logOutBtn": {
+    "message": "Déconnexion"
+  },
+  "createFiles": {
+    "message": "Créer les fichiers"
+  },
+  "newTextDoc": {
+    "message": "Nouveau document"
+  },
+  "newCellDoc": {
+    "message": "Nouveau classeur"
+  },
+  "newSlideDoc": {
+    "message": "Nouvelle présentation"
+  },
+  "recentFiles": {
+    "message": "Récent"
+  },
+  "viewMoreRecentFiles": {
+    "message": "Voir plus"
+  },
+  "uploadFilesBtn": {
+    "message": "Charger les fichiers locaux"
+  },
+  "errorBigFile": {
+    "message": "Le fichier est trop grand"
+  },
+  "errorFilesCount": {
+    "message": "Seulement un fichier peut être chargé à la fois"
+  },
+  "errorWrongExtensions": {
+    "message": "Le fichier choisi ne peut pas être chargé"
+  },
+  "errorCreateNew": {
+    "message": "Le fichier ne peut pas être créé"
+  },
+  "errorUploadFile": {
+    "message":  "Une erreur s'est produite lors de la création du fichier"
+  },
+  "saveBtn": {
+    "message": "Enregistrer"
+  },
+  "portalDomain": {
+    "message": "Domaine"
+  },
+  "portalProtocol": {
+    "message": "Protocole"
+  },
+  "savedSettings": {
+    "message":  "Enregistré!"
+  },
+  "failedSaveSettings": {
+    "message": "Échoué."
   }
 }
