@@ -32,12 +32,12 @@ main {
     position: relative;
 }
 
-#login {
+#login, #errorSection {
     margin: 32px;
     text-align: center;
 }
 
-#logo {
+#logo, #errorImage {
     margin-bottom: 20px;
 }
 
@@ -126,6 +126,10 @@ main {
     position: relative;
     overflow: hidden;
     padding: 12px 26px;
+}
+
+#loader {
+    margin-top: 12px;
 }
 
 #popup {

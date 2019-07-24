@@ -11,16 +11,16 @@ function createFile(host, title) {
                 title: title
             })
         })
-        .then((response) => {
-            if (!response.ok) rej(response.statusText);
-            return response.json();
-        })
-        .then((json) => {
-            res(json.response);
-        })
-        .catch(function(err) {
-            rej(err);
-        });
+            .then((response) => {
+                if (!response.ok) rej(response.statusText);
+                return response.json();
+            })
+            .then((json) => {
+                res(json.response);
+            })
+            .catch((err) => {
+                rej(err);
+            });
     });
 }
 
@@ -33,15 +33,15 @@ function uploadFile(host, file) {
             method: "post",
             body: formData
         })
-        .then((response) => {
-            if (!response.ok) rej(response.statusText);
-            return response.json();
-        })
-        .then((json) => {
-            res(json.response);
-        })
-        .catch(function (err) {
-            rej(err);
-        });
+            .then((response) => {
+                if (!response.ok) rej(response.statusText);
+                return response.json();
+            })
+            .then((json) => {
+                res(json.response);
+            })
+            .catch((err) => {
+                rej(err);
+            });
     });
 }

@@ -12,6 +12,15 @@
     <body>
         <main>
 
+            <div id="loader" class="cont">
+                <div class="progress"></div>
+            </div>
+
+            <section id="errorSection" class="flex column display-none">
+                <img id="errorImage" src="/images/error.svg" />
+                <span id="errorSectionText"></span>
+            </section>
+
             <section id="login" class="flex column display-none">
                 <img id="logo" src="/images/onlyoffice.svg" />
                 <span id="logo-text"><span class="gray-text">ONLY</span>OFFICE</span>
@@ -69,9 +78,7 @@
                         <span id="errorText"></span>
                     </div>
 
-                    <div id="uploadProgress" class="display-none progress">
-                        <div></div>
-                    </div>
+                    <div id="uploadProgress" class="display-none progress"></div>
 
                     <div id="uploadBtn" class="btn orange" data-i18n="uploadFilesBtn">
                         <input id="uploadInput" type="file" class="display-none" accept=".txt, .csv, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp" />

@@ -3,7 +3,9 @@
 window.onload = function () {
     let loginSection = document.getElementById("login");
     let contentSection = document.getElementById("content");
+    let errorSection = document.getElementById("errorSection");
 
+    let loader = document.getElementById("loader");
     let avatarHolder = document.getElementById("avatarHolder");
     let userInfoHolder = document.getElementById("userInfoHolder");
     let switcher = document.getElementById("switcher");
@@ -12,6 +14,7 @@ window.onload = function () {
     let error = document.getElementById("error");
     let errorText = document.getElementById("errorText");
     let logOutBtn = document.getElementById("logOutBtn");
+    let errorSectionText = document.getElementById("errorSectionText");
 
     let recentFilesList = document.getElementById("recentFilesList");
     let recentFilesMenu = recentFilesList.getElementsByClassName("menu")[0];
@@ -241,11 +244,20 @@ window.onload = function () {
         };
     }
 
-    function switchView() {
-        if (currentUser) {
+    function switchView(error) {
+        loader.classList.add(displayNoneClass);
+
+        if (error) {
+            loginSection.classList.add(displayNoneClass);
+            contentSection.classList.add(displayNoneClass);
+            errorSection.classList.remove(displayNoneClass);
+            errorSectionText.innerText = chrome.i18n.getMessage("errorServerUnavailable");
+        } else if (currentUser) {
+            errorSection.classList.add(displayNoneClass);
             loginSection.classList.add(displayNoneClass);
             contentSection.classList.remove(displayNoneClass);
         } else {
+            errorSection.classList.add(displayNoneClass);
             contentSection.classList.add(displayNoneClass);
             loginSection.classList.remove(displayNoneClass);
         }
@@ -269,10 +281,13 @@ window.onload = function () {
                 switchView();
                 fillHtml();
 
-            }).catch(() => {
+            }).catch((e) => {
                 currentUser = null;
-
-                switchView();
+                if (e.message == "timeout") {
+                    switchView("errorServerUnavailable");
+                } else {
+                    switchView();
+                }
             });
 
         fixLinks();
