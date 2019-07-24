@@ -66,5 +66,8 @@
   },
   "failedSaveSettings": {
     "message": "Fehler."
+  },
+  "errorServerUnavailable": {
+    "message": "Der Server ist nicht verfügbar"
   }
 }

@@ -66,5 +66,8 @@
   },
   "failedSaveSettings": {
     "message": "Не удалось."
+  },
+  "errorServerUnavailable": {
+    "message": "Сервер недоступен"
   }
 }
