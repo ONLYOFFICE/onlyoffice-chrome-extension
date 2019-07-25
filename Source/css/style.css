@@ -72,7 +72,7 @@ main {
     }
 
 .splitter {
-    height: 28px;
+    height: 14px;
 }
 
     .splitter.small {
@@ -125,7 +125,7 @@ main {
 .cont {
     position: relative;
     overflow: hidden;
-    padding: 12px 26px;
+    padding: 16px 26px;
 }
 
 #loader {
@@ -166,7 +166,8 @@ main {
 }
 
 .menu {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 22px;
 }
 
     .menu > a {
