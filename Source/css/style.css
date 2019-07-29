@@ -183,12 +183,20 @@ main {
         overflow: hidden;
     }
 
+        .menu.hide-last-border > a:last-of-type {
+            border-bottom: none;
+        }
+
         .menu > a:hover {
             background-color: #e5e5e5;
         }
 
 .gray-text {
     color: var(--secondary-text-color);
+}
+
+.gray-border {
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .light-gray-text {
