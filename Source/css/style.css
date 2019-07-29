@@ -332,37 +332,44 @@ header.cont {
 
 @keyframes error-in-animation {
     0% {
-        top: 64px;
+        bottom: -52px;
+        height: 0;
     }
 
     100% {
-        top: 0px;
+        bottom: 0;
+        height: 52px;
     }
 }
 
 @keyframes error-out-animation {
     0% {
-        top: 0px;
+        bottom: 0;
+        height: 52px;
     }
 
     100% {
-        top: 64px;
+        bottom: -52px;
+        height: 0;
     }
 }
 
 #error {
     background-color: #FFBFAA;
     position: absolute;
-    top: 64px;
+    height: 0;
     left: 0;
     width: 322px;
-    height: 64px;
+    bottom: -52px;
+    z-index: 2;
+    overflow: hidden;
 }
 
     #error.in {
         -webkit-animation: 0.3s linear 0s normal none running error-in-animation;
         animation: 0.3s linear 0s normal none running error-in-animation;
-        top: 0;
+        bottom: 0;
+        height: 52px;
     }
 
     #error.out {

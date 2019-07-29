@@ -20,6 +20,7 @@ window.onload = function () {
     let recentFilesMenu = recentFilesList.getElementsByClassName("menu")[0];
     let iframe = document.getElementById("iframe");
 
+    let uploadCont = document.getElementById("uploadCont");
     let uploadBtn = document.getElementById("uploadBtn");
     let uploadInput = document.getElementById("uploadInput");
     let uploadProgress = document.getElementById("uploadProgress");
@@ -43,7 +44,7 @@ window.onload = function () {
     });
 
     if (chrome.extension.getBackgroundPage().platformOS.os == chrome.runtime.PlatformOs.LINUX) {
-        uploadBtn.classList.add(displayNoneClass);
+        uploadCont.classList.add(displayNoneClass);
     }
 
     function fillHtml() {
