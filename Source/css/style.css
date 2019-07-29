@@ -8,7 +8,7 @@
     --secondary-text-color: #666666;
     --tertiary-text-color: #999999;
     --white-text-color: #ffffff;
-    --link-text-color: #2388aa;
+    --link-text-color: #104071;
 }
 
 * {
@@ -72,7 +72,7 @@ main {
     }
 
 .splitter {
-    height: 14px;
+    height: 15px;
 }
 
     .splitter.small {
@@ -81,6 +81,10 @@ main {
 
     .splitter.medium {
         height: 12px;
+    }
+
+    .splitter.big {
+        height: 20px;
     }
 
 .display-none {
@@ -94,7 +98,7 @@ main {
     text-align: center;
     font-size: 14px;
     border-radius: 4px;
-    padding: 12px 16px;
+    padding: 10px 16px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -130,6 +134,10 @@ main {
     position: relative;
     overflow: hidden;
     padding: 16px 26px;
+}
+
+header.cont {
+    padding: 11px 26px;
 }
 
 #loader {
@@ -177,14 +185,13 @@ main {
     .menu > a {
         display: block;
         padding: 12px 24px;
-        border-bottom: 1px solid #e1e1e1;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
 
-        .menu.hide-last-border > a:last-of-type {
-            border-bottom: none;
+        .menu.border > a {
+            border-bottom: 1px solid #e1e1e1;
         }
 
         .menu > a:hover {
