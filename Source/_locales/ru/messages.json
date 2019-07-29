@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Недавние"
   },
-  "viewMoreRecentFiles": {
-    "message": "Показать еще"
+  "viewAll": {
+    "message": "Просмотреть все"
   },
   "uploadFilesBtn": {
     "message": "Загрузить локальные файлы"

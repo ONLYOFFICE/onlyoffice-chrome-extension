@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Recent"
   },
-  "viewMoreRecentFiles": {
-    "message": "View More"
+  "viewAll": {
+    "message": "View all"
   },
   "uploadFilesBtn": {
     "message": "Upload Local Files"

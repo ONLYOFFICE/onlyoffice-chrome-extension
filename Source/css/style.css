@@ -122,6 +122,10 @@ main {
     font-weight: bold;
 }
 
+.link:hover {
+    text-decoration: underline;
+}
+
 .cont {
     position: relative;
     overflow: hidden;

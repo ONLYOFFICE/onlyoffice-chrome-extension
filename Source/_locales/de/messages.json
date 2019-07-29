@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Kürzlich"
   },
-  "viewMoreRecentFiles": {
-    "message": "Mehr anzeigen"
+  "viewAll": {
+    "message": "Alle anzeigen"
   },
   "uploadFilesBtn": {
     "message": "Lokale Dateien hochladen"
