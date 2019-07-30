@@ -1,10 +1,73 @@
 ﻿{
   "appName": {
-    "message": "ONLYOFFICE Personal",
-    "description": "The title of the application, displayed in the web store."
+    "message": "ONLYOFFICE",
+    "description": "El título de la aplicación, mostrado en la tienda web."
   },
   "appDesc": {
     "message": "El procesador más avanzado para sus documentos", 
-    "description":"The description of the application, displayed in the web store."
+    "description":"La descripción de la aplicación, mostrada en la tienda web."
+   },
+  "loginDesc": {
+    "message": "Vea, modifique y cree archivos DOCX, XLSX, PPTX utilizando su navegador"
+  },
+  "loginBtn": {
+    "message": "Inicie sesión ONLYOFFICE Personal"
+  },
+  "logOutBtn": {
+    "message": "Cerrar sesión"
+  },
+  "createFiles": {
+    "message": "Crear archivos"
+  },
+  "newTextDoc": {
+    "message": "Documento nuevo"
+  },
+  "newCellDoc": {
+    "message": "Hoja de cálculo nueva"
+  },
+  "newSlideDoc": {
+    "message": "Presentación nueva"
+  },
+  "recentFiles": {
+    "message": "Reciente"
+  },
+  "openPortal": {
+    "message": "Ir al portal"
+  },
+  "uploadFilesBtn": {
+    "message": "Subir archivos locales"
+  },
+  "errorBigFile": {
+    "message": "Tamaño del archivo es demasiado largo"
+  },
+  "errorFilesCount": {
+    "message": "Solo se puede cargar 1 archivo a la vez"
+  },
+  "errorWrongExtensions": {
+    "message": "No se puede cargar el archivo seleccionado"
+  },
+  "errorCreateNew": {
+    "message": "No se pudo crear archivo"
+  },
+  "errorUploadFile": {
+    "message":  "Se produjo un error al cargar un archivo"
+  },
+  "saveBtn": {
+    "message": "Guardar"
+  },
+  "portalDomain": {
+    "message": "Dominio"
+  },
+  "portalProtocol": {
+    "message": "Protocolo"
+  },
+  "savedSettings": {
+    "message":  "¡Guardado!"
+  },
+  "failedSaveSettings": {
+    "message": "Fallado."
+  },
+  "errorServerUnavailable": {
+    "message": "El servidor no está disponible"
   }
 }

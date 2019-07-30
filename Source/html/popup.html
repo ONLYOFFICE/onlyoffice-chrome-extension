@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>ONLYOFFICE Personal</title>
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="/js/constants.js"></script>
+        <script src="/js/files.js"></script>
+        <script src="/js/auth.js"></script>
+        <script src="/js/main.js"></script>
+        <script src="/js/i18n.js"></script>
+    </head>
+    <body>
+        <main>
+
+            <div id="loader" class="cont">
+                <div class="progress"></div>
+            </div>
+
+            <section id="errorSection" class="flex column display-none">
+                <img id="errorImage" src="/images/error.svg" />
+                <span id="errorSectionText"></span>
+            </section>
+
+            <section id="login" class="flex column display-none">
+                <img id="logo" src="/images/onlyoffice.svg" />
+                <span id="logo-text"><span class="gray-text">ONLY</span>OFFICE</span>
+                <div class="splitter"></div>
+                <span class="gray-text" data-i18n="loginDesc"></span>
+                <div class="splitter"></div>
+                <a href="/?from=google" target="_blank">
+                    <div class="btn orange" data-i18n="loginBtn"></div>
+                </a>
+            </section>
+
+            <section id="content" class="flex column display-none">
+
+                <header class="flex row ts16 cont">
+                    <div id="avatarHolder" class="flex center items">
+                        <img class="display-none" />
+                        <span class="display-none"></span>
+                    </div>
+                    <div id="userInfoHolder" class="flex column center mr-left white-text">
+                        <span></span>
+                        <a id="switcher"><span class="ts14"></span><span class="tri down"></span></a>
+                    </div>
+                </header>
+
+                <div>
+                    <div id="popup" class="display-none cont">
+                        <div id="logOutBtn" class="btn orange" data-i18n="logOutBtn"></div>
+                    </div>
+                </div>
+
+                <div id="overlay" class="display-none"></div>
+
+                <div>
+                    <div class="splitter"></div>
+                    <span class="ts14 gray-text mr-left-big" data-i18n="createFiles"></span>
+                    <div class="splitter small"></div>
+                    <div class="menu border">
+                        <a id="crdocx"><span class="ext-img docx"></span><span data-i18n="newTextDoc"></span></a>
+                        <a id="crxlsx"><span class="ext-img xlsx"></span><span data-i18n="newCellDoc"></span></a>
+                        <a id="crpptx"><span class="ext-img pptx"></span><span data-i18n="newSlideDoc"></span></a>
+                    </div>
+
+                    <div class="splitter"></div>
+                    <div id="recentFilesList" class="display-none">
+                        <span class="ts14 gray-text mr-left-big" data-i18n="recentFiles"></span>
+                        <div class="splitter small"></div>
+                        <div class="menu">
+                        </div>
+                    </div>
+
+                    <div class="splitter medium"></div>
+                    <div class="text-center">
+                        <a class="link" href="/products/files" target="_blank"><span data-i18n="openPortal"></span></a>
+                    </div>
+                    <div class="splitter big gray-border"></div>
+                </div>
+
+                <div id="error" class="display-none flex items">
+                    <span class="warning-sign"></span>
+                    <span id="errorText"></span>
+                </div>
+                <div id="uploadCont" class="cont">
+                    <div id="uploadProgress" class="display-none progress"></div>
+
+                    <div id="uploadBtn" class="btn orange" data-i18n="uploadFilesBtn">
+                        <input id="uploadInput" type="file" class="display-none" accept=".txt, .csv, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp" />
+                    </div>
+                </div>
+
+                <iframe id="iframe" class="display-none" />
+            </section>
+
+        </main>
+    </body>
+</html>

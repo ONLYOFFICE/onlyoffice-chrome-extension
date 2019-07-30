@@ -1,10 +1,73 @@
 ﻿{
   "appName": {
-    "message": "ONLYOFFICE Personal",
-    "description": "The title of the application, displayed in the web store."
+    "message": "ONLYOFFICE",
+    "description": "Название приложения, отображаемое в интернет-магазине."
   },
   "appDesc": {
     "message": "Самый продвинутый редактор для ваших документов", 
-    "description":"The description of the application, displayed in the web store."
+    "description":"Описание приложения, отображаемое в интернет-магазине."
+  },
+  "loginDesc": {
+    "message": "Просматривайте, редактируйте и создавайте файлы DOCX, XLSX, PPTX в своем браузере"
+  },
+  "loginBtn": {
+    "message": "Войти в ONLYOFFICE Personal"
+  },
+  "logOutBtn": {
+    "message": "Выйти"
+  },
+  "createFiles": {
+    "message": "Создать файлы"
+  },
+  "newTextDoc": {
+    "message": "Новый документ"
+  },
+  "newCellDoc": {
+    "message": "Новая таблица"
+  },
+  "newSlideDoc": {
+    "message": "Новая презентация"
+  },
+  "recentFiles": {
+    "message": "Недавние"
+  },
+  "openPortal": {
+    "message": "Перейти на портал"
+  },
+  "uploadFilesBtn": {
+    "message": "Загрузить локальные файлы"
+  },
+  "errorBigFile": {
+    "message": "Слишком большой размер файла"
+  },
+  "errorFilesCount": {
+    "message": "За один раз можно загрузить только 1 файл"
+  },
+  "errorWrongExtensions": {
+    "message": "Выбранный файл нельзя загрузить"
+  },
+  "errorCreateNew": {
+    "message": "Не удалось создать файл"
+  },
+  "errorUploadFile": {
+    "message":  "При загрузке файла произошла ошибка"
+  },
+  "saveBtn": {
+    "message": "Сохранить"
+  },
+  "portalDomain": {
+    "message": "Домен"
+  },
+  "portalProtocol": {
+    "message": "Протокол"
+  },
+  "savedSettings": {
+    "message":  "Сохранено!"
+  },
+  "failedSaveSettings": {
+    "message": "Не удалось."
+  },
+  "errorServerUnavailable": {
+    "message": "Сервер недоступен"
   }
 }
