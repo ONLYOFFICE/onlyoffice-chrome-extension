@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Recent"
   },
-  "viewAll": {
-    "message": "View all"
+  "openPortal": {
+    "message": "Go to portal"
   },
   "uploadFilesBtn": {
     "message": "Upload Local Files"

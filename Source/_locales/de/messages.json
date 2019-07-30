@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Kürzlich"
   },
-  "viewAll": {
-    "message": "Alle anzeigen"
+  "openPortal": {
+    "message": "Zum Portal übergehen"
   },
   "uploadFilesBtn": {
     "message": "Lokale Dateien hochladen"

@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Недавние"
   },
-  "viewAll": {
-    "message": "Просмотреть все"
+  "openPortal": {
+    "message": "Перейти на портал"
   },
   "uploadFilesBtn": {
     "message": "Загрузить локальные файлы"
