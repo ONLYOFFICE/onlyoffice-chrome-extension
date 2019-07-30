@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Récent"
   },
-  "viewMoreRecentFiles": {
-    "message": "Voir plus"
+  "openPortal": {
+    "message": "Aller au portail"
   },
   "uploadFilesBtn": {
     "message": "Charger les fichiers locaux"
@@ -66,5 +66,8 @@
   },
   "failedSaveSettings": {
     "message": "Échoué."
+  },
+  "errorServerUnavailable": {
+    "message": "Le serveur n'est pas disponible"
   }
 }

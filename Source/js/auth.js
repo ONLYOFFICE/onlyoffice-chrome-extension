@@ -1,19 +1,19 @@
 "use strict";
 
 function checkAuth(host) {
-    return new Promise((res, rej) => {
+    return timeoutPromise(3000, new Promise((res, rej) => {
         fetch(host + "/api/2.0/people/@self")
-        .then((response) => {
-            if (!response.ok) rej(response.statusText);
-            return response.json();
-        })
-        .then((json) => {
-            res(json.response);
-        })
-        .catch(function(err) {
-            rej(err);
-        });
-    });
+            .then((response) => {
+                if (!response.ok) rej(response.statusText);
+                return response.json();
+            })
+            .then((json) => {
+                res(json.response);
+            })
+            .catch((err) => {
+                rej(err);
+            });
+    }));
 }
 
 function logOut(host) {
@@ -22,7 +22,7 @@ function logOut(host) {
             .then((json) => {
                 res(true);
             })
-            .catch(function (err) {
+            .catch((err) => {
                 rej(err);
             });
     });

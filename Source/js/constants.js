@@ -24,3 +24,13 @@ var uploadableFiles = {
     "pptx": "application/vndopenxmlformats-officedocumentpresentationmlpresentation",
     "odp": "application/vnd.oasis.opendocument.presentation"
 };
+
+function timeoutPromise(ms, promise) {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            rej(new Error("timeout"));
+        }, ms);
+
+        promise.then(res, rej);
+    })
+}

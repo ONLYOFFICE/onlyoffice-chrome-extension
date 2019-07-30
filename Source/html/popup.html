@@ -12,6 +12,15 @@
     <body>
         <main>
 
+            <div id="loader" class="cont">
+                <div class="progress"></div>
+            </div>
+
+            <section id="errorSection" class="flex column display-none">
+                <img id="errorImage" src="/images/error.svg" />
+                <span id="errorSectionText"></span>
+            </section>
+
             <section id="login" class="flex column display-none">
                 <img id="logo" src="/images/onlyoffice.svg" />
                 <span id="logo-text"><span class="gray-text">ONLY</span>OFFICE</span>
@@ -48,7 +57,7 @@
                     <div class="splitter"></div>
                     <span class="ts14 gray-text mr-left-big" data-i18n="createFiles"></span>
                     <div class="splitter small"></div>
-                    <div class="menu">
+                    <div class="menu border">
                         <a id="crdocx"><span class="ext-img docx"></span><span data-i18n="newTextDoc"></span></a>
                         <a id="crxlsx"><span class="ext-img xlsx"></span><span data-i18n="newCellDoc"></span></a>
                         <a id="crpptx"><span class="ext-img pptx"></span><span data-i18n="newSlideDoc"></span></a>
@@ -61,17 +70,20 @@
                         <div class="menu">
                         </div>
                     </div>
+
+                    <div class="splitter medium"></div>
+                    <div class="text-center">
+                        <a class="link" href="/products/files" target="_blank"><span data-i18n="openPortal"></span></a>
+                    </div>
+                    <div class="splitter big gray-border"></div>
                 </div>
 
-                <div class="cont">
-                    <div id="error" class="display-none flex items">
-                        <span class="warning-sign"></span>
-                        <span id="errorText"></span>
-                    </div>
-
-                    <div id="uploadProgress" class="display-none progress">
-                        <div></div>
-                    </div>
+                <div id="error" class="display-none flex items">
+                    <span class="warning-sign"></span>
+                    <span id="errorText"></span>
+                </div>
+                <div id="uploadCont" class="cont">
+                    <div id="uploadProgress" class="display-none progress"></div>
 
                     <div id="uploadBtn" class="btn orange" data-i18n="uploadFilesBtn">
                         <input id="uploadInput" type="file" class="display-none" accept=".txt, .csv, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp" />

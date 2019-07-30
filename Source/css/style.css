@@ -8,7 +8,7 @@
     --secondary-text-color: #666666;
     --tertiary-text-color: #999999;
     --white-text-color: #ffffff;
-    --link-text-color: #2388aa;
+    --link-text-color: #104071;
 }
 
 * {
@@ -32,12 +32,12 @@ main {
     position: relative;
 }
 
-#login {
+#login, #errorSection {
     margin: 32px;
     text-align: center;
 }
 
-#logo {
+#logo, #errorImage {
     margin-bottom: 20px;
 }
 
@@ -72,7 +72,7 @@ main {
     }
 
 .splitter {
-    height: 28px;
+    height: 15px;
 }
 
     .splitter.small {
@@ -81,6 +81,10 @@ main {
 
     .splitter.medium {
         height: 12px;
+    }
+
+    .splitter.big {
+        height: 20px;
     }
 
 .display-none {
@@ -94,7 +98,7 @@ main {
     text-align: center;
     font-size: 14px;
     border-radius: 4px;
-    padding: 12px 16px;
+    padding: 10px 16px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -122,10 +126,22 @@ main {
     font-weight: bold;
 }
 
+.link:hover {
+    text-decoration: underline;
+}
+
 .cont {
     position: relative;
     overflow: hidden;
-    padding: 12px 26px;
+    padding: 16px 26px;
+}
+
+header.cont {
+    padding: 11px 26px;
+}
+
+#loader {
+    margin-top: 12px;
 }
 
 #popup {
@@ -162,17 +178,21 @@ main {
 }
 
 .menu {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 22px;
 }
 
     .menu > a {
         display: block;
         padding: 12px 24px;
-        border-bottom: 1px solid #e1e1e1;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
+
+        .menu.border > a {
+            border-bottom: 1px solid #e1e1e1;
+        }
 
         .menu > a:hover {
             background-color: #e5e5e5;
@@ -180,6 +200,10 @@ main {
 
 .gray-text {
     color: var(--secondary-text-color);
+}
+
+.gray-border {
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .light-gray-text {
@@ -308,37 +332,44 @@ main {
 
 @keyframes error-in-animation {
     0% {
-        top: 64px;
+        bottom: -52px;
+        height: 0;
     }
 
     100% {
-        top: 0px;
+        bottom: 0;
+        height: 52px;
     }
 }
 
 @keyframes error-out-animation {
     0% {
-        top: 0px;
+        bottom: 0;
+        height: 52px;
     }
 
     100% {
-        top: 64px;
+        bottom: -52px;
+        height: 0;
     }
 }
 
 #error {
     background-color: #FFBFAA;
     position: absolute;
-    top: 64px;
+    height: 0;
     left: 0;
     width: 322px;
-    height: 64px;
+    bottom: -52px;
+    z-index: 2;
+    overflow: hidden;
 }
 
     #error.in {
         -webkit-animation: 0.3s linear 0s normal none running error-in-animation;
         animation: 0.3s linear 0s normal none running error-in-animation;
-        top: 0;
+        bottom: 0;
+        height: 52px;
     }
 
     #error.out {

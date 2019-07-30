@@ -31,8 +31,8 @@
   "recentFiles": {
     "message": "Недавние"
   },
-  "viewMoreRecentFiles": {
-    "message": "Показать еще"
+  "openPortal": {
+    "message": "Перейти на портал"
   },
   "uploadFilesBtn": {
     "message": "Загрузить локальные файлы"
@@ -66,5 +66,8 @@
   },
   "failedSaveSettings": {
     "message": "Не удалось."
+  },
+  "errorServerUnavailable": {
+    "message": "Сервер недоступен"
   }
 }
