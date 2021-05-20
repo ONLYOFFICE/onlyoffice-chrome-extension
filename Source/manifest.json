@@ -28,7 +28,6 @@
         "js": [ "js/inject.js" ]
     }],
     "permissions": [
-        "tabs",
         "storage",
         "https://personal.onlyoffice.com/"
     ],
