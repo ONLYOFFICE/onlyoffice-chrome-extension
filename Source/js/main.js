@@ -36,16 +36,18 @@ window.onload = function () {
         onGetSettings: onGetSettings
     };
 
-    let background = chrome.extension.connect();
+    let background = chrome.runtime.connect();
     background.onMessage.addListener(function (msg) {
         if (msg.function) {
             callbacks[msg.function].apply(this, msg.args);
         }
     });
 
-    if (chrome.extension.getBackgroundPage().platformOS.os == chrome.runtime.PlatformOs.LINUX) {
-        uploadCont.classList.add(displayNoneClass);
-    }
+    chrome.runtime.getPlatformInfo((p) => {
+        if (p.os == chrome.runtime.PlatformOs.LINUX) {
+            uploadCont.classList.add(displayNoneClass);
+        }
+    });
 
     function fillHtml() {
         background.postMessage({
