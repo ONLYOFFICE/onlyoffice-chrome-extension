@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.1
+## Changed
+- removed unnecessary permission
+
 ## 10.0.1
 - create new file
 - display recent files
