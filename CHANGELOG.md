@@ -1,6 +1,7 @@
 # Change Log
 
 ## Changed
+- manifest v3
 - change logout route for personal as appserver
 
 ## 10.1
