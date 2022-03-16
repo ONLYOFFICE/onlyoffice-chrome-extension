@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- change logout route for personal as appserver
+
 ## 10.1
 ## Changed
 - removed unnecessary permission
