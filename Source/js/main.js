@@ -87,7 +87,11 @@ window.onload = function () {
     }
 
     function handleFile(file) {
-        chrome.extension.getBackgroundPage().startUpload(file, uploadingProgress);
+        background.postMessage({
+            function: "startUpload",
+            callback: "uploadingProgress",
+            args: [file]
+        });
     }
 
     function uploadingProgress(obj) {
@@ -149,7 +153,7 @@ window.onload = function () {
         switcher.onclick = switcherFunc;
         overlay.onclick = switcherFunc;
 
-        uploadInput.onchange = (e) => {
+        uploadInput.onchange = async (e) => {
             if (e.target.files.length != 1) {
                 ShowError(chrome.i18n.getMessage("errorFilesCount"));
                 e.target.value = "";
@@ -172,8 +176,16 @@ window.onload = function () {
                 return;
             }
 
-            handleFile(file);
-            e.target.value = "";
+            let buffer = await file.arrayBuffer();
+            let uintArray = new Uint8Array(buffer);
+            let obj = {
+                fileType: file.type,
+                fileName: file.name,
+                file: uintArray
+
+            };
+            handleFile(obj);
+            if (e.target !== null) e.target.value = "";
 
             uploadBtn.classList.add(displayNoneClass);
             uploadProgress.classList.remove(displayNoneClass);
