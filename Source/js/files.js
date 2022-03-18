@@ -24,9 +24,14 @@ function createFile(host, title) {
     });
 }
 
-function uploadFile(host, file) {
-    var formData = new FormData();
-    formData.append("file", file, file.name);
+function uploadFile(host, fileInfo) {
+    let array = [];
+    for (let bit in fileInfo.file) array.push(fileInfo.file[bit]);
+    let formData = new FormData();
+
+    let buffer = new Uint8Array(array);
+    let blob = new Blob([buffer], {type: fileInfo.fileType});
+    formData.append("file", blob, fileInfo.fileName);
 
     return new Promise((res, rej) => {
         fetch(host + "/api/2.0/files/@my/upload", {
