@@ -25,6 +25,10 @@ var uploadableFiles = {
     "odp": "application/vnd.oasis.opendocument.presentation"
 };
 
+var documentExts = ["txt", "pdf", "doc", "docx", "odt"];
+var slideExts = ["ppt", "pptx", "odp"];
+var cellExts = ["csv", "xls", "xlsx", "ods"];
+
 function timeoutPromise(ms, promise) {
     return new Promise((res, rej) => {
         setTimeout(() => {

@@ -50,3 +50,21 @@ function uploadFile(host, fileInfo) {
             });
     });
 }
+
+function getRecentFiles(host) {
+    return new Promise((res, rej) => {
+        fetch(host + `/api/2.0/files/@recent?filterType=FilesOnly`, {
+            method: "get"
+        })
+            .then((response) => {
+                if (!response.ok) rej(response.statusText);
+                return response.json();
+            })
+            .then((json) => {
+                res(json.response);
+            })
+            .catch((err) => {
+                rej(err);
+            });
+    })
+}

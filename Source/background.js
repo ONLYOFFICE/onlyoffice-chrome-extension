@@ -60,7 +60,14 @@ chrome.storage.sync.get(["settings"], (result) => {
 var recent = null;
 
 function getRecent(callback) {
-    callback(recent);
+    let promise = getRecentFiles(settings.protocol + "://" + settings.domain);
+    promise
+        .then((json) => {
+            callback(json.files);
+        })
+        .catch(() => {
+            callback(recent);
+        });
 }
 
 var currentUpload = null;
