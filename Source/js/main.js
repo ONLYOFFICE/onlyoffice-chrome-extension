@@ -237,7 +237,7 @@ window.onload = function () {
             var count = recentFiles.length > recentFilesMax ? recentFilesMax : recentFiles.length;
 
             for (let i = 0; i < count; i++) {
-                let file = recentFiles[recentFiles.length - 1 - i];
+                let file = recentFiles[i];
                 if (!file.title || !file.webUrl) continue;
 
                 let a = document.createElement("a");
