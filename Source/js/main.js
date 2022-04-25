@@ -217,6 +217,18 @@ window.onload = function () {
         return 0 <= posExt ? filename.substring(posExt + 1).trim().toLowerCase() : "";
     }
 
+    function getIconByExt(ext) {
+        if (documentExts.includes(ext)) {
+            return "text";
+        }
+        else if (cellExts.includes(ext)) {
+            return "spreadsheet";
+        }
+        else if (slideExts.includes(ext)) {
+            return "presentation";
+        }
+    }
+
     function onGetRecent(result) {
         recentFiles = result || [];
 
@@ -226,19 +238,19 @@ window.onload = function () {
 
             for (let i = 0; i < count; i++) {
                 let file = recentFiles[i];
-                if (!file.title || !file.url) continue;
+                if (!file.title || !file.webUrl) continue;
 
                 let a = document.createElement("a");
                 a.innerText = file.title;
-                let ext = file.fileType || getExt(file.title);
+                let ext = getExt(file.title);
                 if (ext) {
                     let span = document.createElement("span");
-                    span.className = "ext-img " + ext;
+                    span.className = "ext-img " + getIconByExt(ext);
                     a.prepend(span);
                 }
 
                 a.onclick = () => {
-                    chrome.tabs.create({ url: file.url });
+                    chrome.tabs.create({ url: file.webUrl });
                 }
 
                 recentFilesMenu.append(a);
