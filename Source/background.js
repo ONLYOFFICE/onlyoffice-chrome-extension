@@ -1,3 +1,5 @@
+importScripts('js/constants.js', 'js/files.js');
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.recent && request.recent[0] == "[") {
         try {
@@ -8,7 +10,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-chrome.extension.onConnect.addListener(function (port) {
+chrome.runtime.onConnect.addListener(function (port) {
     let isConnected = true;
     port.onMessage.addListener(function (msg) {
         if (msg.function && msg.args) {
@@ -29,9 +31,6 @@ chrome.extension.onConnect.addListener(function (port) {
 });
 
 var settings = null;
-
-var platformOS;
-chrome.runtime.getPlatformInfo((p) => { platformOS = p; });
 
 function getSettings(callback) {
     callback(settings);
@@ -61,7 +60,14 @@ chrome.storage.sync.get(["settings"], (result) => {
 var recent = null;
 
 function getRecent(callback) {
-    callback(recent);
+    let promise = getRecentFiles(settings.protocol + "://" + settings.domain);
+    promise
+        .then((json) => {
+            callback(json.files);
+        })
+        .catch(() => {
+            callback(recent);
+        });
 }
 
 var currentUpload = null;

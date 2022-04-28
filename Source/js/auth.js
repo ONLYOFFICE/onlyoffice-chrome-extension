@@ -18,7 +18,7 @@ function checkAuth(host) {
 
 function logOut(host) {
     return new Promise((res, rej) => {
-        fetch(host + "/auth.aspx?t=logout")
+        fetch(host + "/api/2.0/authentication/logout", {method: "POST"})
             .then((json) => {
                 res(true);
             })
