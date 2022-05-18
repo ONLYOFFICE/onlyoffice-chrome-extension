@@ -209,6 +209,7 @@ window.onload = function () {
         document.getElementById("crdocx").onclick = create(".docx");
         document.getElementById("crxlsx").onclick = create(".xlsx");
         document.getElementById("crpptx").onclick = create(".pptx");
+        document.getElementById("crdocxf").onclick = create(".docxf");
     }
 
     function getExt(filename) {

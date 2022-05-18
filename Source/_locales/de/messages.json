@@ -28,6 +28,9 @@
   "newSlideDoc": {
     "message": "Neue Präsentation"
   },
+  "newDocxfDoc": {
+    "message": "Neue Formularvorlage"
+  },
   "recentFiles": {
     "message": "Kürzlich"
   },

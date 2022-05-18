@@ -28,6 +28,9 @@
   "newSlideDoc": {
     "message": "New Presentation"
   },
+  "newDocxfDoc": {
+    "message": "New Form Template"
+  },
   "recentFiles": {
     "message": "Recent"
   },
