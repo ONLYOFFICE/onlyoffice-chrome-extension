@@ -28,6 +28,9 @@
   "newSlideDoc": {
     "message": "Новая презентация"
   },
+  "newDocxfDoc": {
+    "message": "Новый шаблон формы"
+  },
   "recentFiles": {
     "message": "Недавние"
   },
