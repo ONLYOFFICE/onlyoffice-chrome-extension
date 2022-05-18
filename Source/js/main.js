@@ -227,6 +227,12 @@ window.onload = function () {
         else if (slideExts.includes(ext)) {
             return "presentation";
         }
+        else if (ext === 'oform') {
+            return "oform";
+        }
+        else if (ext === "docxf") {
+            return "docxf";
+        }
     }
 
     function onGetRecent(result) {

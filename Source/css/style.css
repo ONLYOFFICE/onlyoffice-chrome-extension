@@ -310,6 +310,14 @@ header.cont {
         background-image: url("/images/file_pptx.svg");
     }
 
+    .ext-img.docxf {
+        background-image: url("/images/file_docxf.svg");
+    }
+
+    .ext-img.oform {
+        background-image: url("/images/file_oform.svg");
+    }
+
 .progress {
     margin-bottom: 12px;
     border-radius: 4px;
