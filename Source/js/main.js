@@ -69,10 +69,10 @@ window.onload = function () {
         } else {
             avatarImg.classList.add(displayNoneClass);
             avatarFallback.classList.remove(displayNoneClass);
-            avatarFallback.innerText = currentUser.displayName[0].toUpperCase();
+            avatarFallback.innerText = currentUser.firstName[0].toUpperCase();
         }
 
-        userInfoHolder.children[0].innerText = currentUser.displayName;
+        userInfoHolder.children[0].innerText = currentUser.firstName + " " + currentUser.lastName;
         userInfoHolder.children[1].children[0].innerText = currentUser.email;
     }
 
