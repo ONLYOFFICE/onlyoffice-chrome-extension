@@ -33,7 +33,13 @@ chrome.runtime.onConnect.addListener(function (port) {
 var settings = null;
 
 function getSettings(callback) {
-    callback(settings);
+    if (settings === null) {
+        setTimeout(() => {
+            getSettings(callback);
+        }, 500);
+    } else {
+        callback(settings);
+    }
 }
 
 function setSettings(newSettings, callback) {
