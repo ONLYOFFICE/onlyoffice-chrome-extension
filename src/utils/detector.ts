@@ -3,6 +3,9 @@ import { Format } from '@utils/formats';
 import pdfIcon from '@icons/pdf.svg';
 import wordIcon from '@icons/word.svg';
 import cellIcon from '@icons/cell.svg';
+import pptxIcon from '@icons/pptx.svg';
+import vsdIcon from '@icons/vsd.svg';
+import unknownIcon from '@icons/unknown.svg';
 
 import formats from '@vendor/document-formats/onlyoffice-docs-formats.json';
 
@@ -16,17 +19,19 @@ const VALID_FORMATS = (formats as Format[]).filter(f => f.actions.length > 0);
 const EXTENSIONS = VALID_FORMATS.map(f => `.${f.name}`);
 
 const ICONS: Record<string, string> = {};
-VALID_FORMATS.forEach(format => {
+
+VALID_FORMATS.forEach((format) => {
     const ext = `.${format.name}`;
+
     const iconMap: Record<string, string> = {
         word: wordIcon,
         cell: cellIcon,
-        slide: cellIcon,
+        slide: pptxIcon,
         pdf: pdfIcon,
-        diagram: cellIcon,
+        diagram: vsdIcon,
     };
 
-    ICONS[ext] = iconMap[format.type] || wordIcon;
+    ICONS[ext] = iconMap[format.type] || unknownIcon;
 });
 
 export class Detector {
@@ -80,6 +85,6 @@ export class Detector {
     }
 
     getIcon(extension: string): string {
-        return ICONS[extension] || 'FILE';
+        return ICONS[extension] || unknownIcon;
     }
 }
