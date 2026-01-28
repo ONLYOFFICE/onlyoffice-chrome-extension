@@ -160,6 +160,26 @@
 		--color-input-text-disabled: #858585;
 		--color-input-text-error: #FFFFFF;
 
+		--color-bg-main: #333333;
+		--color-title-text: #FFFFFF;
+		--color-text-body: #FFFFFF;
+		--color-subtitle-text: #858585;
+
+		--color-overlay-bg: #06162633;
+
+		--color-header-border: #474747;
 		--color-header-bg: #282828;
+
+		--color-file-list-title: #A3A9AE;
+		--color-file-list-empty-title: #FFFFFF;
+		--color-file-list-empty-description: #858585;
+		--color-file-list-loading-more: #858585;
+
+		--color-file-item-border: #474747;
+		--color-file-item-hover-bg: #3D3D3D;
+		--color-file-item-name: #FFFFFF;
+		--color-file-item-extension: #A3A9AE;
+
+		--color-create-menu-fab-bg: #4781D1;
 	}
 }

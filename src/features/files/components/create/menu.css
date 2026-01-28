@@ -11,9 +11,9 @@
     padding: 16px;
     
     z-index: 1000;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background-color: var(--color-overlay-bg);
     animation: fadeIn 0.2s ease-out;
 }
 

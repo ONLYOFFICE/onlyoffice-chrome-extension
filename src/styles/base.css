@@ -30,6 +30,8 @@ html, body {
     display: flex;
     flex-direction: column;
 
+    background: var(--color-bg-main, #ffffff);
+
     overflow: hidden;
 }
 
@@ -114,9 +116,9 @@ html, body {
     align-items: center;
     justify-content: center;
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px);
     background-color: var(--color-overlay-bg);
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(18px);
     z-index: 2000;
     animation: fadeIn 0.2s ease-out;
 }
