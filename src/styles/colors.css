@@ -57,9 +57,17 @@
 	--color-button-secondary-text: var(--color-text-main);
 	--color-button-secondary-hover-bg: var(--color-bg-subtle);
 
+	--color-input-bg: #FFFFFF;
 	--color-input-border: var(--color-border-muted);
+	--color-input-hover-border: #A3A9AE;
 	--color-input-text: var(--color-text-main);
+	--color-input-text-filled: var(--color-text-main);
+	--color-input-text-disabled: var(--color-text-muted);
+	--color-input-text-error: var(--color-text-main);
 	--color-input-focus-border: var(--color-border-accent);
+	--color-input-disabled-bg: #F8F9F9;
+	--color-input-disabled-border: #ECEEF1;
+	--color-input-error-border: #F24724;
 
 	--color-title-text: var(--color-text-main);
 	--color-text-body: var(--color-text-main);
@@ -131,5 +139,17 @@
 	:root {
 		--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
 			linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18));
+
+		--color-input-bg: #282828;
+		--color-input-border: #474747;
+		--color-input-hover-border: #5C5C5C;
+		--color-input-focus-border: #FFFFFF;
+		--color-input-disabled-bg: #474747;
+		--color-input-disabled-border: #474747;
+		--color-input-error-border: #E06451;
+		--color-input-text: #5C5C5C;
+		--color-input-text-filled: #FFFFFF;
+		--color-input-text-disabled: #858585;
+		--color-input-text-error: #FFFFFF;
 	}
 }

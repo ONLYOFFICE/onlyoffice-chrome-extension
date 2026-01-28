@@ -10,7 +10,7 @@ interface InputProps {
     readonly autoFocus?: boolean;
     readonly className?: string;
     readonly onChange: (value: string) => void;
-    readonly onKeyDown?: (event: KeyboardEvent) => void;
+    readonly onKeyDown?: (event: KeyboardEvent) => void
 }
 
 export const Input: FunctionalComponent<InputProps> = ({
@@ -28,14 +28,17 @@ export const Input: FunctionalComponent<InputProps> = ({
         onChange(target.value);
     };
 
-    const rootClassName = className
-        ? `input ${className}`
-        : 'input';
+    const isFilled = value.trim().length > 0;
+    const classes = [
+        'input',
+        className,
+        isFilled ? 'input--filled' : ''
+    ].filter(Boolean).join(' ');
 
     return (
         <input
             type={type}
-            class={rootClassName}
+            class={classes}
             value={value}
             onInput={handleChange}
             onKeyDown={onKeyDown}

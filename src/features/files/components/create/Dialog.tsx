@@ -148,6 +148,10 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
     onCreate,
     onClose
 }) => {
+    const inputClassName = canCreate
+        ? 'create-dialog__input'
+        : 'create-dialog__input input--error';
+
     return (
         <div 
             ref={el}
@@ -163,7 +167,7 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
             
             <Input
                 type="text"
-                className="create-dialog__input"
+                className={inputClassName}
                 value={name}
                 onChange={onNameChange}
                 autoFocus
