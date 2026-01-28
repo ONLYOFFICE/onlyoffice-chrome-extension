@@ -40,7 +40,7 @@
     line-height: 22px;
     letter-spacing: 0;
 
-    color: #333333;
+    color: var(--color-feedback-empty-title);
 }
 
 .empty__subtitle {
@@ -53,7 +53,7 @@
     line-height: 16px;
     letter-spacing: 0;
 
-    color: #555F65;
+    color: var(--color-feedback-empty-subtitle);
 }
 
 @keyframes fadeInScale {

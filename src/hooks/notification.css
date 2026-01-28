@@ -44,23 +44,23 @@
 }
 
 .notification--error {
-    border: 1px solid #f5c6cb;
-    background-color: #f8d7da;
+    border: 1px solid var(--color-danger-border);
+    background-color: var(--color-danger-bg);
 }
 
 .notification--error .notification__title,
 .notification--error .notification__message {
-    color: #721c24;
+    color: var(--color-danger-text);
 }
 
 .notification--success {
-    border: 1px solid #c3e6cb;
-    background-color: #d4edda;
+    border: 1px solid var(--color-success-border);
+    background-color: var(--color-success-bg);
 }
 
 .notification--success .notification__title,
 .notification--success .notification__message {
-    color: #155724;
+    color: var(--color-success-text);
 }
 
 @keyframes slideInNotification {

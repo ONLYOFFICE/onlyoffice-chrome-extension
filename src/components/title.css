@@ -8,5 +8,5 @@
     line-height: 22px;
     letter-spacing: 0;
 
-    color: #333333;
+    color: var(--color-title-text);
 }

@@ -20,5 +20,5 @@
     font-weight: 400;
     line-height: 22px;
 
-    color: #666;
+    color: var(--color-auth-exchanging-text);
 }

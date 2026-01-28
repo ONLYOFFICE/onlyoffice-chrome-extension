@@ -56,7 +56,7 @@
     height: 8px;
     flex-shrink: 0;
 
-    background-color: #F8F9F9;
+    background-color: var(--color-create-menu-divider-bg);
 }
 
 .create-menu__upload {
@@ -77,18 +77,18 @@
 
     border: none;
 
-    color: white;
+    color: var(--color-create-menu-upload-text);
     cursor: pointer;
-    background: #265A8F;
+    background: var(--color-create-menu-upload-bg);
     transition: background-color 0.2s;
 }
 
 .create-menu__upload:hover {
-    background-color: #2f6ba8;
+    background-color: var(--color-create-menu-upload-bg-hover);
 }
 
 .create-menu__upload:active {
-    background-color: #3a7ab5;
+    background-color: var(--color-create-menu-upload-bg-active);
 }
 
 .create-menu__upload-icon {
@@ -129,8 +129,8 @@
     z-index: 1;
     outline: none;
     cursor: pointer;
-    color: white;
-    background: #4781D1;
+    color: var(--color-create-menu-fab-text);
+    background: var(--color-create-menu-fab-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     animation: rotateFab 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
     transition: background-color 0.2s, box-shadow 0.2s, transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -145,7 +145,7 @@
 }
 
 .create-menu__fab:hover {
-    background: #5a91e2;
+    background: var(--color-create-menu-fab-bg-hover);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transform: rotate(45deg) scale(1.1);
 }

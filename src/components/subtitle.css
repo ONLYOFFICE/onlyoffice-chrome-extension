@@ -11,5 +11,5 @@
     font-style: normal;
     font-size: 14px;
 
-    color: #A3A9AE;
+    color: var(--color-subtitle-text);
 }

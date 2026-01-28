@@ -85,7 +85,7 @@
     font-size: 16px;
     line-height: 22px;
 
-    color: #333;
+    color: var(--color-delete-confirm-title);
 }
 
 .delete-confirm__message {
@@ -95,7 +95,7 @@
     font-size: 13px;
     line-height: 18px;
 
-    color: #555F65;
+    color: var(--color-delete-confirm-message);
 }
 
 .delete-confirm__actions {
@@ -123,16 +123,16 @@
 }
 
 .delete-confirm__btn--primary {
-    border-color: #4781D1;
+    border-color: var(--color-delete-confirm-primary-border);
 
-    color: white;
-    background: #4781D1;
+    color: var(--color-delete-confirm-primary-text);
+    background: var(--color-delete-confirm-primary-bg);
 }
 
 .delete-confirm__btn--primary:hover {
-    border-color: #5a91e2;
+    border-color: var(--color-delete-confirm-primary-hover-border);
 
-    background: #5a91e2;
+    background: var(--color-delete-confirm-primary-hover-bg);
     box-shadow: 0 2px 8px rgba(71, 129, 209, 0.3);
     transform: translateY(-1px);
 }
@@ -143,14 +143,14 @@
 }
 
 .delete-confirm__btn--secondary {
-    border-color: #D0D5DA;
+    border-color: var(--color-delete-confirm-secondary-border);
 
-    color: #333;
-    background: white;
+    color: var(--color-delete-confirm-secondary-text);
+    background: var(--color-delete-confirm-secondary-bg);
 }
 
 .delete-confirm__btn--secondary:hover {
-    background: #F8F9F9;
+    background: var(--color-delete-confirm-secondary-hover-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
 }

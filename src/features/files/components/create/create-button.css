@@ -30,13 +30,13 @@
 
 .create-button--open {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    background: #4781D1;
+	background: var(--color-create-button-open-bg);
     transform: none;
 }
 
 .create-button--open:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    background: #5a91e1;
+	background: var(--color-create-button-open-hover-bg);
     transform: none;
 }
 

@@ -24,7 +24,7 @@
 }
 
 .account-menu__button:hover:not(:disabled) {
-    background-color: #F8F9F9;
+    background-color: var(--color-account-menu-button-bg-hover);
 }
 
 .account-menu__button:disabled {
@@ -50,5 +50,5 @@
     line-height: 36px;
     letter-spacing: 0;
 
-    color: #333;
+    color: var(--color-account-menu-button-text);
 }

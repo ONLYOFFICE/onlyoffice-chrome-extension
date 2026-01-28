@@ -15,18 +15,18 @@
     font-weight: 600;
     text-align: left;
 
-    color: #333;
+    color: var(--color-create-menu-item-text);
     cursor: pointer;
-    background: #FFFFFF;
+    background: var(--color-create-menu-item-bg);
     transition: background-color 0.2s;
 }
 
 .create-menu__item:hover {
-    background-color: #F8F9F9;
+    background-color: var(--color-create-menu-item-bg-hover);
 }
 
 .create-menu__item:active {
-    background-color: #F0F1F2;
+    background-color: var(--color-create-menu-item-bg-active);
 }
 
 .create-menu__icon {

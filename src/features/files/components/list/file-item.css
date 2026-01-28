@@ -8,7 +8,7 @@
     padding: 12px 8px;
     margin: 0 16px;
 
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--color-file-item-border);
     border-radius: 3px;
     overflow: hidden;
     transition: background-color 0.2s, transform 0.15s, opacity 0.25s, max-height 0.25s, margin 0.25s, padding 0.25s, border-color 0.25s;
@@ -19,7 +19,7 @@
 }
 
 .file-item:hover:not(.file-item--processing) {
-    background-color: #F8F9F9;
+    background-color: var(--color-file-item-hover-bg);
 }
 
 .file-item--processing {
@@ -78,7 +78,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    color: #333;
+    color: var(--color-file-item-name);
     overflow: hidden;
 }
 
@@ -93,7 +93,7 @@
     letter-spacing: 0;
     white-space: nowrap;
 
-    color: #A3A9AE;
+    color: var(--color-file-item-extension);
 }
 
 .file-item__actions {

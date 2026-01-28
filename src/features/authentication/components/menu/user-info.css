@@ -10,7 +10,7 @@
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 
-    background: #F3F4F4;
+    background: var(--color-account-menu-user-bg);
 }
 
 .account-menu__user-icon {
@@ -28,9 +28,9 @@
     font-size: 18px;
     font-weight: 600;
 
-    color: #A3A9AE;
+    color: var(--color-account-menu-user-icon-text);
     overflow: hidden;
-    background: #ECEEF1;
+    background: var(--color-account-menu-user-icon-bg);
 }
 
 .account-menu__user-avatar {
@@ -70,7 +70,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
 
-    color: #333333;
+    color: var(--color-account-menu-user-name);
 }
 
 .account-menu__user-email {
@@ -83,6 +83,5 @@
     white-space: nowrap;
     overflow: hidden;
 
-    color: #A3A9AE;
+    color: var(--color-account-menu-user-email);
 }
-
