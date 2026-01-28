@@ -25,20 +25,23 @@
 .button--primary:hover:not(:disabled) {
     border-color: var(--color-button-primary-hover-border);
 
-    box-shadow: 0 2px 8px rgba(71, 129, 209, 0.3);
+    box-shadow: 0 2px 8px rgba(82, 153, 224, 0.3);
 
     background: var(--color-button-primary-hover-bg);
     transform: translateY(-1px);
 }
 
 .button--primary:active:not(:disabled) {
-    box-shadow: 0 1px 3px rgba(71, 129, 209, 0.3);
+    box-shadow: 0 1px 3px rgba(82, 153, 224, 0.3);
+    background: var(--color-button-primary-active-bg);
     transform: translateY(0);
 }
 
 .button--primary:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    background: var(--color-button-primary-disabled-bg);
+    box-shadow: none;
+    transform: none;
 }
 
 .button--secondary {

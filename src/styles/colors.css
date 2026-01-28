@@ -7,15 +7,15 @@
 
 	--color-border-subtle: #f0f0f0;
 	--color-border-muted: #D0D5DA;
-	--color-border-accent: #4781D1;
+	--color-border-accent: #5299E0;
 
 	--color-bg-subtle: #F8F9F9;
 	--color-bg-muted: #F3F4F4;
 	--color-bg-muted-strong: #ECEEF1;
 	--color-bg-elevated: #FFFFFF;
 
-	--color-primary: #4781D1;
-	--color-primary-hover: #5a91e2;
+	--color-primary: #5299E0;
+	--color-primary-hover: #5299E0D9;
 	--color-primary-deep: #265A8F;
 
 	--color-text-on-primary: #ffffff;
@@ -45,10 +45,13 @@
 	--color-file-list-loading-more: var(--color-text-muted);
 
 	--color-button-primary-border: var(--color-primary);
-	--color-button-primary-bg: var(--color-primary);
+	--color-button-primary-bg: #5299E0;
 	--color-button-primary-text: var(--color-text-on-primary);
 	--color-button-primary-hover-border: var(--color-primary-hover);
-	--color-button-primary-hover-bg: var(--color-primary-hover);
+	--color-button-primary-hover-bg: #5299E0D9;
+	--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
+		linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+	--color-button-primary-disabled-bg: #5299E099;
 	--color-button-secondary-border: var(--color-border-muted);
 	--color-button-secondary-bg: var(--color-bg-elevated);
 	--color-button-secondary-text: var(--color-text-main);
@@ -125,5 +128,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {}
+	:root {
+		--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
+			linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18));
+	}
 }
