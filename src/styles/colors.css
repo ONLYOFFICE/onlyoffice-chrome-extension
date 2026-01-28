@@ -159,5 +159,7 @@
 		--color-input-text-filled: #FFFFFF;
 		--color-input-text-disabled: #858585;
 		--color-input-text-error: #FFFFFF;
+
+		--color-header-bg: #282828;
 	}
 }

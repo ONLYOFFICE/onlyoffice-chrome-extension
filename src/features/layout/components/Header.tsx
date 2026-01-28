@@ -4,7 +4,8 @@ import { Logo } from '@features/layout/components/Logo';
 
 import { useProfile } from '@stores/profile';
 
-import userpicIcon from '@icons/userpic.svg';
+import userpicLight from '@icons/userpic.svg';
+import userpicDark from '@icons/userpic-dark.svg';
 
 import './header.css';
 
@@ -20,6 +21,12 @@ export const Header: FunctionalComponent<HeaderProps> = ({
     isProfileDisabled = false
 }) => {
     const profile = useProfile();
+    const prefersDark =
+        typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    const fallbackUserpic = prefersDark ? userpicDark : userpicLight;
     const userPicture = profile.state.value.avatar;
     return (
         <header class="header" role="banner">
@@ -34,7 +41,7 @@ export const Header: FunctionalComponent<HeaderProps> = ({
                     disabled={isProfileDisabled}
                 >
                     <img 
-                        src={userPicture || userpicIcon} 
+                        src={userPicture || fallbackUserpic} 
                         alt=""
                         class="header__profile-icon"
                         aria-hidden="true"
