@@ -103,6 +103,7 @@
 
 	--color-create-dialog-title: var(--color-text-main);
 
+	--color-delete-confirm-bg: #FFFFFF;
 	--color-delete-confirm-title: var(--color-text-main);
 	--color-delete-confirm-message: var(--color-text-soft);
 	--color-delete-confirm-primary-border: var(--color-primary);
@@ -179,6 +180,14 @@
 		--color-file-item-hover-bg: #3D3D3D;
 		--color-file-item-name: #FFFFFF;
 		--color-file-item-extension: #A3A9AE;
+
+		--color-delete-confirm-bg: #3D3D3D;
+		--color-delete-confirm-title: #FFFFFF;
+		--color-delete-confirm-message: #D0D5DA;
+		--color-delete-confirm-secondary-border: #5C5C5C;
+		--color-delete-confirm-secondary-bg: #3D3D3D;
+		--color-delete-confirm-secondary-text: #FFFFFF;
+		--color-delete-confirm-secondary-hover-bg: #474747;
 
 		--color-create-menu-fab-bg: #4781D1;
 	}
