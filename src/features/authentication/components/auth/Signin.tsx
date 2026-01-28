@@ -1,6 +1,8 @@
 import { FunctionalComponent } from 'preact';
 
-import { Spinner } from '@components';
+import { Spinner } from '@components/Spinner';
+
+import onlyofficeIcon from '@icons/onlyoffice.svg';
 
 import './signin.css';
 
@@ -17,12 +19,13 @@ export const Signin: FunctionalComponent<SigninProps> = ({
         <div class="signin">
             {isSigningIn ? (
                 <div class="signin__loading">
-                    <Spinner size="small" color="dark" />
+                    <Spinner size="small" />
                     <p class="signin__loading-text">Signing in...</p>
                 </div>
             ) : (
                 <button class="signin__btn" onClick={onSignIn}>
-                    Sign in
+                    <img src={onlyofficeIcon} alt="" class="signin__icon" />
+                    <span>Sign in with DocSpace</span>
                 </button>
             )}
         </div>

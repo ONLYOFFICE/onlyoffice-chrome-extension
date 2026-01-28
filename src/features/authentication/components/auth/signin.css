@@ -6,37 +6,54 @@
     flex-shrink: 0;
 
     padding: 0 16px;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 13px;
+    margin-bottom: 13px;
 }
 
 .signin__btn {
     box-sizing: border-box;
-    width: 100%;
-    max-width: 343px;
+    width: 343px;
     height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    gap: 8px;
     padding: 11px 32px;
 
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 
-    border: 1px solid transparent;
+    border: 1px solid var(--color-auth-signin-border);
     border-radius: 3px;
 
     opacity: 1;
-    color: var(--color-button-primary-text);
+    color: var(--color-auth-signin-text);
     cursor: pointer;
     background: var(--color-auth-signin-bg);
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .signin__btn:hover {
-    background: var(--color-auth-signin-bg-hover);
+    border-color: var(--color-auth-signin-border-hover);
+    box-shadow: 0 1px 2px rgba(15, 35, 52, 0.08);
+}
+
+.signin__icon {
+    width: 18px;
+    height: 17px;
+    display: block;
+
+    margin-right: 16px;
+}
+
+.signin__btn span {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0;
+
+    color: var(--color-auth-signin-caption);
 }
 
 .signin__loading {

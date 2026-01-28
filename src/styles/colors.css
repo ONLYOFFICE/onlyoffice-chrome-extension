@@ -38,6 +38,10 @@
 
 	--color-auth-signin-bg: #333333;
 	--color-auth-signin-bg-hover: #555555;
+	--color-auth-signin-border: #D0D5DA;
+	--color-auth-signin-border-hover: #A3A9AE;
+	--color-auth-signin-text: #5C5C5C;
+	--color-auth-signin-caption: #A3A9AE;
 
 	--color-file-list-title: var(--color-text-secondary);
 	--color-file-list-empty-title: var(--color-text-main);
@@ -139,6 +143,10 @@
 	:root {
 		--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
 			linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18));
+
+		--color-auth-signin-bg: #333333;
+		--color-auth-signin-border: #474747;
+		--color-auth-signin-text: #858585;
 
 		--color-input-bg: #282828;
 		--color-input-border: #474747;
