@@ -5,9 +5,13 @@ import { MenuItem } from './MenuItem';
 import { useModal } from '@hooks/useModal';
 
 import documentIcon from '@icons/document.svg';
+import documentIconDark from '@icons/document-dark.svg';
 import spreadsheetIcon from '@icons/spreadsheet.svg';
+import spreadsheetIconDark from '@icons/spreadsheet-dark.svg';
 import presentationIcon from '@icons/presentation.svg';
+import presentationIconDark from '@icons/presentation-dark.svg';
 import pdfIcon from '@icons/form.svg';
+import pdfIconDark from '@icons/form-dark.svg';
 import uploadIcon from '@icons/upload.svg';
 import minusIcon from '@icons/minus.svg';
 
@@ -39,6 +43,10 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
     onUploadFiles
 }) => {
     const { render, closing, el } = useModal({ isOpen, onClose });
+    const isDarkMode =
+        typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     if (!render) return null;
 
@@ -46,22 +54,22 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
         {
             label: 'Document',
             onClick: onCreateDocument,
-            icon: documentIcon
+            icon: isDarkMode ? documentIconDark : documentIcon
         },
         {
             label: 'Spreadsheet',
             onClick: onCreateSpreadsheet,
-            icon: spreadsheetIcon
+            icon: isDarkMode ? spreadsheetIconDark : spreadsheetIcon
         },
         {
             label: 'Presentation',
             onClick: onCreatePresentation,
-            icon: presentationIcon
+            icon: isDarkMode ? presentationIconDark : presentationIcon
         },
         {
             label: 'PDF Form',
             onClick: onCreatePdf,
-            icon: pdfIcon
+            icon: isDarkMode ? pdfIconDark : pdfIcon
         }
     ];
 

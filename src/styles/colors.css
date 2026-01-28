@@ -90,6 +90,7 @@
 	--color-create-button-open-bg: var(--color-primary);
 	--color-create-button-open-hover-bg: var(--color-primary-hover);
 
+	--color-create-menu-bg: #FFFFFF;
 	--color-create-menu-divider-bg: var(--color-bg-subtle);
 	--color-create-menu-upload-text: var(--color-text-on-primary);
 	--color-create-menu-upload-bg: var(--color-primary-deep);
@@ -200,6 +201,17 @@
 		--color-checkbox-bg: #282828;
 		--color-checkbox-border: #474747;
 		--color-checkbox-tick: #FFFFFF;
+
+		--color-create-menu-bg: #333333;
+		--color-create-menu-item-text: #FFFFFF;
+		--color-create-menu-item-bg: #333333;
+		--color-create-menu-item-bg-hover: #474747;
+		--color-create-menu-item-bg-active: #282828;
+		--color-create-menu-divider-bg: #333333;
+		--color-create-menu-upload-text: #FFFFFF;
+		--color-create-menu-upload-bg: #265A8F;
+		--color-create-menu-upload-bg-hover: #4781D1;
+		--color-create-menu-upload-bg-active: #5299E0;
 
 		--color-create-menu-fab-bg: #4781D1;
 	}
