@@ -9,9 +9,9 @@
     justify-content: center;
 
     z-index: 1001;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background-color: var(--color-overlay-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     animation: fadeIn 0.25s ease-out;
 }
 
@@ -39,7 +39,7 @@
 
     border-radius: 6px 6px 0 0;
 
-    background: white;
+    background: var(--color-create-dialog-bg);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.16);
     transform-origin: bottom;
 }

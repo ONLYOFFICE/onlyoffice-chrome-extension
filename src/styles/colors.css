@@ -78,6 +78,9 @@
 	--color-subtitle-text: var(--color-text-secondary);
 
 	--color-checkbox-label: var(--color-text-soft);
+	--color-checkbox-bg: #FFFFFF;
+	--color-checkbox-border: #D0D5DA;
+	--color-checkbox-tick: #4781D1;
 
 	--color-file-item-border: var(--color-border-subtle);
 	--color-file-item-hover-bg: var(--color-bg-subtle);
@@ -101,6 +104,7 @@
 	--color-create-menu-item-bg-hover: var(--color-bg-subtle);
 	--color-create-menu-item-bg-active: var(--color-bg-muted-strong);
 
+	--color-create-dialog-bg: #FFFFFF;
 	--color-create-dialog-title: var(--color-text-main);
 
 	--color-delete-confirm-bg: #FFFFFF;
@@ -181,6 +185,9 @@
 		--color-file-item-name: #FFFFFF;
 		--color-file-item-extension: #A3A9AE;
 
+		--color-create-dialog-bg: #3D3D3D;
+		--color-create-dialog-title: #FFFFFF;
+
 		--color-delete-confirm-bg: #3D3D3D;
 		--color-delete-confirm-title: #FFFFFF;
 		--color-delete-confirm-message: #D0D5DA;
@@ -188,6 +195,11 @@
 		--color-delete-confirm-secondary-bg: #3D3D3D;
 		--color-delete-confirm-secondary-text: #FFFFFF;
 		--color-delete-confirm-secondary-hover-bg: #474747;
+
+		--color-checkbox-label: #FFFFFF;
+		--color-checkbox-bg: #282828;
+		--color-checkbox-border: #474747;
+		--color-checkbox-tick: #FFFFFF;
 
 		--color-create-menu-fab-bg: #4781D1;
 	}
