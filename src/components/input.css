@@ -1,0 +1,21 @@
+.input {
+  box-sizing: border-box;
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid #D0D5DA;
+  border-radius: 3px;
+
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: #4781D1;
+  box-shadow: 0 0 0 3px rgba(71, 129, 209, 0.1);
+}

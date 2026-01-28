@@ -1,0 +1,38 @@
+{
+	"name": "onlyoffice-docspace-chrome",
+	"version": "1.0.0",
+	"description": "Chrome extension for ONLYOFFICE DocSpace",
+	"author": "Ascensio System SIA",
+	"license": "Apache-2.0",
+	"private": true,
+	"type": "module",
+	"keywords": [
+		"onlyoffice",
+		"docspace",
+		"chrome-extension",
+		"collaboration",
+		"documents",
+		"productivity"
+	],
+	"eslintConfig": {
+		"extends": "preact"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"package": "npm run build && cd dist && zip -r ../docspace-chrome.zip . && cd .."
+	},
+	"dependencies": {
+		"@preact/signals": "^2.5.1",
+		"preact": "^10.26.9"
+	},
+	"devDependencies": {
+		"@preact/preset-vite": "^2.10.2",
+		"@types/chrome": "^0.0.256",
+		"eslint": "^9.39.2",
+		"eslint-config-preact": "^2.0.0",
+		"typescript": "^5.9.3",
+		"vite": "^7.0.4"
+	}
+}

@@ -1,0 +1,10 @@
+.account-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 6px 6px 0 0;
+
+    background: white;
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.16);
+}

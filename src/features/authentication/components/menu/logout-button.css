@@ -1,0 +1,29 @@
+.account-menu__logout {
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+    margin: 0 16px 16px 16px;
+    padding: 12px 28px;
+
+    border: 1px solid #D0D5DA;
+    border-radius: 3px;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    background: #FFFFFF;
+    transition: background-color 0.2s;
+}
+
+.account-menu__logout:hover {
+    background: #F8F9F9;
+}

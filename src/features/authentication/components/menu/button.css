@@ -1,0 +1,54 @@
+.account-menu__button {
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    padding: 0 16px;
+
+    border: none;
+
+    text-align: left;
+
+    outline: none;
+    cursor: pointer;
+    background: none;
+    transition: background-color 0.2s;
+}
+
+.account-menu__button:last-of-type {
+    margin-bottom: 12px;
+}
+
+.account-menu__button:hover:not(:disabled) {
+    background-color: #F8F9F9;
+}
+
+.account-menu__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.account-menu__button-icon {
+    width: 14px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
+
+    margin-left: 1px;
+}
+
+.account-menu__button-text {
+    flex: 1;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: 0;
+
+    color: #333;
+}
