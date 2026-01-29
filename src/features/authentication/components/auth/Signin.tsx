@@ -11,17 +11,21 @@ import './signin.css';
 interface SigninProps {
     readonly isSigningIn: boolean;
     readonly onSignIn: () => void;
+    readonly className?: string;
 }
 
 export const Signin: FunctionalComponent<SigninProps> = ({
     isSigningIn,
-    onSignIn
+    onSignIn,
+    className
 }) => {
     const { t, locale } = useI18n();
     const _ = locale.value;
     
+    const containerClass = ['signin', className].filter(Boolean).join(' ');
+    
     return (
-        <div class="signin">
+        <div class={containerClass}>
             {isSigningIn ? (
                 <div class="signin__loading">
                     <Spinner size="small" />

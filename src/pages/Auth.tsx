@@ -51,10 +51,10 @@ export const AuthPage: FunctionalComponent<AuthPageProps> = ({
     const getIcon = (extension: string): string => detector.getIcon(extension);
     
     return (
-        <>
+        <div class="auth-page">
             <Welcome />
             {hasDetectedFiles && (
-                <>
+                <div class="file-list__section file-list__section--detected">
                     <Subtitle>{t('files.files_detected')}</Subtitle>
                     <div class="file-list__container">
                         <FileList
@@ -66,9 +66,13 @@ export const AuthPage: FunctionalComponent<AuthPageProps> = ({
                             getIcon={getIcon}
                         />
                     </div>
-                </>
+                </div>
             )}
-            <Signin isSigningIn={isSigningIn} onSignIn={onSignIn} />
-        </>
+            <Signin
+                isSigningIn={isSigningIn}
+                onSignIn={onSignIn}
+                className={hasDetectedFiles ? undefined : 'signin--inline'}
+            />
+        </div>
     );
 };

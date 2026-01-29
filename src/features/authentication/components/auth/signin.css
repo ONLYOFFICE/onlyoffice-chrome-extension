@@ -5,9 +5,13 @@
     justify-content: center;
     flex-shrink: 0;
 
+    margin-top: auto;
     padding: 0 16px;
-    margin-top: 13px;
     margin-bottom: 13px;
+}
+
+.signin--inline {
+    margin-top: 16px;
 }
 
 .signin__btn {

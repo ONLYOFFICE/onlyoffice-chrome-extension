@@ -23,6 +23,13 @@ html, body {
     overflow: hidden;
 }
 
+.auth-page {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .main-container {
     width: 100%;
     height: 100%;
