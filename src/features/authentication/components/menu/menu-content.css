@@ -5,6 +5,11 @@
 
     border-radius: 6px 6px 0 0;
 
-    background: white;
+    background: var(--color-account-menu-bg);
     box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.16);
+}
+
+.account-menu__logout-container {
+    background: var(--color-account-menu-logout-container-bg);
+    padding-bottom: 16px;
 }

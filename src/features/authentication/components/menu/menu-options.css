@@ -3,4 +3,6 @@
     flex-direction: column;
 
     padding: 0;
+
+    background: var(--color-account-menu-options-bg);
 }

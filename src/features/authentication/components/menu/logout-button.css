@@ -7,7 +7,7 @@
     justify-content: center;
 
     gap: 8px;
-    margin: 0 16px 16px 16px;
+    margin: 0 16px;
     padding: 12px 28px;
 
     border: 1px solid var(--color-account-menu-logout-border);

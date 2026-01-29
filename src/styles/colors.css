@@ -124,15 +124,19 @@
 	--color-feedback-empty-title: var(--color-text-main);
 	--color-feedback-empty-subtitle: var(--color-text-soft);
 
+	--color-account-menu-bg: #FFFFFF;
 	--color-account-menu-user-bg: var(--color-bg-muted);
 	--color-account-menu-user-icon-text: var(--color-text-secondary);
 	--color-account-menu-user-icon-bg: var(--color-bg-muted-strong);
 	--color-account-menu-user-name: var(--color-text-main);
 	--color-account-menu-user-email: var(--color-text-secondary);
+	--color-account-menu-logout-container-bg: transparent;
 	--color-account-menu-logout-border: var(--color-border-muted);
 	--color-account-menu-logout-text: var(--color-text-main);
 	--color-account-menu-logout-bg: var(--color-bg-elevated);
 	--color-account-menu-logout-bg-hover: var(--color-bg-subtle);
+	--color-account-menu-options-bg: transparent;
+	--color-account-menu-button-bg: transparent;
 	--color-account-menu-button-bg-hover: var(--color-bg-subtle);
 	--color-account-menu-button-text: var(--color-text-main);
 
@@ -214,5 +218,21 @@
 		--color-create-menu-upload-bg-active: #5299E0;
 
 		--color-create-menu-fab-bg: #4781D1;
+
+		--color-account-menu-bg: #3D3D3D;
+		--color-account-menu-user-bg: #3D3D3D;
+		--color-account-menu-user-icon-text: #FFFFFF;
+		--color-account-menu-user-icon-bg: #474747;
+		--color-account-menu-user-name: #FFFFFF;
+		--color-account-menu-user-email: #A3A9AE;
+		--color-account-menu-logout-container-bg: #333333;
+		--color-account-menu-logout-border: #5C5C5C;
+		--color-account-menu-logout-text: #FFFFFF;
+		--color-account-menu-logout-bg: #333333;
+		--color-account-menu-logout-bg-hover: #474747;
+		--color-account-menu-options-bg: #333333;
+		--color-account-menu-button-bg: #333333;
+		--color-account-menu-button-bg-hover: #474747;
+		--color-account-menu-button-text: #FFFFFF;
 	}
 }

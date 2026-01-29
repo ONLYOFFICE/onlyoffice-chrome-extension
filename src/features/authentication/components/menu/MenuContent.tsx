@@ -38,7 +38,9 @@ export const MenuContent: FunctionalComponent<MenuContentProps> = ({
         >
             <UserInfo name={name} email={email} avatar={avatar} />
             <MenuOptions tenant={tenant} onGoTo={onGoTo} onOpenTab={onOpenTab} />
-            <LogoutButton onLogout={onLogout} />
+            <div class="account-menu__logout-container">
+                <LogoutButton onLogout={onLogout} />
+            </div>
         </div>
     );
 };

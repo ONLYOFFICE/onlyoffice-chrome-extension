@@ -1,6 +1,7 @@
 import { FunctionalComponent } from 'preact';
 
 import personIcon from '@icons/person.svg';
+import personDarkIcon from '@icons/person-dark.svg';
 
 import './user-info.css';
 
@@ -11,6 +12,9 @@ interface UserInfoProps {
 }
 
 export const UserInfo: FunctionalComponent<UserInfoProps> = ({ name, email, avatar }) => {
+    const isDarkMode = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const currentPersonIcon = isDarkMode ? personDarkIcon : personIcon;
+
     return (
         <div class="account-menu__user" aria-label="User information">
             <div class="account-menu__user-icon" aria-hidden="true">
@@ -22,7 +26,7 @@ export const UserInfo: FunctionalComponent<UserInfoProps> = ({ name, email, avat
                     />
                 ) : (
                     <img 
-                        src={personIcon} 
+                        src={currentPersonIcon} 
                         alt="" 
                         class="account-menu__user-avatar-placeholder"
                     />
