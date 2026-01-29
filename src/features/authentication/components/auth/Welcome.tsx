@@ -8,15 +8,14 @@ import { useI18n } from '@stores/i18n';
 import './welcome.css';
 
 export const Welcome: FunctionalComponent = () => {
-    const { t, locale } = useI18n();
-    const _ = locale.value;
+  const { t } = useI18n();
 
-    return (
-        <div class="welcome">
-            <Title>{t('auth.welcome')}</Title>
-            <Text>
-                {t('auth.welcome_description')}
-            </Text>
-        </div>
-    );
+  return (
+    <div className="welcome">
+      <Title>{t('auth.welcome')}</Title>
+      <Text>
+        {t('auth.welcome_description')}
+      </Text>
+    </div>
+  );
 };

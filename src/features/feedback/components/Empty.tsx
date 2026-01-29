@@ -5,18 +5,16 @@ import noDocsIcon from '@icons/nodocs.svg';
 import './empty.css';
 
 interface EmptyProps {
-    readonly title: string;
-    readonly subtitle: string;
+  readonly title: string;
+  readonly subtitle: string;
 }
 
-export const Empty: FunctionalComponent<EmptyProps> = ({ title, subtitle }) => {
-    return (
-        <div class="empty">
-            <img src={noDocsIcon} alt="" class="empty__icon" />
-            <div class="empty__content">
-                <h3 class="empty__title">{title}</h3>
-                <p class="empty__subtitle">{subtitle}</p>
-            </div>
-        </div>
-    );
-};
+export const Empty: FunctionalComponent<EmptyProps> = ({ title, subtitle }) => (
+  <div className="empty">
+    <img src={noDocsIcon} alt="" className="empty__icon" />
+    <div className="empty__content">
+      <h3 className="empty__title">{title}</h3>
+      <p className="empty__subtitle">{subtitle}</p>
+    </div>
+  </div>
+);

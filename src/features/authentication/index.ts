@@ -1,1 +1,3 @@
-export { Signin, Welcome, Exchanging, AccountMenu } from './components';
+export {
+  Signin, Welcome, Exchanging, AccountMenu,
+} from './components';

@@ -3,9 +3,7 @@ import { FunctionalComponent, ComponentChildren } from 'preact';
 import './subtitle.css';
 
 interface SubtitleProps {
-    readonly children: ComponentChildren;
+  readonly children: ComponentChildren;
 }
 
-export const Subtitle: FunctionalComponent<SubtitleProps> = ({ children }) => {
-    return <h3 class="subtitle">{children}</h3>;
-};
+export const Subtitle: FunctionalComponent<SubtitleProps> = ({ children }) => <h3 className="subtitle">{children}</h3>;

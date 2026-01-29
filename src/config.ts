@@ -7,10 +7,8 @@ export const FEEDBACK_LINK = import.meta.env.VITE_FEEDBACK_LINK ?? 'https://www.
 export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://www.onlyoffice.com/';
 
 export function validateConfig(): { valid: boolean; errors: string[] } {
-    const errors: string[] = [];
-    if (!TOKEN_EXCHANGE_URL)
-        errors.push('TOKEN_EXCHANGE_URL is not set in .env');
-    if (!OAUTH_CLIENT_ID)
-        errors.push('OAUTH_CLIENT_ID is not set in .env');
-    return { valid: errors.length === 0, errors };
+  const errors: string[] = [];
+  if (!TOKEN_EXCHANGE_URL) errors.push('TOKEN_EXCHANGE_URL is not set in .env');
+  if (!OAUTH_CLIENT_ID) errors.push('OAUTH_CLIENT_ID is not set in .env');
+  return { valid: errors.length === 0, errors };
 }

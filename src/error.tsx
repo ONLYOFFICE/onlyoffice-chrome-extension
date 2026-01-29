@@ -8,28 +8,39 @@ import errorIcon from '@icons/error.svg';
 
 import '@styles/error.css';
 
-const ErrorMessage = () => {
-	const { t, locale } = useI18n();
-	const _ = locale.value;
-	
-	return (
-		<div class="error">
-			<img src={errorIcon} alt={t('common.error')} class="error__icon" />
-			<Title>{t('error.something_went_wrong')}</Title>
-		</div>
-	);
-};
+function ErrorMessage() {
+  const { t } = useI18n();
 
-export class ErrorBoundary extends Component {
-	state = { error: null };
+  return (
+    <div className="error">
+      <img src={errorIcon} alt={t('common.error')} className="error__icon" />
+      <Title>{t('error.something_went_wrong')}</Title>
+    </div>
+  );
+}
 
-	static getDerivedStateFromError(error) {
-		return { error: error.message };
-	}
+interface ErrorBoundaryProps {
+  readonly children: preact.ComponentChildren;
+}
 
-	render() {
-		if (this.state.error)
-			return <ErrorMessage />;
-		return this.props.children;
-	}
+interface ErrorBoundaryState {
+  error: string | null;
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { error: error.message };
+  }
+
+  render() {
+    const { error } = this.state;
+    const { children } = this.props;
+    if (error) return <ErrorMessage />;
+    return children;
+  }
 }

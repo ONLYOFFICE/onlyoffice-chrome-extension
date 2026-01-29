@@ -18,6 +18,8 @@
 		"extends": "preact"
 	},
 	"scripts": {
+		"lint": "eslint src/",
+		"lint:fix": "eslint src/ --fix",
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -25,13 +27,24 @@
 	},
 	"dependencies": {
 		"@preact/signals": "^2.5.1",
-		"preact": "^10.26.9"
+		"preact": "^10.26.9",
+		"typescript-eslint": "^8.54.0"
 	},
 	"devDependencies": {
+		"@eslint/compat": "^1.4.1",
+		"@eslint/js": "^9.39.2",
 		"@preact/preset-vite": "^2.10.2",
+		"@stylistic/eslint-plugin": "^3.1.0",
 		"@types/chrome": "^0.0.256",
+		"@types/node": "^22.10.2",
 		"eslint": "^9.39.2",
+		"eslint-config-airbnb-extended": "^2.3.3",
 		"eslint-config-preact": "^2.0.0",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-plugin-import-x": "^4.16.1",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "^7.0.1",
 		"typescript": "^5.9.3",
 		"vite": "^7.0.4"
 	}
