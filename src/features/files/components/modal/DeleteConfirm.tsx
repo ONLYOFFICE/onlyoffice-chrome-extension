@@ -3,6 +3,8 @@ import { useCallback } from 'preact/hooks';
 
 import { CloseButton } from '@components/CloseButton';
 
+import { useI18n } from '@stores/i18n';
+
 import { useModal } from '@hooks/useModal';
 
 import './delete-confirm.css';
@@ -20,6 +22,9 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
     onConfirm,
     onCancel
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
+    
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
@@ -51,8 +56,8 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
             role="presentation"
         >
             <div class={`delete-confirm__container ${closing ? 'delete-confirm__container--closing' : ''}`}>
-                <CloseButton onClick={onCancel} ariaLabel="Close" />
-                
+                <CloseButton onClick={onCancel} ariaLabel={t('common.close')} />
+
                 <div 
                     ref={el}
                     class="delete-confirm" 
@@ -63,13 +68,13 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
                     aria-describedby="delete-confirm-message"
                 >
                     <h3 id="delete-confirm-title" class="delete-confirm__title">
-                        Move to Trash?
+                        {t('files.move_to_trash')}?
                     </h3>
                     
                     <p id="delete-confirm-message" class="delete-confirm__message">
                         {fileName
-                            ? `Are you sure you want to move "${fileName}" to the trash?`
-                            : 'Are you sure you want to continue?'}
+                            ? t('files.move_to_trash_confirm', { fileName })
+                            : t('files.move_to_trash_confirm_generic')}
                     </p>
                     
                     <div class="delete-confirm__actions">
@@ -78,14 +83,14 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
                             class="delete-confirm__btn delete-confirm__btn--primary"
                             onClick={onConfirm}
                         >
-                            Move to Trash
+                            {t('files.move_to_trash')}
                         </button>
                         <button 
                             type="button"
                             class="delete-confirm__btn delete-confirm__btn--secondary"
                             onClick={onCancel}
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                     </div>
                 </div>

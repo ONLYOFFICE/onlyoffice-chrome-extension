@@ -8,6 +8,8 @@ import { Input } from '@components/Input';
 
 import { useModal } from '@hooks/useModal';
 
+import { useI18n } from '@stores/i18n';
+
 import './dialog.css';
 
 type FileType = 'document' | 'spreadsheet' | 'presentation' | 'pdf';
@@ -20,13 +22,6 @@ interface CreateDialogProps {
     readonly onSavePreference: (skip: boolean) => void;
 }
 
-const DEFAULTS: Record<FileType, string> = {
-    document: 'Document',
-    spreadsheet: 'Spreadsheet',
-    presentation: 'Presentation',
-    pdf: 'PDF Form'
-};
-
 export const CreateDialog: FunctionalComponent<CreateDialogProps> = ({
     isOpen,
     fileType,
@@ -34,6 +29,8 @@ export const CreateDialog: FunctionalComponent<CreateDialogProps> = ({
     onCreate,
     onSavePreference
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     const [name, setName] = useState('');
     const [skip, setSkip] = useState(false);
     const [activeFileType, setActiveFileType] = useState<FileType | null>(null);
@@ -73,13 +70,19 @@ export const CreateDialog: FunctionalComponent<CreateDialogProps> = ({
     useEffect(() => {
         if (isOpen && fileType) {
             setActiveFileType(fileType);
-            setName(DEFAULTS[fileType]);
+            const defaults: Record<FileType, string> = {
+                document: t('files.document'),
+                spreadsheet: t('files.spreadsheet'),
+                presentation: t('files.presentation'),
+                pdf: t('files.pdf_form')
+            };
+            setName(defaults[fileType]);
         } else if (!isOpen) {
             setActiveFileType(null);
             setName('');
             setSkip(false);
         }
-    }, [isOpen, fileType]);
+    }, [isOpen, fileType, t]);
 
     if (!render || !activeFileType) return null;
 
@@ -148,9 +151,18 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
     onCreate,
     onClose
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     const inputClassName = canCreate
         ? 'create-dialog__input'
         : 'create-dialog__input input--error';
+    
+    const titleMap: Record<FileType, string> = {
+        document: t('files.new_document'),
+        spreadsheet: t('files.new_spreadsheet'),
+        presentation: t('files.new_presentation'),
+        pdf: t('files.new_pdf_form')
+    };
 
     return (
         <div 
@@ -162,7 +174,7 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
             aria-labelledby="create-dialog-title"
         >
             <h3 id="create-dialog-title" class="create-dialog__title">
-                New {activeFileType}
+                {titleMap[activeFileType]}
             </h3>
             
             <Input
@@ -171,14 +183,14 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
                 value={name}
                 onChange={onNameChange}
                 autoFocus
-                placeholder="Enter file name"
+                placeholder={t('files.enter_file_name')}
             />
             
             <Checkbox
                 className="create-dialog__checkbox"
                 checked={skip}
                 onChange={onSkipChange}
-                label="Don't ask file name again on creation"
+                label={t('files.dont_ask_file_name')}
             />
             
             <div class="create-dialog__actions">
@@ -187,13 +199,13 @@ const CreateDialogContent: FunctionalComponent<CreateDialogContentProps> = ({
                     onClick={onCreate}
                     disabled={!canCreate}
                 >
-                    Create
+                    {t('common.create')}
                 </Button>
                 <Button
                     variant="secondary"
                     onClick={onClose}
                 >
-                    Cancel
+                    {t('common.cancel')}
                 </Button>
             </div>
         </div>

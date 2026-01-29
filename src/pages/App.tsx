@@ -6,6 +6,7 @@ import { FilesPage } from '@pages/Files';
 
 import { Spinner } from '@components/Spinner';
 
+import { useI18n } from '@stores/i18n';
 import { useAuth, useDocs, useFeedback, useProfile } from '@stores/index';
 
 import { Format } from '@utils/formats';
@@ -44,6 +45,8 @@ export function App() {
     const docs = useDocs();
     const profile = useProfile();
     const feedback = useFeedback();
+    const { t, locale } = useI18n();
+    const _ = locale.value;
 
     const [createMenuOpen, setCreateMenuOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
@@ -120,7 +123,7 @@ export function App() {
             await detect();
         } catch (error) {
             console.error('Sign-in error:', error);
-            feedback.showError('Sign-in failed: ' + (error as Error).message);
+            feedback.showError(t('error.sign_in_failed', { message: (error as Error).message }));
         }
     }
 
@@ -132,7 +135,7 @@ export function App() {
             profile.clearProfile();
             await detect();
         } catch (error) {
-            alert('Error logging out: ' + (error as Error).message);
+            console.error(t('error.error_logging_out', { message: (error as Error).message }));
         }
     }
 
@@ -160,7 +163,7 @@ export function App() {
 
     function handleUploadFiles() {
         if (!auth.state.value.client.accessToken || !auth.state.value.tenant) {
-            feedback.showError('Please sign in to upload files');
+            feedback.showError(t('files.please_sign_in_to_upload_files'));
             return;
         }
 

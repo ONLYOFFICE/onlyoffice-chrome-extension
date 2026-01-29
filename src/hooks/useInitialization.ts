@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'preact/hooks';
+
+import { useAuth, useDocs, useProfile, useFeedback, useI18n } from '@stores/index';
+
 import { Storage } from '@utils/storage';
-import { useAuth, useDocs, useProfile, useFeedback } from '@stores/index';
 
 interface UseInitializationReturn {
     loaded: boolean;
@@ -15,6 +17,8 @@ export function useInitialization(
     const docs = useDocs();
     const profile = useProfile();
     const feedback = useFeedback();
+    const { t, locale } = useI18n();
+    const _ = locale.value;
 
     const [loaded, setLoaded] = useState(false);
 
@@ -35,8 +39,6 @@ export function useInitialization(
             }
 
             await detect();
-        } catch (error) {
-            console.error('Initialization error:', error);
         } finally {
             setLoaded(true);
         }
@@ -47,14 +49,28 @@ export function useInitialization(
             const result = await storage.get(['pending_auth_error', 'exchanging_tokens']);
             
             if (result.pending_auth_error) {
-                feedback.showError(result.pending_auth_error);
+                const errorLower = (result.pending_auth_error || '').toLowerCase().trim();
+                let translatedError = result.pending_auth_error;
+                if (errorLower.includes("not approve") || 
+                    errorLower.includes("access not approved") ||
+                    errorLower.includes("didn't approve") || 
+                    errorLower.includes("did not approve") ||
+                    errorLower.includes("user did not approve") ||
+                    errorLower.includes("user didn't approve") ||
+                    (errorLower.includes("approve") && errorLower.includes("access"))) {
+                    translatedError = t('error.access_not_approved');
+                } else if (errorLower.includes('cancel') || errorLower.includes('cancelled')) {
+                    translatedError = t('error.authentication_cancelled');
+                }
+                
+                feedback.showError(translatedError);
                 storage.remove(['pending_auth_error']);
             }
         };
 
         init();
         checkStorage();
-    }, []);
+    }, [t, locale, storage, feedback, init]);
 
     useEffect(() => {
         const hasFiles = Array.isArray(docs.state.value.files);
@@ -75,9 +91,24 @@ export function useInitialization(
 
     useEffect(() => {
         if (auth.state.value.error) {
-            feedback.showError(auth.state.value.error);
+            const errorLower = (auth.state.value.error || '').toLowerCase().trim();
+            let translatedError = auth.state.value.error;
+            
+            if (errorLower.includes("not approve") || 
+                errorLower.includes("access not approved") ||
+                errorLower.includes("didn't approve") || 
+                errorLower.includes("did not approve") ||
+                errorLower.includes("user did not approve") ||
+                errorLower.includes("user didn't approve") ||
+                (errorLower.includes("approve") && errorLower.includes("access"))) {
+                translatedError = t('error.access_not_approved');
+            } else if (errorLower.includes('cancel') || errorLower.includes('cancelled')) {
+                translatedError = t('error.authentication_cancelled');
+            }
+            
+            feedback.showError(translatedError);
         }
-    }, [auth.state.value.error, feedback]);
+    }, [auth.state.value.error, feedback, t, locale]);
 
     return {
         loaded,

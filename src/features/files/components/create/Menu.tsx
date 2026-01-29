@@ -4,6 +4,8 @@ import { MenuItem } from './MenuItem';
 
 import { useModal } from '@hooks/useModal';
 
+import { useI18n } from '@stores/i18n';
+
 import documentIcon from '@icons/document.svg';
 import documentIconDark from '@icons/document-dark.svg';
 import spreadsheetIcon from '@icons/spreadsheet.svg';
@@ -42,6 +44,8 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
     onCreatePdf,
     onUploadFiles
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     const { render, closing, el } = useModal({ isOpen, onClose });
     const isDarkMode =
         typeof window !== 'undefined' &&
@@ -52,22 +56,22 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
 
     const menuItems: readonly MenuItem[] = [
         {
-            label: 'Document',
+            label: t('files.document'),
             onClick: onCreateDocument,
             icon: isDarkMode ? documentIconDark : documentIcon
         },
         {
-            label: 'Spreadsheet',
+            label: t('files.spreadsheet'),
             onClick: onCreateSpreadsheet,
             icon: isDarkMode ? spreadsheetIconDark : spreadsheetIcon
         },
         {
-            label: 'Presentation',
+            label: t('files.presentation'),
             onClick: onCreatePresentation,
             icon: isDarkMode ? presentationIconDark : presentationIcon
         },
         {
-            label: 'PDF Form',
+            label: t('files.pdf_form'),
             onClick: onCreatePdf,
             icon: isDarkMode ? pdfIconDark : pdfIcon
         }
@@ -106,7 +110,7 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
                         role="menuitem"
                     >
                         <img src={uploadIcon} alt="" class="create-menu__upload-icon" />
-                        <span class="create-menu__upload-label">Upload files</span>
+                        <span class="create-menu__upload-label">{t('files.upload_files')}</span>
                     </button>
                 </div>
                 

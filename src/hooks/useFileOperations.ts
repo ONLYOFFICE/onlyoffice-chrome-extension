@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'preact/hooks';
 
 import { File as RecentFile } from '@stores/docs';
-import { useAuth, useDocs, useFeedback } from '@stores/index';
+import { useAuth, useDocs, useFeedback, useI18n } from '@stores/index';
 
 import { DocspaceAPI } from '@utils/http';
 import { calculate as calculateHash, download as downloadFile } from '@utils/hash';
@@ -26,6 +26,8 @@ export function useFileOperations(
     const auth = useAuth();
     const docs = useDocs();
     const feedback = useFeedback();
+    const { t, locale } = useI18n();
+    const _ = locale.value;
 
     const [uploading, setUploading] = useState(false);
     const [processingFiles, setProcessingFiles] = useState<Set<string>>(new Set());
@@ -35,7 +37,7 @@ export function useFileOperations(
         const key = fileUrl + fileName;
 
         if (!auth.state.value.client.accessToken || !auth.state.value.tenant) {
-            feedback.showError('Please sign in to edit files');
+            feedback.showError(t('files.please_sign_in_to_edit_files'));
             return;
         }
 
@@ -52,15 +54,14 @@ export function useFileOperations(
 
             if (existing) {
                 chrome.tabs.create({ url: existing.webUrl, active: true });
-                feedback.showSuccess('File opened in new tab');
+                feedback.showSuccess(t('files.file_opened_in_new_tab'));
             } else {
                 const uploaded = await docs.uploadFile(accessToken, tenant, blob, fileName, hash);
                 chrome.tabs.create({ url: uploaded.webUrl, active: true });
-                feedback.showSuccess('File uploaded and opened in new tab');
+                feedback.showSuccess(t('files.file_uploaded_and_opened_in_new_tab'));
             }
         } catch (error) {
-            console.error('Error editing detected file:', error);
-            feedback.showError('Failed to open file: ' + (error as Error).message);
+            feedback.showError(t('error.failed_to_open_file', { message: (error as Error).message }));
         } finally {
             setProcessingFiles(prev => {
                 const newSet = new Set(prev);
@@ -68,7 +69,7 @@ export function useFileOperations(
                 return newSet;
             });
         }
-    }, [auth, docs, feedback]);
+    }, [auth, docs, feedback, t]);
 
     const fileAction = useCallback((action: 'download' | 'edit', url: string, fileName?: string) => {
         const key = url + fileName;
@@ -85,7 +86,7 @@ export function useFileOperations(
             });
         } else if (action === 'edit') {
             if (!auth.isAuthenticated.value) {
-                feedback.showError('Please sign in to edit files');
+                feedback.showError(t('files.please_sign_in_to_edit_files'));
                 return;
             }
 
@@ -93,11 +94,11 @@ export function useFileOperations(
                 editDetected(url, fileName);
             }
         }
-    }, [processingFiles, auth.isAuthenticated.value, editDetected]);
+    }, [processingFiles, auth.isAuthenticated.value, editDetected, t, feedback]);
 
     const downloadRecent = useCallback(async (fileId: number) => {
         if (!auth.state.value.client.accessToken || !auth.state.value.tenant) {
-            feedback.showError('Not authenticated');
+            feedback.showError(t('error.not_authenticated'));
             return;
         }
 
@@ -115,8 +116,7 @@ export function useFileOperations(
                 }
             });
         } catch (error) {
-            console.error('Error downloading file:', error);
-            feedback.showError('Failed to download file: ' + (error as Error).message);
+            feedback.showError(t('error.failed_to_download_file', { message: (error as Error).message }));
         } finally {
             setProcessingRecentFiles(prev => {
                 const newSet = new Set(prev);
@@ -124,7 +124,7 @@ export function useFileOperations(
                 return newSet;
             });
         }
-    }, [auth, api, feedback]);
+    }, [auth, api, feedback, t]);
 
     const recentAction = useCallback((action: 'download' | 'edit' | 'delete', fileId: number, webUrl: string) => {
         if (processingRecentFiles.has(fileId)) {
@@ -143,7 +143,7 @@ export function useFileOperations(
 
     const deleteFile = useCallback(async (fileId: number) => {
         if (!auth.state.value.client.accessToken || !auth.state.value.tenant) {
-            feedback.showError('Not authenticated');
+            feedback.showError(t('error.not_authenticated'));
             return;
         }
 
@@ -155,13 +155,12 @@ export function useFileOperations(
             const { tenant } = auth.state.value;
             await api.deleteFile(accessToken, tenant, fileId, auth.refreshTokenIfNeeded);
 
-            feedback.showSuccess('File deleted successfully');
+            feedback.showSuccess(t('files.file_deleted_successfully'));
 
             const page = docs.state.value.currentPage;
             await docs.fetchRecentFiles(accessToken, tenant, page, auth.refreshTokenIfNeeded);
         } catch (error) {
-            console.error('Error deleting file:', error);
-            feedback.showError('Failed to delete file: ' + (error as Error).message);
+            feedback.showError(t('error.failed_to_delete_file', { message: (error as Error).message }));
         } finally {
             setProcessingRecentFiles(prev => {
                 const newSet = new Set(prev);
@@ -169,7 +168,7 @@ export function useFileOperations(
                 return newSet;
             });
         }
-    }, [auth, docs, api, feedback]);
+    }, [auth, docs, api, feedback, t]);
 
     const upload = useCallback(async (files: FileList) => {
         const { accessToken } = auth.state.value.client;
@@ -194,19 +193,18 @@ export function useFileOperations(
                 }
             }
 
-            feedback.showSuccess(`Successfully uploaded ${files.length} file(s)`);
+            feedback.showSuccess(t('files.successfully_uploaded_files', { count: String(files.length) }));
             await docs.fetchRecentFiles(accessToken, tenant, 1, auth.refreshTokenIfNeeded);
 
             if (last) {
                 chrome.tabs.create({ url: last.webUrl, active: true });
             }
         } catch (error) {
-            console.error('Error uploading files:', error);
-            feedback.showError('Failed to upload files: ' + (error as Error).message);
+            feedback.showError(t('error.failed_to_upload_files', { message: (error as Error).message }));
         } finally {
             setUploading(false);
         }
-    }, [auth, docs, feedback]);
+    }, [auth, docs, feedback, t]);
 
     return {
         processingFiles,

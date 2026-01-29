@@ -2,6 +2,8 @@ import { FunctionalComponent } from 'preact';
 
 import { Button } from './Button';
 
+import { useI18n } from '@stores/i18n';
+
 import helpIcon from '@icons/help.svg';
 import helpDarkIcon from '@icons/help-dark.svg';
 import infoIcon from '@icons/info.svg';
@@ -22,6 +24,8 @@ interface MenuOptionsProps {
 }
 
 export const MenuOptions: FunctionalComponent<MenuOptionsProps> = ({ tenant, onGoTo, onOpenTab }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     const isDarkMode = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
     const currentPersonIcon = isDarkMode ? personDarkIcon : personIcon;
     const currentHelpIcon = isDarkMode ? helpDarkIcon : helpIcon;
@@ -33,27 +37,27 @@ export const MenuOptions: FunctionalComponent<MenuOptionsProps> = ({ tenant, onG
             <Button 
                 onClick={onGoTo}
                 disabled={!tenant}
-                ariaLabel="Go to DocSpace"
+                ariaLabel={t('menu.go_to_doc_space')}
                 icon={currentPersonIcon}
-                text="Go to DocSpace"
+                text={t('menu.go_to_doc_space')}
             />
             <Button 
                 onClick={() => onOpenTab(HELP_LINK)}
-                ariaLabel="Open Help Center"
+                ariaLabel={t('menu.help_center')}
                 icon={currentHelpIcon}
-                text="Help Center"
+                text={t('menu.help_center')}
             />
             <Button 
                 onClick={() => onOpenTab(FEEDBACK_LINK)}
-                ariaLabel="Open Feedback & Support"
+                ariaLabel={t('menu.feedback_support')}
                 icon={currentSupportIcon}
-                text="Feedback & Support"
+                text={t('menu.feedback_support')}
             />
             <Button 
                 onClick={() => onOpenTab(ABOUT_LINK)}
-                ariaLabel="About this program"
+                ariaLabel={t('menu.about_program')}
                 icon={currentInfoIcon}
-                text="About this program"
+                text={t('menu.about_program')}
             />
         </nav>
     );

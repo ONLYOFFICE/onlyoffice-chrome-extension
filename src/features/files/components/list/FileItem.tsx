@@ -1,5 +1,7 @@
 import { FunctionalComponent } from 'preact';
 
+import { useI18n } from '@stores/i18n';
+
 import downloadIcon from '@icons/download.svg';
 import pencilIcon from '@icons/pencil.svg';
 import deleteIcon from '@icons/clear.svg';
@@ -60,7 +62,10 @@ export const FileItem: FunctionalComponent<FileItemProps> = ({
     onEdit,
     onDelete
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     const isDisabled = isProcessing || isRemoving;
+    const fileName = `${name}.${extension}`;
 
     return (
         <li 
@@ -78,8 +83,8 @@ export const FileItem: FunctionalComponent<FileItemProps> = ({
                 {onDelete && (
                     <FileItemAction
                         icon={deleteIcon}
-                        ariaLabel={`Delete ${name}.${extension}`}
-                        title="Delete"
+                        ariaLabel={t('files.delete_file', { fileName })}
+                        title={t('common.delete')}
                         onClick={onDelete}
                         disabled={isDisabled}
                         variant="delete"
@@ -87,15 +92,15 @@ export const FileItem: FunctionalComponent<FileItemProps> = ({
                 )}
                 <FileItemAction
                     icon={downloadIcon}
-                    ariaLabel={`Download ${name}.${extension}`}
-                    title="Download"
+                    ariaLabel={t('files.download_file', { fileName })}
+                    title={t('files.download')}
                     onClick={onDownload}
                     disabled={isDisabled}
                 />
                 <FileItemAction
                     icon={pencilIcon}
-                    ariaLabel={`Edit ${name}.${extension}`}
-                    title={isAuthenticated ? 'Edit in DocSpace' : 'Sign in to edit files'}
+                    ariaLabel={t('files.edit_file', { fileName })}
+                    title={isAuthenticated ? t('files.edit_in_doc_space') : t('files.sign_in_to_edit_files')}
                     onClick={onEdit}
                     disabled={isDisabled || !isAuthenticated}
                 />

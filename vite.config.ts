@@ -12,6 +12,7 @@ export default defineConfig({
 			'@features': resolve(__dirname, 'src/features'),
 			'@hooks': resolve(__dirname, 'src/hooks'),
 			'@icons': resolve(__dirname, 'public/icons'),
+			'@i18n': resolve(__dirname, 'src/i18n'),
 			'@pages': resolve(__dirname, 'src/pages'),
 			'@stores': resolve(__dirname, 'src/stores'),
 			'@styles': resolve(__dirname, 'src/styles'),

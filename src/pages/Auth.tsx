@@ -6,6 +6,8 @@ import { Subtitle } from '@components/Subtitle';
 import { FileList } from '@features/files';
 import { Signin, Welcome, Exchanging } from '@features/authentication';
 
+import { useI18n } from '@stores/i18n';
+
 import { Detector, File as DetectedFile } from '@utils/detector';
 
 interface AuthPageProps {
@@ -29,6 +31,9 @@ export const AuthPage: FunctionalComponent<AuthPageProps> = ({
     onDetectedFileAction,
     onRefresh
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
+    
     if (isExchanging && !isSigningIn) {
         return <Exchanging />;
     }
@@ -37,7 +42,7 @@ export const AuthPage: FunctionalComponent<AuthPageProps> = ({
         return (
             <div class="exchanging">
                 <Spinner size="large" color="darker" />
-                <p class="exchanging__text">Signing in...</p>
+                <p class="exchanging__text">{t('auth.signing_in')}</p>
             </div>
         );
     }
@@ -50,7 +55,7 @@ export const AuthPage: FunctionalComponent<AuthPageProps> = ({
             <Welcome />
             {hasDetectedFiles && (
                 <>
-                    <Subtitle>Files detected on this webpage</Subtitle>
+                    <Subtitle>{t('files.files_detected')}</Subtitle>
                     <div class="file-list__container">
                         <FileList
                             files={detectedFiles}

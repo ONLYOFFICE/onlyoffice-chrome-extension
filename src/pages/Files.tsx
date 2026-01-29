@@ -7,6 +7,7 @@ import { Subtitle } from '@components/Subtitle';
 import { Empty } from '@features/feedback';
 import { FileList, FileItem } from '@features/files';
 
+import { useI18n } from '@stores/i18n';
 import { File as RecentFile } from '@stores/docs';
 
 import { Detector, File as DetectedFile } from '@utils/detector';
@@ -59,6 +60,9 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
     onRecentFileAction,
     onRefresh
 }) => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
+    
     const sentinelRef = useRef<HTMLDivElement>(null);
     const removalTimersRef = useRef<Map<number, number>>(new Map());
     
@@ -81,8 +85,8 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
     if (!hasAnyFiles) {
         return (
             <Empty
-                title="No docs here yet"
-                subtitle="Create or open the webpage with files to edit"
+                title={t('files.no_docs_yet')}
+                subtitle={t('files.no_docs_subtitle')}
             />
         );
     }
@@ -150,7 +154,7 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
         <>
             {hasDetectedFiles && (
                 <div class="file-list__section file-list__section--detected">
-                    <Subtitle>Files detected on this webpage</Subtitle>
+                    <Subtitle>{t('files.files_detected')}</Subtitle>
                     <div class="file-list__container">
                         <FileList
                             files={detectedFiles}
@@ -166,7 +170,7 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
 
             {isAuthenticated && (
                 <div class="file-list__section file-list__section--recent">
-                    <Subtitle>Recent files</Subtitle>
+                    <Subtitle>{t('files.recent_files')}</Subtitle>
                     {hasDisplayFiles ? (
                         <>
                             <ul class="file-list__list file-list__list--recent">
@@ -196,7 +200,7 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
                                     {loadingMore && (
                                         <div class="file-list__loading-more">
                                             <Spinner size="small" />
-                                            <span>Loading more files...</span>
+                                            <span>{t('files.loading_more_files')}</span>
                                         </div>
                                     )}
                                 </div>
@@ -204,8 +208,8 @@ export const FilesPage: FunctionalComponent<FilesPageProps> = ({
                         </>
                     ) : (
                         <Empty
-                            title="No recent docs"
-                            subtitle="Your recently edited documents will appear here"
+                            title={t('files.no_recent_docs')}
+                            subtitle={t('files.no_recent_docs_subtitle')}
                         />
                     )}
                 </div>

@@ -3,15 +3,19 @@ import { FunctionalComponent } from 'preact';
 import { Title } from '@components/Title';
 import { Text } from '@components/Text';
 
+import { useI18n } from '@stores/i18n';
+
 import './welcome.css';
 
 export const Welcome: FunctionalComponent = () => {
+    const { t, locale } = useI18n();
+    const _ = locale.value;
+
     return (
         <div class="welcome">
-            <Title>Welcome to ONLYOFFICE!</Title>
+            <Title>{t('auth.welcome')}</Title>
             <Text>
-                This extension helps to view, download and edit files on the webpage. 
-                For editing files and viewing version history please Log in using Google account.
+                {t('auth.welcome_description')}
             </Text>
         </div>
     );

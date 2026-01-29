@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'preact/hooks';
 
-import { useAuth, useDocs, useFeedback } from '@stores/index';
+import { useAuth, useDocs, useFeedback, useI18n } from '@stores/index';
 
 import { Storage } from '@utils/storage';
 
@@ -21,6 +21,8 @@ export function useFileCreation(
     const auth = useAuth();
     const docs = useDocs();
     const feedback = useFeedback();
+    const { t, locale } = useI18n();
+    const _ = locale.value;
     
     const [dontAskFileName, setDontAskFileName] = useState(false);
 
@@ -37,7 +39,7 @@ export function useFileCreation(
 
     const createFile = useCallback(async (fileType: FileType, fileName: string) => {
         if (!auth.state.value.client.accessToken || !auth.state.value.tenant) {
-            feedback.showError('Please sign in to create files');
+            feedback.showError(t('files.please_sign_in_to_create_files'));
             return;
         }
 
@@ -48,14 +50,13 @@ export function useFileCreation(
 
             const file = await docs.createFile(accessToken, tenant, fileName, fileType, auth.refreshTokenIfNeeded);
 
-            feedback.showSuccess('File created successfully');
+            feedback.showSuccess(t('files.file_created_successfully'));
 
             chrome.tabs.create({ url: file.webUrl, active: true });
         } catch (error) {
-            console.error('Error creating file:', error);
-            feedback.showError('Failed to create file: ' + (error as Error).message);
+            feedback.showError(t('error.failed_to_create_file', { message: (error as Error).message }));
         }
-    }, [auth, docs, feedback]);
+    }, [auth, docs, feedback, t]);
 
     const setDontAsk = useCallback((checked: boolean) => {
         setDontAskFileName(checked);

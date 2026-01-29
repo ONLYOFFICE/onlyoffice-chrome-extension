@@ -18,6 +18,7 @@
 			"@features/*": ["./src/features/*"],
 			"@hooks/*": ["./src/hooks/*"],
 			"@icons/*": ["./public/icons/*"],
+			"@i18n/*": ["./src/i18n/*"],
 			"@pages/*": ["./src/pages/*"],
 			"@stores/*": ["./src/stores/*"],
 			"@styles/*": ["./src/styles/*"],

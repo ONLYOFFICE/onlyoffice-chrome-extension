@@ -7,6 +7,8 @@ import { Error, Success } from '@features/feedback';
 import { AccountMenu } from '@features/authentication';
 import { CreateMenu, CreateDialog, DeleteConfirm, CreateButton } from '@features/files';
 
+import { useI18n } from '@stores/i18n';
+
 interface LayoutProps {
     readonly children: ComponentChildren;
     readonly isAuthenticated: boolean;
@@ -77,6 +79,9 @@ export const Layout: FunctionalComponent<LayoutProps> = ({
     onErrorDismiss,
     onSuccessDismiss
 }) => {
+    const { t, locale } = useI18n();
+    // Read locale.value to establish reactivity
+    const _ = locale.value;
     const showCreateButton = isAuthenticated && !createMenuOpen;
     return (
         <div class="main-container">
@@ -95,7 +100,7 @@ export const Layout: FunctionalComponent<LayoutProps> = ({
                 <div class="uploading-overlay">
                     <div class="uploading-overlay__content">
                         <Spinner />
-                        <p class="uploading-overlay__text">Uploading files...</p>
+                        <p class="uploading-overlay__text">{t('files.uploading_files')}</p>
                     </div>
                 </div>
             )}

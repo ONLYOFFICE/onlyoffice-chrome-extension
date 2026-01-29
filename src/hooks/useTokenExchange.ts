@@ -2,6 +2,7 @@ import { useCallback } from 'preact/hooks';
 
 import { useAuth } from '@stores/index';
 import { useFeedback } from '@stores/index';
+import { useI18n } from '@stores/i18n';
 
 import { Storage } from '@utils/storage';
 
@@ -19,6 +20,8 @@ interface UseTokenExchangeReturn {
 export function useTokenExchange({ storage, onSuccess }: UseTokenExchangeOptions): UseTokenExchangeReturn {
     const auth = useAuth();
     const feedback = useFeedback();
+    const { t, locale } = useI18n();
+    const _ = locale.value;
 
     const exchange = useCallback(() => {
         auth.state.value = { ...auth.state.value, signingIn: true, exchanging: true };
@@ -42,7 +45,7 @@ export function useTokenExchange({ storage, onSuccess }: UseTokenExchangeOptions
             clean();
             auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
             storage.remove(['exchanging_tokens']);
-            feedback.showError('Sign-in timed out. Please try again.');
+            feedback.showError(t('error.sign_in_timed_out'));
         }, TOKEN_EXCHANGE_TIMEOUT);
 
         const listener = async (message: any) => {
@@ -56,12 +59,27 @@ export function useTokenExchange({ storage, onSuccess }: UseTokenExchangeOptions
             } else if (message.action === 'oauthError') {
                 clean();
                 auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
-                feedback.showError(message.error);
+                let translatedError = message.error;
+                const errorLower = (message.error || '').toLowerCase().trim();
+
+                if (errorLower.includes("not approve") || 
+                    errorLower.includes("access not approved") ||
+                    errorLower.includes("didn't approve") || 
+                    errorLower.includes("did not approve") ||
+                    errorLower.includes("user did not approve") ||
+                    errorLower.includes("user didn't approve") ||
+                    (errorLower.includes("approve") && errorLower.includes("access"))) {
+                    translatedError = t('error.access_not_approved');
+                } else if (errorLower.includes('cancel') || errorLower.includes('cancelled')) {
+                    translatedError = t('error.authentication_cancelled');
+                }
+                
+                feedback.showError(translatedError);
             }
         };
 
         chrome.runtime.onMessage.addListener(listener);
-    }, [auth, feedback, storage, onSuccess]);
+    }, [auth, feedback, storage, onSuccess, t, locale]);
 
     return {
         exchange
