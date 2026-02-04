@@ -1,4 +1,5 @@
 import { Format } from '@utils/formats';
+import { tabs, scripting } from '@utils/browser';
 
 import pdfIcon from '@icons/pdf.svg';
 import wordIcon from '@icons/word.svg';
@@ -37,15 +38,15 @@ VALID_FORMATS.forEach((format) => {
 export class Detector {
   async detect(): Promise<File[]> {
     return new Promise((resolve) => {
-      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-        if (!tabs[0]?.id) {
+      tabs.query({ active: true, currentWindow: true }).then(async (tabList) => {
+        if (!tabList[0]?.id) {
           resolve([]);
           return;
         }
 
         try {
-          const results = await chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
+          const results = await scripting.executeScript({
+            target: { tabId: tabList[0].id },
             func: (extensions: string[]) => {
               const files: File[] = [];
               const links = document.querySelectorAll('a[href]');
@@ -81,6 +82,8 @@ export class Detector {
           console.error('File detection error:', error);
           resolve([]);
         }
+      }).catch(() => {
+        resolve([]);
       });
     });
   }

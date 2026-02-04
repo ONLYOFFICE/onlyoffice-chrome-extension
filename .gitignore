@@ -3,6 +3,8 @@ node_modules/
 
 # Build output
 dist/
+dist-chrome/
+dist-firefox/
 *.zip
 
 # Environment variables

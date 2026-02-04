@@ -1,3 +1,5 @@
+import { i18n as browserI18n } from '@utils/browser';
+
 import en from '@i18n/locales/en.json';
 import ru from '@i18n/locales/ru.json';
 import de from '@i18n/locales/de.json';
@@ -54,12 +56,14 @@ export function getTranslation(
 export function detectLocale(): Locale {
   const supportedLocales: Locale[] = ['en', 'ru', 'de', 'es', 'fr', 'zh'];
 
-  if (typeof chrome !== 'undefined' && chrome.i18n?.getUILanguage) {
-    const uiLang = chrome.i18n.getUILanguage();
+  try {
+    const uiLang = browserI18n.getUILanguage();
     const langCode = uiLang.split('-')[0].toLowerCase();
     if (supportedLocales.includes(langCode as Locale)) {
       return langCode as Locale;
     }
+  } catch {
+    console.warn('Error detecting locale');
   }
 
   if (typeof navigator !== 'undefined') {

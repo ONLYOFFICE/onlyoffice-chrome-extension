@@ -2,34 +2,58 @@ import { decodeJWT } from '@utils/jwt';
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { downloadFile } from '@utils/url';
+import {
+  runtime, identity, declarativeNetRequest,
+} from '@utils/browser';
 
 import {
   OAUTH_CLIENT_ID, OAUTH_SCOPES, TOKEN_EXCHANGE_URL, validateConfig,
 } from '@config';
 
+declare const browser: any;
+
+const configValidation = validateConfig();
+if (!configValidation.valid) {
+  throw new Error(`Configuration error: ${configValidation.errors.join(', ')}`);
+}
+
 const storage = new Storage();
 const api = new DocspaceAPI(storage);
 
+if (typeof browser !== 'undefined' && browser.webRequest) {
+  browser.webRequest.onBeforeSendHeaders.addListener(
+    (details) => {
+      const headers = details.requestHeaders || [];
+      const filtered = headers.filter((header) => header.name.toLowerCase() !== 'origin');
+      return { requestHeaders: filtered };
+    },
+    { urls: ['https://*.onlyoffice.com/*'] },
+    ['blocking', 'requestHeaders'],
+  );
+}
+
 async function exchangeCode(code: string) {
   try {
-    const redirectUri = chrome.identity.getRedirectURL().replace(/\/$/, '');
+    const redirectUri = identity.getRedirectURL().replace(/\/$/, '');
     await storage.set({ exchanging_tokens: true });
 
-    chrome.runtime.sendMessage({
+    runtime.sendMessage({
       action: 'exchangingTokens',
     }).catch(() => {});
 
+    const params = new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+      client_id: OAUTH_CLIENT_ID,
+    });
+    
     const response = await fetch(TOKEN_EXCHANGE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri,
-        client_id: OAUTH_CLIENT_ID,
-      }),
+      body: params,
     });
 
     if (!response.ok) {
@@ -53,12 +77,11 @@ async function exchangeCode(code: string) {
     await storage.set({ docspace_authentication: authData });
     await storage.remove(['pending_auth_error', 'exchanging_tokens']);
 
-    chrome.runtime.sendMessage({
+    runtime.sendMessage({
       action: 'oauthSuccess',
       tokens: authData,
-    }).catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log('Could not notify popup:', err.message);
+    }).catch(() => {
+      console.warn('Failed to send oauthSuccess message');
     });
   } catch (error) {
     let errorMessage = 'Authentication failed. Please try again.';
@@ -74,35 +97,44 @@ async function exchangeCode(code: string) {
 
     await storage.remove(['exchanging_tokens']);
 
-    chrome.runtime.sendMessage({
+    runtime.sendMessage({
       action: 'oauthError',
       error: errorMessage,
-    }).catch(() => {});
+    }).catch(() => {
+      console.warn('Failed to send oauthError message');
+    });
   }
 }
 
-chrome.declarativeNetRequest.updateDynamicRules({
-  removeRuleIds: [1],
-  addRules: [{
-    id: 1,
-    priority: 1,
-    action: {
-      type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-      requestHeaders: [
-        { header: 'Origin', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE },
-      ],
-    },
-    condition: {
-      urlFilter: '*.onlyoffice.com/api/*',
-      resourceTypes: [chrome.declarativeNetRequest.ResourceType.XMLHTTPREQUEST],
-    },
-  }],
-}).catch((error) => {
+try {
+  if (typeof chrome !== 'undefined' && chrome.declarativeNetRequest?.RuleActionType) {
+    declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [1],
+      addRules: [{
+        id: 1,
+        priority: 1,
+        action: {
+          type: declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+          requestHeaders: [
+            { header: 'Origin', operation: declarativeNetRequest.HeaderOperation.REMOVE },
+          ],
+        },
+        condition: {
+          urlFilter: '*.onlyoffice.com/api/*',
+          resourceTypes: [declarativeNetRequest.ResourceType.XMLHTTPREQUEST],
+        },
+      }],
+    }).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to add declarativeNetRequest rule:', error);
+    });
+  }
+} catch (error) {
   // eslint-disable-next-line no-console
-  console.error('Failed to add declarativeNetRequest rule:', error);
-});
+  console.error('Failed to initialize declarativeNetRequest rules:', error);
+}
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'ping') {
     sendResponse({ pong: true, timestamp: Date.now() });
     return true;
@@ -125,32 +157,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === 'startOAuthFlow') {
-    const validation = validateConfig();
-    if (!validation.valid) {
-      sendResponse({
-        success: false,
-        error: `Configuration error: ${validation.errors.join(', ')}\n\nPlease create a .env file with TOKEN_EXCHANGE_URL and OAUTH_CLIENT_ID`,
-      });
-      return true;
-    }
-
-    const redirectUri = chrome.identity.getRedirectURL().replace(/\/$/, '');
+    const redirectUri = identity.getRedirectURL().replace(/\/$/, '');
     const authUrl = `https://oauth.onlyoffice.com/oauth2/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${OAUTH_SCOPES}`;
 
-    chrome.identity.launchWebAuthFlow(
+    identity.launchWebAuthFlow(
       {
         url: authUrl,
         interactive: true,
       },
       (redirectUrl) => {
-        if (chrome.runtime.lastError) {
-          const errorMsg = chrome.runtime.lastError.message || 'Authentication cancelled';
+        if (runtime.lastError) {
+          const errorMsg = runtime.lastError.message || 'Authentication cancelled';
 
           storage.set({
             pending_auth_error: errorMsg.includes('canceled') ? 'Authentication cancelled' : errorMsg,
           });
 
-          chrome.runtime.sendMessage({
+          runtime.sendMessage({
             action: 'oauthError',
             error: errorMsg.includes('canceled') ? 'Authentication cancelled' : errorMsg,
           }).catch(() => {});
@@ -162,7 +185,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (!redirectUrl) {
           const errorMsg = 'Authentication cancelled';
           storage.set({ pending_auth_error: errorMsg });
-          chrome.runtime.sendMessage({
+          runtime.sendMessage({
             action: 'oauthError',
             error: errorMsg,
           }).catch(() => {});
@@ -183,7 +206,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } catch (error) {
           const errorMsg = (error as Error).message;
           storage.set({ pending_auth_error: errorMsg });
-          chrome.runtime.sendMessage({
+          runtime.sendMessage({
             action: 'oauthError',
             error: errorMsg,
           }).catch(() => {});
@@ -235,6 +258,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const blob = new Blob([bytes], { type: fileType });
         const fileInfo = await api.uploadFile(accessToken, tenant, blob, fileName);
         sendResponse({ success: true, data: fileInfo });
+      } catch (error) {
+        sendResponse({ success: false, error: (error as Error).message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'deleteFile') {
+    (async () => {
+      try {
+        const { tenant, accessToken, fileId } = request;
+        await api.deleteFile(accessToken, tenant, fileId);
+        sendResponse({ success: true });
       } catch (error) {
         sendResponse({ success: false, error: (error as Error).message });
       }

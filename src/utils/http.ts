@@ -37,7 +37,12 @@ export class DocspaceAPI {
     options: RequestInit,
     refreshToken?: () => Promise<boolean>,
   ): Promise<Response> {
-    let response = await fetch(url, options);
+    const fetchOptions: RequestInit = {
+      ...options,
+      referrerPolicy: 'no-referrer',
+    };
+
+    let response = await fetch(url, fetchOptions);
 
     if ((response.status === 401 || response.status === 403) && refreshToken) {
       const refreshed = await refreshToken();
@@ -48,9 +53,9 @@ export class DocspaceAPI {
 
         if (newToken) {
           response = await fetch(url, {
-            ...options,
+            ...fetchOptions,
             headers: {
-              ...options.headers,
+              ...fetchOptions.headers,
               Authorization: `Bearer ${newToken}`,
             },
           });

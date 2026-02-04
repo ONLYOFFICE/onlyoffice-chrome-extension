@@ -5,6 +5,7 @@ import { signal, computed } from '@preact/signals';
 import { Client } from '@utils/client';
 import { decodeJWT } from '@utils/jwt';
 import { Storage } from '@utils/storage';
+import { runtime } from '@utils/browser';
 
 import { TOKEN_EXCHANGE_URL, OAUTH_CLIENT_ID } from '@config';
 
@@ -176,8 +177,8 @@ function createStore(): Store {
     try {
       state.value = { ...state.value, signingIn: true, error: null };
 
-      await chrome.runtime.sendMessage({ action: 'ping' });
-      const response = await chrome.runtime.sendMessage({ action: 'startOAuthFlow' });
+      await runtime.sendMessage({ action: 'ping' });
+      const response = await runtime.sendMessage({ action: 'startOAuthFlow' });
 
       if (!response.success) {
         throw new Error(response.error || 'OAuth flow failed');
@@ -193,45 +194,47 @@ function createStore(): Store {
             timeoutId = null;
           }
           if (!listenerRemoved) {
-            chrome.runtime.onMessage.removeListener(messageListener);
+            runtime.onMessage.removeListener(messageListener);
             listenerRemoved = true;
           }
         };
 
-        const messageListener = async (message: any) => {
-          if (message.action === 'exchangingTokens') {
-            state.value = { ...state.value, signingIn: false, exchanging: true };
+        const messageListener = (message: any) => {
+          (async () => {
+            if (message.action === 'exchangingTokens') {
+              state.value = { ...state.value, signingIn: false, exchanging: true };
 
-            if (timeoutId === null) {
-              timeoutId = window.setTimeout(async () => {
-                cleanup();
-                state.value = {
-                  ...state.value,
-                  signingIn: false,
-                  exchanging: false,
-                  error: 'Sign-in timed out. Please try again.',
-                };
-                await storage.remove(['exchanging_tokens']);
-                reject(new Error('Sign-in timed out. Please try again.'));
-              }, 25000);
+              if (timeoutId === null) {
+                timeoutId = window.setTimeout(async () => {
+                  cleanup();
+                  state.value = {
+                    ...state.value,
+                    signingIn: false,
+                    exchanging: false,
+                    error: 'Sign-in timed out. Please try again.',
+                  };
+                  await storage.remove(['exchanging_tokens']);
+                  reject(new Error('Sign-in timed out. Please try again.'));
+                }, 25000);
+              }
+            } else if (message.action === 'oauthSuccess') {
+              cleanup();
+              state.value = { ...state.value, signingIn: false, exchanging: false };
+              resolve();
+            } else if (message.action === 'oauthError') {
+              cleanup();
+              state.value = {
+                ...state.value,
+                signingIn: false,
+                exchanging: false,
+                error: message.error,
+              };
+              reject(new Error(message.error));
             }
-          } else if (message.action === 'oauthSuccess') {
-            cleanup();
-            state.value = { ...state.value, signingIn: false, exchanging: false };
-            resolve();
-          } else if (message.action === 'oauthError') {
-            cleanup();
-            state.value = {
-              ...state.value,
-              signingIn: false,
-              exchanging: false,
-              error: message.error,
-            };
-            reject(new Error(message.error));
-          }
+          })();
         };
 
-        chrome.runtime.onMessage.addListener(messageListener);
+        runtime.onMessage.addListener(messageListener);
       });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -248,7 +251,7 @@ function createStore(): Store {
 
   const logout = async (): Promise<void> => {
     try {
-      await chrome.runtime.sendMessage({ action: 'clearAuth' });
+      await runtime.sendMessage({ action: 'clearAuth' });
       await clearAuth();
     } catch (error) {
       // eslint-disable-next-line no-console

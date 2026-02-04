@@ -7,6 +7,7 @@ import {
 
 import { DocspaceAPI } from '@utils/http';
 import { calculate as calculateHash, download as downloadFile } from '@utils/hash';
+import { tabs, downloads, runtime } from '@utils/browser';
 
 interface UseFileOperationsReturn {
   processingFiles: Set<string>;
@@ -54,11 +55,11 @@ export function useFileOperations(
       const existing = await docs.findFileByHash(accessToken, tenant, hash);
 
       if (existing) {
-        chrome.tabs.create({ url: existing.webUrl, active: true });
+        tabs.create({ url: existing.webUrl, active: true });
         feedback.showSuccess(t('files.file_opened_in_new_tab'));
       } else {
         const uploaded = await docs.uploadFile(accessToken, tenant, blob, fileName, hash);
-        chrome.tabs.create({ url: uploaded.webUrl, active: true });
+        tabs.create({ url: uploaded.webUrl, active: true });
         feedback.showSuccess(t('files.file_uploaded_and_opened_in_new_tab'));
       }
     } catch (error) {
@@ -80,9 +81,9 @@ export function useFileOperations(
     }
 
     if (action === 'download') {
-      chrome.downloads.download({ url }, () => {
-        if (chrome.runtime.lastError) {
-          chrome.tabs.create({ url, active: true });
+      downloads.download({ url }, () => {
+        if (runtime.lastError) {
+          tabs.create({ url, active: true });
         }
       });
     } else if (action === 'edit') {
@@ -111,9 +112,9 @@ export function useFileOperations(
       const { tenant } = auth.state.value;
       const url = await api.getDownloadUrl(accessToken, tenant, fileId, auth.refreshTokenIfNeeded);
 
-      chrome.downloads.download({ url }, () => {
-        if (chrome.runtime.lastError) {
-          chrome.tabs.create({ url, active: true });
+      downloads.download({ url }, () => {
+        if (runtime.lastError) {
+          tabs.create({ url, active: true });
         }
       });
     } catch (error) {
@@ -135,7 +136,7 @@ export function useFileOperations(
     if (action === 'download') {
       downloadRecent(fileId);
     } else if (action === 'edit') {
-      chrome.tabs.create({ url: webUrl, active: true });
+      tabs.create({ url: webUrl, active: true });
     } else if (action === 'delete') {
       const file = docs.state.value.files.find((f) => f.id === fileId);
       onDelete(fileId, file?.title || 'this file');
@@ -154,7 +155,17 @@ export function useFileOperations(
 
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
-      await api.deleteFile(accessToken, tenant, fileId, auth.refreshTokenIfNeeded);
+      
+      const response = await runtime.sendMessage({
+        action: 'deleteFile',
+        tenant,
+        accessToken,
+        fileId,
+      });
+
+      if (!response.success) {
+        throw new Error(response.error || 'Delete failed');
+      }
 
       feedback.showSuccess(t('files.file_deleted_successfully'));
 
@@ -169,7 +180,7 @@ export function useFileOperations(
         return newSet;
       });
     }
-  }, [auth, docs, api, feedback, t]);
+  }, [auth, docs, feedback, t]);
 
   const upload = useCallback(async (files: FileList) => {
     const { accessToken } = auth.state.value.client;
@@ -198,7 +209,7 @@ export function useFileOperations(
       await docs.fetchRecentFiles(accessToken, tenant, 1, auth.refreshTokenIfNeeded);
 
       if (last) {
-        chrome.tabs.create({ url: last.webUrl, active: true });
+        tabs.create({ url: last.webUrl, active: true });
       }
     } catch (error) {
       feedback.showError(t('error.failed_to_upload_files', { message: (error as Error).message }));

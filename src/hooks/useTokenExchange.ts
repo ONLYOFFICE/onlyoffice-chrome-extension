@@ -4,6 +4,7 @@ import { useAuth, useFeedback } from '@stores/index';
 import { useI18n } from '@stores/i18n';
 
 import { Storage } from '@utils/storage';
+import { runtime } from '@utils/browser';
 
 const TOKEN_EXCHANGE_TIMEOUT = 25000;
 
@@ -34,7 +35,7 @@ export function useTokenExchange({ storage, onSuccess }: UseTokenExchangeOptions
       }
 
       if (!removed) {
-        chrome.runtime.onMessage.removeListener(listener);
+        runtime.onMessage.removeListener(listener);
         removed = true;
       }
     };
@@ -46,37 +47,39 @@ export function useTokenExchange({ storage, onSuccess }: UseTokenExchangeOptions
       feedback.showError(t('error.sign_in_timed_out'));
     }, TOKEN_EXCHANGE_TIMEOUT);
 
-    const listener = async (message: any) => {
-      if (message.action === 'oauthSuccess') {
-        clean();
-        auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
-        await auth.checkAuthentication();
-        if (onSuccess) {
-          await onSuccess();
-        }
-      } else if (message.action === 'oauthError') {
-        clean();
-        auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
-        let translatedError = message.error;
-        const errorLower = (message.error || '').toLowerCase().trim();
+    const listener = (message: any) => {
+      (async () => {
+        if (message.action === 'oauthSuccess') {
+          clean();
+          auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
+          await auth.checkAuthentication();
+          if (onSuccess) {
+            await onSuccess();
+          }
+        } else if (message.action === 'oauthError') {
+          clean();
+          auth.state.value = { ...auth.state.value, signingIn: false, exchanging: false };
+          let translatedError = message.error;
+          const errorLower = (message.error || '').toLowerCase().trim();
 
-        if (errorLower.includes('not approve')
-                    || errorLower.includes('access not approved')
-                    || errorLower.includes("didn't approve")
-                    || errorLower.includes('did not approve')
-                    || errorLower.includes('user did not approve')
-                    || errorLower.includes("user didn't approve")
-                    || (errorLower.includes('approve') && errorLower.includes('access'))) {
-          translatedError = t('error.access_not_approved');
-        } else if (errorLower.includes('cancel') || errorLower.includes('cancelled')) {
-          translatedError = t('error.authentication_cancelled');
-        }
+          if (errorLower.includes('not approve')
+                      || errorLower.includes('access not approved')
+                      || errorLower.includes("didn't approve")
+                      || errorLower.includes('did not approve')
+                      || errorLower.includes('user did not approve')
+                      || errorLower.includes("user didn't approve")
+                      || (errorLower.includes('approve') && errorLower.includes('access'))) {
+            translatedError = t('error.access_not_approved');
+          } else if (errorLower.includes('cancel') || errorLower.includes('cancelled')) {
+            translatedError = t('error.authentication_cancelled');
+          }
 
-        feedback.showError(translatedError);
-      }
+          feedback.showError(translatedError);
+        }
+      })();
     };
 
-    chrome.runtime.onMessage.addListener(listener);
+    runtime.onMessage.addListener(listener);
   }, [auth, feedback, storage, onSuccess, t]);
 
   return {

@@ -5,6 +5,7 @@ import {
 } from '@stores/index';
 
 import { Storage } from '@utils/storage';
+import { tabs } from '@utils/browser';
 
 type FileType = 'document' | 'spreadsheet' | 'presentation' | 'pdf';
 
@@ -53,7 +54,7 @@ export function useFileCreation(
 
       feedback.showSuccess(t('files.file_created_successfully'));
 
-      chrome.tabs.create({ url: file.webUrl, active: true });
+      tabs.create({ url: file.webUrl, active: true });
     } catch (error) {
       feedback.showError(t('error.failed_to_create_file', { message: (error as Error).message }));
     }

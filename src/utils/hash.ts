@@ -1,4 +1,5 @@
 import { Format } from '@utils/formats';
+import { runtime } from '@utils/browser';
 
 import formats from '@vendor/document-formats/onlyoffice-docs-formats.json';
 
@@ -22,7 +23,7 @@ export function getMimeType(fileName: string): string {
 }
 
 export async function download(url: string, fileName: string): Promise<Blob> {
-  const response = await chrome.runtime.sendMessage({
+  const response = await runtime.sendMessage({
     action: 'downloadFile',
     url,
   });

@@ -5,6 +5,7 @@ import { signal, computed } from '@preact/signals';
 import { Format } from '@utils/formats';
 import { Storage } from '@utils/storage';
 import { DocspaceAPI, FileInfo } from '@utils/http';
+import { runtime } from '@utils/browser';
 
 import formats from '@vendor/document-formats/onlyoffice-docs-formats.json';
 
@@ -207,7 +208,7 @@ function createStore(): Store {
 
       const base64 = btoa(binary);
 
-      const response = await chrome.runtime.sendMessage({
+      const response = await runtime.sendMessage({
         action: 'uploadFile',
         tenant,
         accessToken: token,
@@ -260,7 +261,7 @@ function createStore(): Store {
       const fileId = state.value.hashMap[hash];
       if (!fileId) return null;
 
-      const response = await chrome.runtime.sendMessage({
+      const response = await runtime.sendMessage({
         action: 'getFileInfo',
         tenant,
         accessToken: token,

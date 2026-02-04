@@ -21,9 +21,14 @@
 		"lint": "eslint src/",
 		"lint:fix": "eslint src/ --fix",
 		"dev": "vite",
-		"build": "vite build",
+		"build": "npm run build:chrome && npm run build:firefox",
+		"build:chrome": "vite build",
+		"build:firefox": "vite build --mode firefox",
 		"preview": "vite preview",
-		"package": "npm run build && cd dist && zip -r ../docspace-chrome.zip . && cd .."
+		"package": "npm run package:chrome && npm run package:firefox",
+		"package:chrome": "npm run build:chrome && cd dist-chrome && zip -r ../docspace-chrome.zip . && cd ..",
+		"package:firefox": "npm run build:firefox && cd dist-firefox && zip -r ../docspace-firefox.zip . && cd ..",
+		"clean": "rm -rf dist-chrome dist-firefox"
 	},
 	"dependencies": {
 		"@preact/signals": "^2.5.1",
