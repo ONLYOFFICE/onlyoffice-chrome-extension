@@ -16,20 +16,20 @@ export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://www.onlyof
 
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   if (!TOKEN_EXCHANGE_URL) {
-    const tokenUrlVar = isFirefoxBuild 
-      ? 'VITE_TOKEN_FIREFOX_EXCHANGE_URL' 
+    const tokenUrlVar = isFirefoxBuild
+      ? 'VITE_TOKEN_FIREFOX_EXCHANGE_URL'
       : 'VITE_TOKEN_CHROME_EXCHANGE_URL';
     errors.push(`${tokenUrlVar} is not set in .env`);
   }
-  
+
   if (!OAUTH_CLIENT_ID) {
-    const clientIdVar = isFirefoxBuild 
-      ? 'VITE_OAUTH_FIREFOX_CLIENT_ID' 
+    const clientIdVar = isFirefoxBuild
+      ? 'VITE_OAUTH_FIREFOX_CLIENT_ID'
       : 'VITE_OAUTH_CHROME_CLIENT_ID';
     errors.push(`${clientIdVar} is not set in .env`);
   }
-  
+
   return { valid: errors.length === 0, errors };
 }

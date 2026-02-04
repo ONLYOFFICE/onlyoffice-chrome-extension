@@ -47,7 +47,7 @@ async function exchangeCode(code: string) {
       redirect_uri: redirectUri,
       client_id: OAUTH_CLIENT_ID,
     });
-    
+
     const response = await fetch(TOKEN_EXCHANGE_URL, {
       method: 'POST',
       headers: {
@@ -81,6 +81,7 @@ async function exchangeCode(code: string) {
       action: 'oauthSuccess',
       tokens: authData,
     }).catch(() => {
+      // eslint-disable-next-line no-console
       console.warn('Failed to send oauthSuccess message');
     });
   } catch (error) {
@@ -101,6 +102,7 @@ async function exchangeCode(code: string) {
       action: 'oauthError',
       error: errorMessage,
     }).catch(() => {
+      // eslint-disable-next-line no-console
       console.warn('Failed to send oauthError message');
     });
   }

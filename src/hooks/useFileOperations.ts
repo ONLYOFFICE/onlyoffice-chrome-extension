@@ -155,7 +155,7 @@ export function useFileOperations(
 
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
-      
+
       const response = await runtime.sendMessage({
         action: 'deleteFile',
         tenant,
