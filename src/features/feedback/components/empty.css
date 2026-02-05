@@ -6,13 +6,13 @@
     justify-content: center;
     flex: 1;
 
-    padding: 32px 16px;
+    padding: 16px;
 
     animation: fadeInScale 0.4s ease-out;
 }
 
 .empty__icon {
-    width: 150px;
+    width: 64px;
     height: auto;
     flex-shrink: 0;
 
@@ -25,7 +25,7 @@
     align-items: center;
 
     gap: 8px;
-    margin-top: 20px;
+    margin-top: 12px;
 
     animation: fadeInScale 0.5s ease-out 0.2s both;
 }

@@ -75,6 +75,7 @@ export async function downloadFile(url: string, maxRedirects = 5, depth = 0): Pr
     }
 
     const contentType = response.headers.get('content-type') || '';
+    
     if (contentType.includes('text/html')) {
       const html = await response.text();
 
@@ -83,13 +84,16 @@ export async function downloadFile(url: string, maxRedirects = 5, depth = 0): Pr
         return await downloadFile(transformedUrl, maxRedirects, depth + 1);
       }
 
-      if (html.length < 10000) {
-        return { success: false, error: 'File appears to be a web page, not a document' };
-      }
-    }
+      const blob = new Blob([html], { type: contentType });
+      const arrayBuffer = await blob.arrayBuffer();
+      const base64 = toBase64(arrayBuffer);
 
-    if (!isDocumentFile(contentType, url) && contentType.includes('text/html')) {
-      return { success: false, error: 'Unable to find actual file download link' };
+      return {
+        success: true,
+        data: base64,
+        type: blob.type || 'text/html',
+        size: blob.size,
+      };
     }
 
     const blob = await response.blob();
