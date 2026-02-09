@@ -75,7 +75,7 @@ export async function downloadFile(url: string, maxRedirects = 5, depth = 0): Pr
     }
 
     const contentType = response.headers.get('content-type') || '';
-    
+
     if (contentType.includes('text/html')) {
       const html = await response.text();
 
