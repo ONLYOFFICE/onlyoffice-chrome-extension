@@ -1,0 +1,202 @@
+name: Build Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to build for'
+        required: true
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - both
+        default: 'both'
+
+      chrome_token_url:
+        description: 'Chrome Token Exchange URL'
+        required: false
+        type: string
+      
+      chrome_client_id:
+        description: 'Chrome OAuth Client ID'
+        required: false
+        type: string
+      
+      firefox_token_url:
+        description: 'Firefox Token Exchange URL'
+        required: false
+        type: string
+      
+      firefox_client_id:
+        description: 'Firefox OAuth Client ID'
+        required: false
+        type: string
+      
+      help_link:
+        description: 'Help Link (optional)'
+        required: false
+        type: string
+      
+      feedback_link:
+        description: 'Feedback Link (optional)'
+        required: false
+        type: string
+      
+      about_link:
+        description: 'About Link (optional)'
+        required: false
+        type: string
+
+jobs:
+  build-chrome:
+    name: Build Chrome Extension
+    runs-on: ubuntu-latest
+    if: inputs.browser == 'chrome' || inputs.browser == 'both'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment variables
+        run: |
+          touch .env
+          
+          if [ -n "${{ inputs.chrome_token_url }}" ]; then
+            echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ inputs.chrome_token_url }}" >> .env
+          elif [ -n "${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" ]; then
+            echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" >> .env
+          else
+            echo "❌ Error: CHROME_TOKEN_EXCHANGE_URL not provided (set as secret or workflow input)"
+            exit 1
+          fi
+          
+          if [ -n "${{ inputs.chrome_client_id }}" ]; then
+            echo "VITE_OAUTH_CHROME_CLIENT_ID=${{ inputs.chrome_client_id }}" >> .env
+          elif [ -n "${{ secrets.CHROME_OAUTH_CLIENT_ID }}" ]; then
+            echo "VITE_OAUTH_CHROME_CLIENT_ID=${{ secrets.CHROME_OAUTH_CLIENT_ID }}" >> .env
+          else
+            echo "❌ Error: CHROME_OAUTH_CLIENT_ID not provided (set as secret or workflow input)"
+            exit 1
+          fi
+          
+          if [ -n "${{ inputs.help_link }}" ]; then
+            echo "VITE_HELP_LINK=${{ inputs.help_link }}" >> .env
+          elif [ -n "${{ secrets.HELP_LINK }}" ]; then
+            echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ inputs.feedback_link }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ inputs.feedback_link }}" >> .env
+          elif [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ inputs.about_link }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ inputs.about_link }}" >> .env
+          elif [ -n "${{ secrets.ABOUT_LINK }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
+          fi
+          
+          echo "Environment variables configured for Chrome"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Chrome extension
+        run: npm run build:chrome
+
+      - name: Package Chrome extension
+        run: npm run package:chrome
+
+      - name: Upload Chrome extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-extension
+          path: dist-chrome/
+          retention-days: 30
+
+  build-firefox:
+    name: Build Firefox Extension
+    runs-on: ubuntu-latest
+    if: inputs.browser == 'firefox' || inputs.browser == 'both'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment variables
+        run: |
+          touch .env
+          
+          if [ -n "${{ inputs.firefox_token_url }}" ]; then
+            echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ inputs.firefox_token_url }}" >> .env
+          elif [ -n "${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" ]; then
+            echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" >> .env
+          else
+            echo "❌ Error: FIREFOX_TOKEN_EXCHANGE_URL not provided (set as secret or workflow input)"
+            exit 1
+          fi
+          
+          if [ -n "${{ inputs.firefox_client_id }}" ]; then
+            echo "VITE_OAUTH_FIREFOX_CLIENT_ID=${{ inputs.firefox_client_id }}" >> .env
+          elif [ -n "${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" ]; then
+            echo "VITE_OAUTH_FIREFOX_CLIENT_ID=${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" >> .env
+          else
+            echo "❌ Error: FIREFOX_OAUTH_CLIENT_ID not provided (set as secret or workflow input)"
+            exit 1
+          fi
+          
+          if [ -n "${{ inputs.help_link }}" ]; then
+            echo "VITE_HELP_LINK=${{ inputs.help_link }}" >> .env
+          elif [ -n "${{ secrets.HELP_LINK }}" ]; then
+            echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ inputs.feedback_link }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ inputs.feedback_link }}" >> .env
+          elif [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ inputs.about_link }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ inputs.about_link }}" >> .env
+          elif [ -n "${{ secrets.ABOUT_LINK }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
+          fi
+          
+          echo "Environment variables configured for Firefox"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Firefox extension
+        run: npm run build:firefox
+
+      - name: Package Firefox extension
+        run: npm run package:firefox
+
+      - name: Upload Firefox extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension
+          path: dist-firefox/
+          retention-days: 30
