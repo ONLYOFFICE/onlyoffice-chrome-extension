@@ -170,7 +170,7 @@ export function App() {
 
     const input = document.createElement('input');
     input.type = 'file';
-    input.multiple = true;
+    input.multiple = false;
     input.accept = ACCEPTED_FILE_TYPES;
 
     input.onchange = async (e) => {
