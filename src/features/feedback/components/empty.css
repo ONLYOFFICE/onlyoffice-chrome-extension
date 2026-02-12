@@ -12,9 +12,10 @@
 }
 
 .empty__icon {
-    width: 64px;
-    height: auto;
+    width: 150px;
+    height: 105px;
     flex-shrink: 0;
+    object-fit: contain;
 
     animation: fadeInScale 0.5s ease-out 0.1s both;
 }

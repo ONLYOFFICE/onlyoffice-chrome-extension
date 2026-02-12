@@ -234,5 +234,8 @@
 		--color-account-menu-button-bg: #333333;
 		--color-account-menu-button-bg-hover: #474747;
 		--color-account-menu-button-text: #FFFFFF;
+
+		--color-feedback-empty-title: #FFFFFF;
+		--color-feedback-empty-subtitle: #858585;
 	}
 }
