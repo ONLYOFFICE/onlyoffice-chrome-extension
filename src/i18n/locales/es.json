@@ -12,8 +12,8 @@
   },
   "auth": {
     "welcome": "Welcome to ONLYOFFICE! ES",
-    "welcome_description": "This extension helps to view, download and edit files on the webpage. For editing files and viewing version history please Log in using Google account. ES",
-    "sign_in_with_doc_space": "Sign in with DocSpace ES",
+    "welcome_description": "This extension helps to view, download and edit files on the webpage. For editing files and viewing version history please Sign in. ES",
+    "sign_in_with_doc_space": "Sign in ES",
     "signing_in": "Signing in... ES",
     "exchanging_tokens": "Exchanging tokens... ES"
   },
