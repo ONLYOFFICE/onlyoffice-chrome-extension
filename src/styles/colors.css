@@ -154,6 +154,11 @@
 		--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
 			linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18));
 
+		--color-button-secondary-bg: #333333;
+		--color-button-secondary-border: #474747;
+		--color-button-secondary-text: #FFFFFF;
+		--color-button-secondary-hover-bg: #474747;
+
 		--color-auth-signin-bg: #333333;
 		--color-auth-signin-border: #474747;
 		--color-auth-signin-text: #858585;
