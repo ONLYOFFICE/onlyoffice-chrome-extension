@@ -143,5 +143,12 @@ html, body {
     font-size: 14px;
     font-weight: 600;
     
-    color: var(--color-text-main);
+    color: var(--color-title-text);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+@media (prefers-color-scheme: dark) {
+    .uploading-overlay__text {
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
 }
