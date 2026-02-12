@@ -1,4 +1,5 @@
 import { Storage } from './storage';
+import { retryFetch } from './retry';
 
 export interface FileInfo {
   id: number;
@@ -42,7 +43,14 @@ export class DocspaceAPI {
       referrerPolicy: 'no-referrer',
     };
 
-    let response = await fetch(url, fetchOptions);
+    let response = await retryFetch(
+      () => fetch(url, fetchOptions),
+      {
+        maxRetries: 2,
+        initialDelay: 500,
+        maxDelay: 3000,
+      },
+    );
 
     if ((response.status === 401 || response.status === 403) && refreshToken) {
       const refreshed = await refreshToken();
@@ -52,13 +60,20 @@ export class DocspaceAPI {
         const newToken = docspace_authentication?.accessToken;
 
         if (newToken) {
-          response = await fetch(url, {
-            ...fetchOptions,
-            headers: {
-              ...fetchOptions.headers,
-              Authorization: `Bearer ${newToken}`,
+          response = await retryFetch(
+            () => fetch(url, {
+              ...fetchOptions,
+              headers: {
+                ...fetchOptions.headers,
+                Authorization: `Bearer ${newToken}`,
+              },
+            }),
+            {
+              maxRetries: 2,
+              initialDelay: 500,
+              maxDelay: 3000,
             },
-          });
+          );
         }
       }
     }

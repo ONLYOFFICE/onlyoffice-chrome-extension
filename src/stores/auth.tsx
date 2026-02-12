@@ -6,6 +6,7 @@ import { Client } from '@utils/client';
 import { decodeJWT } from '@utils/jwt';
 import { Storage } from '@utils/storage';
 import { runtime } from '@utils/browser';
+import { retryFetch } from '@utils/retry';
 
 import { TOKEN_EXCHANGE_URL, OAUTH_CLIENT_ID } from '@config';
 
@@ -66,15 +67,22 @@ function createStore(): Store {
 
   const refreshToken = async (refreshTokenValue: string): Promise<boolean> => {
     try {
-      const response = await fetch(TOKEN_EXCHANGE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refreshTokenValue,
-          client_id: OAUTH_CLIENT_ID,
+      const response = await retryFetch(
+        () => fetch(TOKEN_EXCHANGE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshTokenValue,
+            client_id: OAUTH_CLIENT_ID,
+          }),
         }),
-      });
+        {
+          maxRetries: 3,
+          initialDelay: 1000,
+          maxDelay: 5000,
+        },
+      );
 
       if (!response.ok) {
         // eslint-disable-next-line no-console
@@ -105,7 +113,7 @@ function createStore(): Store {
       return true;
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Token refresh error:', error);
+      console.error('Token refresh error after retries:', error);
 
       if (error instanceof TypeError && error.message.includes('fetch')) {
         state.value = {

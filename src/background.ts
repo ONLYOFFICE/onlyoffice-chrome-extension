@@ -2,6 +2,7 @@ import { decodeJWT } from '@utils/jwt';
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { downloadFile } from '@utils/url';
+import { retryFetch } from '@utils/retry';
 import {
   runtime, identity, declarativeNetRequest,
 } from '@utils/browser';
@@ -48,13 +49,20 @@ async function exchangeCode(code: string) {
       client_id: OAUTH_CLIENT_ID,
     });
 
-    const response = await fetch(TOKEN_EXCHANGE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const response = await retryFetch(
+      () => fetch(TOKEN_EXCHANGE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params,
+      }),
+      {
+        maxRetries: 3,
+        initialDelay: 1000,
+        maxDelay: 5000,
       },
-      body: params,
-    });
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
