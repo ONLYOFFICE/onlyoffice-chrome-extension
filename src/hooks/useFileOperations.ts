@@ -167,10 +167,13 @@ export function useFileOperations(
         throw new Error(response.error || 'Delete failed');
       }
 
-      feedback.showSuccess(t('files.file_deleted_successfully'));
+      docs.state.value = {
+        ...docs.state.value,
+        files: docs.state.value.files.filter((f) => f.id !== fileId),
+        total: Math.max(0, docs.state.value.total - 1),
+      };
 
-      const page = docs.state.value.currentPage;
-      await docs.fetchRecentFiles(accessToken, tenant, page, auth.refreshTokenIfNeeded);
+      feedback.showSuccess(t('files.file_deleted_successfully'));
     } catch (error) {
       feedback.showError(t('error.failed_to_delete_file', { message: (error as Error).message }));
     } finally {
