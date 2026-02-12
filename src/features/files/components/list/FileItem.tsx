@@ -82,16 +82,6 @@ export const FileItem: FunctionalComponent<FileItemProps> = ({
         </span>
       </div>
       <div className="file-item__actions">
-        {onDelete && (
-        <FileItemAction
-          icon={deleteIcon}
-          ariaLabel={t('files.delete_file', { fileName })}
-          title={t('common.delete')}
-          onClick={onDelete}
-          disabled={isDisabled}
-          variant="delete"
-        />
-        )}
         <FileItemAction
           icon={downloadIcon}
           ariaLabel={t('files.download_file', { fileName })}
@@ -106,6 +96,16 @@ export const FileItem: FunctionalComponent<FileItemProps> = ({
           onClick={onEdit}
           disabled={isDisabled || !isAuthenticated}
         />
+        {onDelete && (
+        <FileItemAction
+          icon={deleteIcon}
+          ariaLabel={t('files.delete_file', { fileName })}
+          title={t('common.delete')}
+          onClick={onDelete}
+          disabled={isDisabled}
+          variant="delete"
+        />
+        )}
       </div>
     </li>
   );
