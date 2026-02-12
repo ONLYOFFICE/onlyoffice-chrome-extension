@@ -36,8 +36,8 @@
 	--color-spinner-darker: #333333;
 	--color-spinner-primary: var(--color-primary);
 
-	--color-auth-signin-bg: #333333;
-	--color-auth-signin-bg-hover: #555555;
+	--color-auth-signin-bg: #FFFFFF;
+	--color-auth-signin-bg-hover: #F8F9F9;
 	--color-auth-signin-border: #D0D5DA;
 	--color-auth-signin-border-hover: #A3A9AE;
 	--color-auth-signin-text: #5C5C5C;
