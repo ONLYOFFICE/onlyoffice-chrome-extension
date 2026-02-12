@@ -198,18 +198,16 @@ export function useFileOperations(
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const hash = await calculateHash(file);
-
-        const existing = await docs.findFileByHash(accessToken, tenant, hash);
-        if (existing) {
-          last = existing;
-        } else {
-          const uploaded = await docs.uploadFile(accessToken, tenant, file, file.name, hash);
-          last = uploaded;
-        }
+        const uploaded = await docs.uploadFile(accessToken, tenant, file, file.name, hash);
+        last = uploaded;
       }
 
       feedback.showSuccess(t('files.successfully_uploaded_files', { count: String(files.length) }));
+
       await docs.fetchRecentFiles(accessToken, tenant, 1, auth.refreshTokenIfNeeded);
+      await new Promise<void>((resolve) => {
+        setTimeout(() => resolve(), 150);
+      });
 
       if (last) {
         tabs.create({ url: last.webUrl, active: true });
