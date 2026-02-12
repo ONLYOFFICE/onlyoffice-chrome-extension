@@ -11,8 +11,8 @@ export const OAUTH_CLIENT_ID = isFirefoxBuild
 export const OAUTH_SCOPES = 'files:write%20files:read%20rooms:read%20accounts.self:read%20accounts.self:write%20rooms:write';
 
 export const HELP_LINK = import.meta.env.VITE_HELP_LINK ?? 'https://helpcenter.onlyoffice.com/';
-export const FEEDBACK_LINK = import.meta.env.VITE_FEEDBACK_LINK ?? 'https://www.onlyoffice.com/';
-export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://www.onlyoffice.com/';
+export const FEEDBACK_LINK = import.meta.env.VITE_FEEDBACK_LINK ?? 'https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288';
+export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://github.com/ONLYOFFICE/onlyoffice-chrome-extension';
 
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
