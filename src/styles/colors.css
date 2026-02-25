@@ -1,0 +1,246 @@
+
+:root {
+	--color-text-main: #333333;
+	--color-text-muted: #666666;
+	--color-text-subtle: #999999;
+	--color-text-secondary: #A3A9AE;
+
+	--color-border-subtle: #f0f0f0;
+	--color-border-muted: #D0D5DA;
+	--color-border-accent: #5299E0;
+
+	--color-bg-subtle: #F8F9F9;
+	--color-bg-muted: #F3F4F4;
+	--color-bg-muted-strong: #ECEEF1;
+	--color-bg-elevated: #FFFFFF;
+
+	--color-primary: #5299E0;
+	--color-primary-hover: #5299E0D9;
+	--color-primary-deep: #265A8F;
+
+	--color-text-on-primary: #ffffff;
+
+	--color-text-soft: #555F65;
+
+	--color-danger-border: #f5c6cb;
+	--color-danger-bg: #f8d7da;
+	--color-danger-text: #721c24;
+
+	--color-success-border: #c3e6cb;
+	--color-success-bg: #d4edda;
+	--color-success-text: #155724;
+
+	--color-spinner-track: #f3f3f3;
+	--color-spinner-track-subtle: #e0e0e0;
+	--color-spinner-dark: #666666;
+	--color-spinner-darker: #333333;
+	--color-spinner-primary: var(--color-primary);
+
+	--color-auth-signin-bg: #FFFFFF;
+	--color-auth-signin-bg-hover: #F8F9F9;
+	--color-auth-signin-border: #D0D5DA;
+	--color-auth-signin-border-hover: #A3A9AE;
+	--color-auth-signin-text: #5C5C5C;
+	--color-auth-signin-caption: #A3A9AE;
+
+	--color-file-list-title: var(--color-text-secondary);
+	--color-file-list-empty-title: var(--color-text-main);
+	--color-file-list-empty-description: var(--color-text-subtle);
+	--color-file-list-loading-more: var(--color-text-muted);
+
+	--color-button-primary-border: var(--color-primary);
+	--color-button-primary-bg: #5299E0;
+	--color-button-primary-text: var(--color-text-on-primary);
+	--color-button-primary-hover-border: var(--color-primary-hover);
+	--color-button-primary-hover-bg: #5299E0D9;
+	--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
+		linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+	--color-button-primary-disabled-bg: #5299E099;
+	--color-button-secondary-border: var(--color-border-muted);
+	--color-button-secondary-bg: var(--color-bg-elevated);
+	--color-button-secondary-text: var(--color-text-main);
+	--color-button-secondary-hover-bg: var(--color-bg-subtle);
+
+	--color-input-bg: #FFFFFF;
+	--color-input-border: var(--color-border-muted);
+	--color-input-hover-border: #A3A9AE;
+	--color-input-text: var(--color-text-main);
+	--color-input-text-filled: var(--color-text-main);
+	--color-input-text-disabled: var(--color-text-muted);
+	--color-input-text-error: var(--color-text-main);
+	--color-input-focus-border: var(--color-border-accent);
+	--color-input-disabled-bg: #F8F9F9;
+	--color-input-disabled-border: #ECEEF1;
+	--color-input-error-border: #F24724;
+
+	--color-title-text: var(--color-text-main);
+	--color-text-body: var(--color-text-main);
+	--color-subtitle-text: var(--color-text-secondary);
+
+	--color-checkbox-label: var(--color-text-soft);
+	--color-checkbox-bg: #FFFFFF;
+	--color-checkbox-border: #D0D5DA;
+	--color-checkbox-tick: #4781D1;
+
+	--color-file-item-border: var(--color-border-subtle);
+	--color-file-item-hover-bg: var(--color-bg-subtle);
+	--color-file-item-name: var(--color-text-main);
+	--color-file-item-extension: var(--color-text-secondary);
+
+	--color-create-button-open-bg: var(--color-primary);
+	--color-create-button-open-hover-bg: var(--color-primary-hover);
+
+	--color-create-menu-bg: #FFFFFF;
+	--color-create-menu-divider-bg: var(--color-bg-subtle);
+	--color-create-menu-upload-text: var(--color-text-on-primary);
+	--color-create-menu-upload-bg: var(--color-primary-deep);
+	--color-create-menu-upload-bg-hover: var(--color-primary);
+	--color-create-menu-upload-bg-active: var(--color-primary-hover);
+	--color-create-menu-fab-text: var(--color-text-on-primary);
+	--color-create-menu-fab-bg: var(--color-primary);
+	--color-create-menu-fab-bg-hover: var(--color-primary-hover);
+
+	--color-create-menu-item-text: var(--color-text-main);
+	--color-create-menu-item-bg: var(--color-bg-elevated);
+	--color-create-menu-item-bg-hover: var(--color-bg-subtle);
+	--color-create-menu-item-bg-active: var(--color-bg-muted-strong);
+
+	--color-create-dialog-bg: #FFFFFF;
+	--color-create-dialog-title: var(--color-text-main);
+
+	--color-delete-confirm-bg: #FFFFFF;
+	--color-delete-confirm-title: var(--color-text-main);
+	--color-delete-confirm-message: var(--color-text-soft);
+	--color-delete-confirm-primary-border: var(--color-primary);
+	--color-delete-confirm-primary-bg: var(--color-primary);
+	--color-delete-confirm-primary-text: var(--color-text-on-primary);
+	--color-delete-confirm-primary-hover-border: var(--color-primary-hover);
+	--color-delete-confirm-primary-hover-bg: var(--color-primary-hover);
+	--color-delete-confirm-secondary-border: var(--color-border-muted);
+	--color-delete-confirm-secondary-bg: var(--color-bg-elevated);
+	--color-delete-confirm-secondary-text: var(--color-text-main);
+	--color-delete-confirm-secondary-hover-bg: var(--color-bg-subtle);
+
+	--color-feedback-empty-title: var(--color-text-main);
+	--color-feedback-empty-subtitle: var(--color-text-soft);
+
+	--color-account-menu-bg: #FFFFFF;
+	--color-account-menu-user-bg: var(--color-bg-muted);
+	--color-account-menu-user-icon-text: var(--color-text-secondary);
+	--color-account-menu-user-icon-bg: var(--color-bg-muted-strong);
+	--color-account-menu-user-name: var(--color-text-main);
+	--color-account-menu-user-email: var(--color-text-secondary);
+	--color-account-menu-logout-container-bg: transparent;
+	--color-account-menu-logout-border: var(--color-border-muted);
+	--color-account-menu-logout-text: var(--color-text-main);
+	--color-account-menu-logout-bg: var(--color-bg-elevated);
+	--color-account-menu-logout-bg-hover: var(--color-bg-subtle);
+	--color-account-menu-options-bg: transparent;
+	--color-account-menu-button-bg: transparent;
+	--color-account-menu-button-bg-hover: var(--color-bg-subtle);
+	--color-account-menu-button-text: var(--color-text-main);
+
+	--color-auth-exchanging-text: var(--color-text-muted);
+	--color-auth-loading-text: var(--color-text-muted);
+
+	--color-header-border: var(--color-border-subtle);
+	--color-header-bg: var(--color-bg-subtle);
+
+	--color-overlay-bg: rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-button-primary-active-bg: linear-gradient(0deg, #5299E0, #5299E0),
+			linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18));
+
+		--color-button-secondary-bg: #333333;
+		--color-button-secondary-border: #474747;
+		--color-button-secondary-text: #FFFFFF;
+		--color-button-secondary-hover-bg: #474747;
+
+		--color-auth-signin-bg: #333333;
+		--color-auth-signin-border: #474747;
+		--color-auth-signin-text: #858585;
+
+		--color-input-bg: #282828;
+		--color-input-border: #474747;
+		--color-input-hover-border: #5C5C5C;
+		--color-input-focus-border: #FFFFFF;
+		--color-input-disabled-bg: #474747;
+		--color-input-disabled-border: #474747;
+		--color-input-error-border: #E06451;
+		--color-input-text: #5C5C5C;
+		--color-input-text-filled: #FFFFFF;
+		--color-input-text-disabled: #858585;
+		--color-input-text-error: #FFFFFF;
+
+		--color-bg-main: #333333;
+		--color-title-text: #FFFFFF;
+		--color-text-body: #FFFFFF;
+		--color-subtitle-text: #858585;
+
+		--color-overlay-bg: #06162633;
+
+		--color-header-border: #474747;
+		--color-header-bg: #282828;
+
+		--color-file-list-title: #A3A9AE;
+		--color-file-list-empty-title: #FFFFFF;
+		--color-file-list-empty-description: #858585;
+		--color-file-list-loading-more: #858585;
+
+		--color-file-item-border: #474747;
+		--color-file-item-hover-bg: #3D3D3D;
+		--color-file-item-name: #FFFFFF;
+		--color-file-item-extension: #A3A9AE;
+
+		--color-create-dialog-bg: #3D3D3D;
+		--color-create-dialog-title: #FFFFFF;
+
+		--color-delete-confirm-bg: #3D3D3D;
+		--color-delete-confirm-title: #FFFFFF;
+		--color-delete-confirm-message: #D0D5DA;
+		--color-delete-confirm-secondary-border: #5C5C5C;
+		--color-delete-confirm-secondary-bg: #3D3D3D;
+		--color-delete-confirm-secondary-text: #FFFFFF;
+		--color-delete-confirm-secondary-hover-bg: #474747;
+
+		--color-checkbox-label: #FFFFFF;
+		--color-checkbox-bg: #282828;
+		--color-checkbox-border: #474747;
+		--color-checkbox-tick: #FFFFFF;
+
+		--color-create-menu-bg: #333333;
+		--color-create-menu-item-text: #FFFFFF;
+		--color-create-menu-item-bg: #333333;
+		--color-create-menu-item-bg-hover: #474747;
+		--color-create-menu-item-bg-active: #282828;
+		--color-create-menu-divider-bg: #333333;
+		--color-create-menu-upload-text: #FFFFFF;
+		--color-create-menu-upload-bg: #265A8F;
+		--color-create-menu-upload-bg-hover: #4781D1;
+		--color-create-menu-upload-bg-active: #5299E0;
+
+		--color-create-menu-fab-bg: #4781D1;
+
+		--color-account-menu-bg: #3D3D3D;
+		--color-account-menu-user-bg: #3D3D3D;
+		--color-account-menu-user-icon-text: #FFFFFF;
+		--color-account-menu-user-icon-bg: #474747;
+		--color-account-menu-user-name: #FFFFFF;
+		--color-account-menu-user-email: #A3A9AE;
+		--color-account-menu-logout-container-bg: #333333;
+		--color-account-menu-logout-border: #5C5C5C;
+		--color-account-menu-logout-text: #FFFFFF;
+		--color-account-menu-logout-bg: #333333;
+		--color-account-menu-logout-bg-hover: #474747;
+		--color-account-menu-options-bg: #333333;
+		--color-account-menu-button-bg: #333333;
+		--color-account-menu-button-bg-hover: #474747;
+		--color-account-menu-button-text: #FFFFFF;
+
+		--color-feedback-empty-title: #FFFFFF;
+		--color-feedback-empty-subtitle: #858585;
+	}
+}

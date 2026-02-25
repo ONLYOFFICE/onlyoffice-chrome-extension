@@ -1,0 +1,210 @@
+.create-menu__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    padding: 16px;
+    
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.25s ease-out;
+}
+
+.create-menu__overlay--closing {
+    animation: fadeOut 0.25s ease-out forwards;
+}
+
+.create-menu__container {
+    position: relative;
+    width: 335px;
+
+    padding-bottom: 24px;
+    
+    animation: slideUp 0.3s ease-out;
+}
+
+.create-menu__container--closing {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+.create-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background: var(--color-create-menu-bg);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+    transform-origin: bottom right;
+}
+
+.create-menu__options {
+    flex-shrink: 0;
+}
+
+.create-menu__divider {
+    height: 8px;
+    flex-shrink: 0;
+
+    background-color: var(--color-create-menu-divider-bg);
+}
+
+.create-menu__upload {
+    box-sizing: border-box;
+    width: 100%;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+
+    gap: 12px;
+    padding: 0 72px 0 16px;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    border: none;
+
+    color: var(--color-create-menu-upload-text);
+    cursor: pointer;
+    background: var(--color-create-menu-upload-bg);
+    transition: background-color 0.2s;
+}
+
+.create-menu__upload:hover {
+    background-color: var(--color-create-menu-upload-bg-hover);
+}
+
+.create-menu__upload:active {
+    background-color: var(--color-create-menu-upload-bg-active);
+}
+
+.create-menu__upload-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+
+    transition: transform 0.2s;
+}
+
+.create-menu__upload:hover .create-menu__upload-icon {
+    transform: scale(1.1);
+}
+
+.create-menu__upload-label {
+    flex-shrink: 0;
+}
+
+.create-menu__fab {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1;
+    
+    z-index: 1;
+    outline: none;
+    cursor: pointer;
+    color: var(--color-create-menu-fab-text);
+    background: var(--color-create-menu-fab-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    animation: rotateFab 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.create-menu__fab img {
+    width: 48px;
+    height: 48px;
+    display: block;
+
+    animation: rotateFabIcon 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.create-menu__fab:hover {
+    background: var(--color-create-menu-fab-bg-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: rotate(45deg) scale(1.1);
+}
+
+.create-menu__fab:active {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transform: rotate(45deg) scale(0.95);
+}
+
+@keyframes rotateFabIcon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-45deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes rotateFab {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(45deg);
+    }
+}

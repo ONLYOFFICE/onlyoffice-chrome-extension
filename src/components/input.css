@@ -1,0 +1,49 @@
+.input {
+  box-sizing: border-box;
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid var(--color-input-border);
+  border-radius: 3px;
+
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+
+  color: var(--color-input-text);
+  background: var(--color-input-bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--color-input-hover-border);
+
+  background: var(--color-input-bg);
+}
+
+.input:focus:not(:disabled) {
+  border-color: var(--color-input-focus-border);
+
+  background: var(--color-input-bg);
+  box-shadow: 0 0 0 3px rgba(82, 153, 224, 0.1);
+}
+
+.input:disabled {
+  border-color: var(--color-input-disabled-border);
+
+  background: var(--color-input-disabled-bg);
+  color: var(--color-input-text-disabled);
+  cursor: not-allowed;
+}
+
+.input--error {
+  border-color: var(--color-input-error-border);
+
+  background: var(--color-input-bg);
+  color: var(--color-input-text-error);
+}
+
+.input--filled {
+  color: var(--color-input-text-filled);
+}

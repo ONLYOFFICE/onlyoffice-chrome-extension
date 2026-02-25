@@ -1,0 +1,134 @@
+.file-list__section {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+
+    overflow: hidden;
+}
+
+.file-list__section--detected .file-list__container {
+    padding-bottom: 0;
+}
+
+.file-list__title {
+    flex-shrink: 0;
+
+    margin: 0 16px 8px 16px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--color-file-list-title);
+}
+
+.file-list__list {
+    box-sizing: border-box;
+    min-height: 0;
+    flex: 0 1 auto;
+
+    margin: 0;
+    padding: 0 0 8px 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    list-style: none;
+}
+
+.file-list__list::-webkit-scrollbar {
+    display: none;
+}
+
+
+.file-list__section--recent {
+}
+
+.file-list__loading {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+}
+
+.file-list__loading--full {
+    min-height: 100%;
+}
+
+.file-list__list--recent {
+    box-sizing: border-box;
+    min-height: 0;
+    flex: 0 1 auto;
+
+    margin: 0;
+    padding: 0 0 8px 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+    list-style: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.file-list__list--recent::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.file-list__empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.file-list__empty-icon {
+    margin-bottom: 8px;
+
+    font-size: 40px;
+
+    opacity: 0.5;
+}
+
+.file-list__empty-title {
+    margin-bottom: 6px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-file-list-empty-title);
+}
+
+.file-list__empty-description {
+    font-size: 12px;
+
+    color: var(--color-file-list-empty-description);
+}
+
+.file-list__sentinel {
+    height: 1px;
+    margin: 8px 0;
+
+    visibility: hidden;
+}
+
+.file-list__loading-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+    padding: 12px;
+
+    font-size: 13px;
+
+    color: var(--color-file-list-loading-more);
+}

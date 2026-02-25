@@ -1,0 +1,8 @@
+.account-menu__options {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+
+    background: var(--color-account-menu-options-bg);
+}

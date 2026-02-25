@@ -1,0 +1,143 @@
+.file-item {
+    box-sizing: border-box;
+    max-height: 80px;
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+    padding: 12px 8px;
+    margin: 0 16px;
+
+    border-bottom: 1px solid var(--color-file-item-border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: background-color 0.2s, transform 0.15s, opacity 0.25s, max-height 0.25s, margin 0.25s, padding 0.25s, border-color 0.25s;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-item:hover:not(.file-item--processing) {
+    background-color: var(--color-file-item-hover-bg);
+}
+
+.file-item--processing {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.file-item--removing {
+    max-height: 0;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    border-color: transparent;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+}
+
+.file-item__icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-item__icon img {
+    display: block;
+}
+
+.file-item__info {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    flex: 1;
+
+    gap: 0;
+
+    overflow: hidden;
+}
+
+.file-item__name {
+    max-width: 100%;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--color-file-item-name);
+    overflow: hidden;
+}
+
+.file-item__extension {
+    flex-shrink: 0;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
+    white-space: nowrap;
+
+    color: var(--color-file-item-extension);
+}
+
+.file-item__actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    gap: 24px;
+}
+
+.file-item__action {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+
+    opacity: 1;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.file-item__action:hover:not(:disabled) {
+    opacity: 0.7;
+    transform: scale(1.2);
+}
+
+.file-item__action:active:not(:disabled) {
+    transform: scale(1.0);
+}
+
+.file-item__action:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.file-item__action img {
+    width: 16px;
+    height: 16px;
+    display: block;
+}

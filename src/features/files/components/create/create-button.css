@@ -1,0 +1,62 @@
+.create-button {
+    box-sizing: border-box;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.create-button:focus {
+    outline: none;
+}
+
+.create-button img {
+    width: 48px;
+    height: 48px;
+    display: block;
+}
+
+.create-button--open {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	background: var(--color-create-button-open-bg);
+    transform: none;
+}
+
+.create-button--open:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	background: var(--color-create-button-open-hover-bg);
+    transform: none;
+}
+
+.create-button__close {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1;
+
+    color: white;
+}
+
+.create-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}

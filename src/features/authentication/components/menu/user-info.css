@@ -1,0 +1,87 @@
+.account-menu__user {
+    box-sizing: border-box;
+    height: 72px;
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+    padding: 16px;
+
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+
+    background: var(--color-account-menu-user-bg);
+}
+
+.account-menu__user-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    margin: 0;
+
+    border-radius: 50%;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: var(--color-account-menu-user-icon-text);
+    overflow: hidden;
+    background: var(--color-account-menu-user-icon-bg);
+}
+
+.account-menu__user-avatar {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.account-menu__user-avatar-placeholder {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.account-menu__user-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+
+    margin: 20px 16px 20px 0;
+}
+
+.account-menu__user-name {
+    margin-bottom: 4px;
+
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    color: var(--color-account-menu-user-name);
+}
+
+.account-menu__user-email {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    color: var(--color-account-menu-user-email);
+}

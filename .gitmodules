@@ -1,0 +1,3 @@
+[submodule "vendor/document-formats"]
+	path = vendor/document-formats
+	url = https://github.com/ONLYOFFICE/document-formats.git

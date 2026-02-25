@@ -1,0 +1,241 @@
+name: Release Extension
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - 'CHANGELOG.md'
+
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - 'CHANGELOG.md'
+
+jobs:
+  build-chrome:
+    name: Build Chrome Extension
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment variables
+        run: |
+          touch .env
+          
+          if [ -z "${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" ]; then
+            echo "❌ Error: CHROME_TOKEN_EXCHANGE_URL secret not set"
+            exit 1
+          fi
+          echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" >> .env
+          
+          if [ -z "${{ secrets.CHROME_OAUTH_CLIENT_ID }}" ]; then
+            echo "❌ Error: CHROME_OAUTH_CLIENT_ID secret not set"
+            exit 1
+          fi
+          echo "VITE_OAUTH_CHROME_CLIENT_ID=${{ secrets.CHROME_OAUTH_CLIENT_ID }}" >> .env
+          
+          if [ -n "${{ secrets.HELP_LINK }}" ]; then
+            echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ secrets.ABOUT_LINK }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
+          fi
+          
+          echo "Environment variables configured for Chrome"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Chrome extension
+        run: npm run build:chrome
+
+      - name: Package Chrome extension
+        run: npm run package:chrome
+
+      - name: Upload Chrome extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-extension
+          path: dist-chrome/
+          retention-days: 30
+
+      - name: Upload Chrome zip for release
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-extension-zip
+          path: docspace-chrome.zip
+          retention-days: 30
+
+  build-firefox:
+    name: Build Firefox Extension
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment variables
+        run: |
+          touch .env
+          
+          if [ -z "${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" ]; then
+            echo "❌ Error: FIREFOX_TOKEN_EXCHANGE_URL secret not set"
+            exit 1
+          fi
+          echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" >> .env
+          
+          if [ -z "${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" ]; then
+            echo "❌ Error: FIREFOX_OAUTH_CLIENT_ID secret not set"
+            exit 1
+          fi
+          echo "VITE_OAUTH_FIREFOX_CLIENT_ID=${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" >> .env
+          
+          if [ -n "${{ secrets.HELP_LINK }}" ]; then
+            echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
+            echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
+          fi
+          
+          if [ -n "${{ secrets.ABOUT_LINK }}" ]; then
+            echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
+          fi
+          
+          echo "Environment variables configured for Firefox"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Firefox extension
+        run: npm run build:firefox
+
+      - name: Package Firefox extension
+        run: npm run package:firefox
+
+      - name: Upload Firefox extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension
+          path: dist-firefox/
+          retention-days: 30
+
+      - name: Upload Firefox zip for release
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension-zip
+          path: docspace-firefox.zip
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-chrome, build-firefox]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version and changelog
+        id: version
+        run: |
+          VERSION=$(grep -m 1 '^##' CHANGELOG.md | sed 's/^## *//')
+          echo "version=v${VERSION}" >> $GITHUB_OUTPUT
+          echo "raw_version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Version: v${VERSION}"
+          
+          CHANGELOG=$(awk '/^## /{if(seen)exit; seen=1; next} {if(seen)print}' CHANGELOG.md | sed '/^$/d')
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Check if release exists
+        id: check_release
+        run: |
+          if gh release view "${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release ${{ steps.version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Release ${{ steps.version.outputs.version }} does not exist"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Chrome extension
+        uses: actions/download-artifact@v4
+        with:
+          name: chrome-extension-zip
+          path: ./artifacts
+
+      - name: Download Firefox extension
+        uses: actions/download-artifact@v4
+        with:
+          name: firefox-extension-zip
+          path: ./artifacts
+
+      - name: Create GitHub Release
+        if: steps.check_release.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+          make_latest: true
+          files: |
+            ./artifacts/docspace-chrome.zip
+            ./artifacts/docspace-firefox.zip
+          body: |
+            ## What's Changed
+            
+            ${{ steps.version.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

@@ -1,0 +1,33 @@
+.account-menu__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    transition: opacity 0.25s ease-out;
+}
+
+.account-menu__container {
+    position: relative;
+    width: 100%;
+
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.account-menu__overlay--open {
+    opacity: 1;
+}
+
+.account-menu__container--open {
+    transform: translateY(0);
+}
