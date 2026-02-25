@@ -2,36 +2,14 @@ name: Release Extension
 
 on:
   push:
-    branches:
-      - main
-      - master
-      - develop
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'package.json'
-      - 'vite.config.ts'
-      - 'tsconfig.json'
-      - 'CHANGELOG.md'
-
-  pull_request:
-    branches:
-      - main
-      - master
-      - develop
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'package.json'
-      - 'vite.config.ts'
-      - 'tsconfig.json'
-      - 'CHANGELOG.md'
+    tags:
+      - 'v*'
 
 jobs:
   build-chrome:
     name: Build Chrome Extension
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -48,31 +26,31 @@ jobs:
       - name: Setup environment variables
         run: |
           touch .env
-          
+
           if [ -z "${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" ]; then
             echo "❌ Error: CHROME_TOKEN_EXCHANGE_URL secret not set"
             exit 1
           fi
           echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" >> .env
-          
+
           if [ -z "${{ secrets.CHROME_OAUTH_CLIENT_ID }}" ]; then
             echo "❌ Error: CHROME_OAUTH_CLIENT_ID secret not set"
             exit 1
           fi
           echo "VITE_OAUTH_CHROME_CLIENT_ID=${{ secrets.CHROME_OAUTH_CLIENT_ID }}" >> .env
-          
+
           if [ -n "${{ secrets.HELP_LINK }}" ]; then
             echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
           fi
-          
+
           if [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
             echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
           fi
-          
+
           if [ -n "${{ secrets.ABOUT_LINK }}" ]; then
             echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
           fi
-          
+
           echo "Environment variables configured for Chrome"
 
       - name: Lint code
@@ -101,7 +79,7 @@ jobs:
   build-firefox:
     name: Build Firefox Extension
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -118,31 +96,31 @@ jobs:
       - name: Setup environment variables
         run: |
           touch .env
-          
+
           if [ -z "${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" ]; then
             echo "❌ Error: FIREFOX_TOKEN_EXCHANGE_URL secret not set"
             exit 1
           fi
           echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" >> .env
-          
+
           if [ -z "${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" ]; then
             echo "❌ Error: FIREFOX_OAUTH_CLIENT_ID secret not set"
             exit 1
           fi
           echo "VITE_OAUTH_FIREFOX_CLIENT_ID=${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" >> .env
-          
+
           if [ -n "${{ secrets.HELP_LINK }}" ]; then
             echo "VITE_HELP_LINK=${{ secrets.HELP_LINK }}" >> .env
           fi
-          
+
           if [ -n "${{ secrets.FEEDBACK_LINK }}" ]; then
             echo "VITE_FEEDBACK_LINK=${{ secrets.FEEDBACK_LINK }}" >> .env
           fi
-          
+
           if [ -n "${{ secrets.ABOUT_LINK }}" ]; then
             echo "VITE_ABOUT_LINK=${{ secrets.ABOUT_LINK }}" >> .env
           fi
-          
+
           echo "Environment variables configured for Firefox"
 
       - name: Lint code
@@ -172,10 +150,10 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: [build-chrome, build-firefox]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -189,7 +167,7 @@ jobs:
           echo "version=v${VERSION}" >> $GITHUB_OUTPUT
           echo "raw_version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Version: v${VERSION}"
-          
+
           CHANGELOG=$(awk '/^## /{if(seen)exit; seen=1; next} {if(seen)print}' CHANGELOG.md | sed '/^$/d')
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
@@ -234,7 +212,7 @@ jobs:
             ./artifacts/docspace-firefox.zip
           body: |
             ## What's Changed
-            
+
             ${{ steps.version.outputs.changelog }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
