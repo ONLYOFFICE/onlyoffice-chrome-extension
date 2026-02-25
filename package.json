@@ -1,56 +1,68 @@
 {
-	"name": "onlyoffice-docspace-chrome",
-	"version": "1.0.0",
-	"description": "Chrome extension for ONLYOFFICE DocSpace",
-	"author": "Ascensio System SIA",
-	"license": "Apache-2.0",
-	"private": true,
-	"type": "module",
-	"keywords": [
-		"onlyoffice",
-		"docspace",
-		"chrome-extension",
-		"collaboration",
-		"documents",
-		"productivity"
-	],
-	"eslintConfig": {
-		"extends": "preact"
-	},
-	"scripts": {
-		"lint": "eslint src/",
-		"lint:fix": "eslint src/ --fix",
-		"dev": "vite",
-		"build": "npm run build:chrome && npm run build:firefox",
-		"build:chrome": "vite build",
-		"build:firefox": "vite build --mode firefox",
-		"preview": "vite preview",
-		"package": "npm run package:chrome && npm run package:firefox",
-		"package:chrome": "npm run build:chrome && cd dist-chrome && zip -r ../docspace-chrome.zip . && cd ..",
-		"package:firefox": "npm run build:firefox && cd dist-firefox && zip -r ../docspace-firefox.zip . && cd ..",
-		"clean": "rm -rf dist-chrome dist-firefox"
-	},
-	"dependencies": {
-		"@preact/signals": "^2.5.1",
-		"preact": "^10.26.9",
-		"typescript-eslint": "^8.54.0"
-	},
-	"devDependencies": {
-		"@eslint/compat": "^1.4.1",
-		"@eslint/js": "^9.39.2",
-		"@preact/preset-vite": "^2.10.2",
-		"@stylistic/eslint-plugin": "^3.1.0",
-		"@types/chrome": "^0.0.256",
-		"@types/node": "^22.10.2",
-		"eslint": "^9.39.2",
-		"eslint-config-airbnb-extended": "^2.3.3",
-		"eslint-config-preact": "^2.0.0",
-		"eslint-import-resolver-typescript": "^4.4.4",
-		"eslint-plugin-import-x": "^4.16.1",
-		"eslint-plugin-jsx-a11y": "^6.10.2",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^7.0.1",
-		"typescript": "^5.9.3",
-		"vite": "^7.0.4"
-	}
+  "name": "onlyoffice-docspace-chrome",
+  "version": "1.0.0",
+  "description": "Chrome extension for ONLYOFFICE DocSpace",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/ONLYOFFICE/onlyoffice-chrome-extension",
+  "author": "Ascensio System SIA",
+  "maintainers": [
+    "Ascensio System SIA <integration@onlyoffice.com> (https://www.onlyoffice.com)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONLYOFFICE/onlyoffice-chrome-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ONLYOFFICE/onlyoffice-chrome-extension",
+    "email": "support@onlyoffice.com"
+  },
+  "keywords": [
+    "onlyoffice",
+    "docspace",
+    "chrome-extension",
+    "collaboration",
+    "documents",
+    "productivity"
+  ],
+  "private": true,
+  "type": "module",
+  "eslintConfig": {
+    "extends": "preact"
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "dev": "vite",
+    "build": "npm run build:chrome && npm run build:firefox",
+    "build:chrome": "vite build",
+    "build:firefox": "vite build --mode firefox",
+    "preview": "vite preview",
+    "package": "npm run package:chrome && npm run package:firefox",
+    "package:chrome": "npm run build:chrome && cd dist-chrome && zip -r ../docspace-chrome.zip . && cd ..",
+    "package:firefox": "npm run build:firefox && cd dist-firefox && zip -r ../docspace-firefox.zip . && cd ..",
+    "clean": "rm -rf dist-chrome dist-firefox"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.5.1",
+    "preact": "^10.26.9",
+    "typescript-eslint": "^8.54.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.4.1",
+    "@eslint/js": "^9.39.2",
+    "@preact/preset-vite": "^2.10.2",
+    "@stylistic/eslint-plugin": "^3.1.0",
+    "@types/chrome": "^0.0.256",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.39.2",
+    "eslint-config-airbnb-extended": "^2.3.3",
+    "eslint-config-preact": "^2.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.4"
+  }
 }
