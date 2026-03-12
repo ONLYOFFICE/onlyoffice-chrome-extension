@@ -22,7 +22,7 @@ The **ONLYOFFICE DocSpace extension for Chrome** is your gateway to seamless doc
 - In the window that appears, click the **Sign in with DocSpace** button.
 - Enter your DocSpace account login credentials.
 - Select the portal you want to log in to.
-- Once logged in, you’re ready to start using the extension.
+- Once logged in, you're ready to start using the extension.
 
 **Tip:** New to ONLYOFFICE DocSpace? Register for a free account [here](https://www.onlyoffice.com/docspace-registration?utm_source=github&utm_medium=cpc&utm_campaign=ChromeExtension) and get started today!
 
@@ -34,20 +34,20 @@ The **ONLYOFFICE DocSpace extension for Chrome** is your gateway to seamless doc
 - Choose the file type (Document / Spreadsheet / Presentation / PDF Form).
 - Enter a name for your file.
 - The file will open in a new tab for editing.
-- It will be saved automatically to the **My documents** section of your connected DocSpace and will appear in the extension’s file list. From the extension, the file can be opened for editing, downloaded, and deleted.
+- It will be saved automatically to the **My documents** section of your connected DocSpace and will appear in the extension's file list. From the extension, the file can be opened for editing, downloaded, and deleted.
 
 ### Uploading files from your device 📤
 
 - Click the **Upload file** button in the extension.
 - Select the desired file from your device using File Explorer.
 - The file will open in a new tab with editing permissions.
-- It will also be saved to the **My documents** folder in DocSpace and appear in the extension’s file list.
+- It will also be saved to the **My documents** folder in DocSpace and appear in the extension's file list.
 
 ### Opening files from a web page 🌐
 
 - Navigate to the web page containing the file you want to open.
 - Open the ONLYOFFICE DocSpace extension.
-- In the **Files detected on this webpage** section, you’ll see a list of files available on the page.
+- In the **Files detected on this webpage** section, you'll see a list of files available on the page.
 - Download the file to your device **OR** open the file in ONLYOFFICE in a new tab.
 
 ## Need help? User Feedback and Support 💡
