@@ -2,13 +2,13 @@ import { decodeJWT } from '@utils/jwt';
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { downloadFile } from '@utils/url';
-import { retryFetch } from '@utils/retry';
+import { createPKCE } from '@utils/pkce';
 import {
   runtime, identity, declarativeNetRequest,
 } from '@utils/browser';
 
 import {
-  OAUTH_CLIENT_ID, OAUTH_SCOPES, TOKEN_EXCHANGE_URL, validateConfig,
+  OAUTH_AUTHORIZE_URL, OAUTH_CLIENT_ID, OAUTH_SCOPES, OAUTH_TOKEN_URL, validateConfig,
 } from '@config';
 
 declare const browser: any;
@@ -33,7 +33,7 @@ if (typeof browser !== 'undefined' && browser.webRequest) {
   );
 }
 
-async function exchangeCode(code: string) {
+async function exchangeCode(code: string, codeVerifier: string) {
   try {
     const redirectUri = identity.getRedirectURL().replace(/\/$/, '');
     await storage.set({ exchanging_tokens: true });
@@ -47,22 +47,16 @@ async function exchangeCode(code: string) {
       code,
       redirect_uri: redirectUri,
       client_id: OAUTH_CLIENT_ID,
+      code_verifier: codeVerifier,
     });
 
-    const response = await retryFetch(
-      () => fetch(TOKEN_EXCHANGE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params,
-      }),
-      {
-        maxRetries: 3,
-        initialDelay: 1000,
-        maxDelay: 5000,
+    const response = await fetch(OAUTH_TOKEN_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-    );
+      body: params,
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -168,11 +162,12 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.action === 'startOAuthFlow') {
     const redirectUri = identity.getRedirectURL().replace(/\/$/, '');
-    const authUrl = `https://oauth.onlyoffice.com/oauth2/authorize?response_type=code&client_id=${OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${OAUTH_SCOPES}`;
 
-    identity.launchWebAuthFlow(
+    createPKCE().then((pkce) => identity.launchWebAuthFlow(
       {
-        url: authUrl,
+        url: `${OAUTH_AUTHORIZE_URL}?response_type=code&client_id=${OAUTH_CLIENT_ID}`
+          + `&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${OAUTH_SCOPES}`
+          + `&code_challenge=${pkce.challenge}&code_challenge_method=S256`,
         interactive: true,
       },
       (redirectUrl) => {
@@ -208,10 +203,11 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
           const code = url.searchParams.get('code');
 
           if (!code) {
-            throw new Error('No authorization code received');
+            const error = url.searchParams.get('error_description') || url.searchParams.get('error');
+            throw new Error(error ? `Authorization failed: ${error}` : 'No authorization code received');
           }
 
-          exchangeCode(code);
+          exchangeCode(code, pkce.verifier);
           sendResponse({ success: true });
         } catch (error) {
           const errorMsg = (error as Error).message;
@@ -223,7 +219,7 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
           sendResponse({ success: false, error: errorMsg });
         }
       },
-    );
+    ));
 
     return true;
   }

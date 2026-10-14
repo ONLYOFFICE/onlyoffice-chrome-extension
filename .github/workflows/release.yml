@@ -27,12 +27,6 @@ jobs:
         run: |
           touch .env
 
-          if [ -z "${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" ]; then
-            echo "❌ Error: CHROME_TOKEN_EXCHANGE_URL secret not set"
-            exit 1
-          fi
-          echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" >> .env
-
           if [ -z "${{ secrets.CHROME_OAUTH_CLIENT_ID }}" ]; then
             echo "❌ Error: CHROME_OAUTH_CLIENT_ID secret not set"
             exit 1
@@ -96,12 +90,6 @@ jobs:
       - name: Setup environment variables
         run: |
           touch .env
-
-          if [ -z "${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" ]; then
-            echo "❌ Error: FIREFOX_TOKEN_EXCHANGE_URL secret not set"
-            exit 1
-          fi
-          echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" >> .env
 
           if [ -z "${{ secrets.FIREFOX_OAUTH_CLIENT_ID }}" ]; then
             echo "❌ Error: FIREFOX_OAUTH_CLIENT_ID secret not set"

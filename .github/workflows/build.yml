@@ -13,18 +13,8 @@ on:
           - both
         default: 'both'
 
-      chrome_token_url:
-        description: 'Chrome Token Exchange URL'
-        required: false
-        type: string
-      
       chrome_client_id:
         description: 'Chrome OAuth Client ID'
-        required: false
-        type: string
-      
-      firefox_token_url:
-        description: 'Firefox Token Exchange URL'
         required: false
         type: string
       
@@ -70,15 +60,6 @@ jobs:
       - name: Setup environment variables
         run: |
           touch .env
-          
-          if [ -n "${{ inputs.chrome_token_url }}" ]; then
-            echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ inputs.chrome_token_url }}" >> .env
-          elif [ -n "${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" ]; then
-            echo "VITE_TOKEN_CHROME_EXCHANGE_URL=${{ secrets.CHROME_TOKEN_EXCHANGE_URL }}" >> .env
-          else
-            echo "❌ Error: CHROME_TOKEN_EXCHANGE_URL not provided (set as secret or workflow input)"
-            exit 1
-          fi
           
           if [ -n "${{ inputs.chrome_client_id }}" ]; then
             echo "VITE_OAUTH_CHROME_CLIENT_ID=${{ inputs.chrome_client_id }}" >> .env
@@ -146,15 +127,6 @@ jobs:
       - name: Setup environment variables
         run: |
           touch .env
-          
-          if [ -n "${{ inputs.firefox_token_url }}" ]; then
-            echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ inputs.firefox_token_url }}" >> .env
-          elif [ -n "${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" ]; then
-            echo "VITE_TOKEN_FIREFOX_EXCHANGE_URL=${{ secrets.FIREFOX_TOKEN_EXCHANGE_URL }}" >> .env
-          else
-            echo "❌ Error: FIREFOX_TOKEN_EXCHANGE_URL not provided (set as secret or workflow input)"
-            exit 1
-          fi
           
           if [ -n "${{ inputs.firefox_client_id }}" ]; then
             echo "VITE_OAUTH_FIREFOX_CLIENT_ID=${{ inputs.firefox_client_id }}" >> .env

@@ -1,8 +1,7 @@
 const isFirefoxBuild = import.meta.env.MODE === 'firefox';
 
-export const TOKEN_EXCHANGE_URL = isFirefoxBuild
-  ? import.meta.env.VITE_TOKEN_FIREFOX_EXCHANGE_URL
-  : import.meta.env.VITE_TOKEN_CHROME_EXCHANGE_URL;
+export const OAUTH_AUTHORIZE_URL = import.meta.env.VITE_OAUTH_AUTHORIZE_URL ?? 'https://oauth.onlyoffice.com/oauth2/authorize';
+export const OAUTH_TOKEN_URL = import.meta.env.VITE_OAUTH_TOKEN_URL ?? 'https://oauth.onlyoffice.com/oauth2/token';
 
 export const OAUTH_CLIENT_ID = isFirefoxBuild
   ? import.meta.env.VITE_OAUTH_FIREFOX_CLIENT_ID
@@ -16,13 +15,6 @@ export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://github.com
 
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-
-  if (!TOKEN_EXCHANGE_URL) {
-    const tokenUrlVar = isFirefoxBuild
-      ? 'VITE_TOKEN_FIREFOX_EXCHANGE_URL'
-      : 'VITE_TOKEN_CHROME_EXCHANGE_URL';
-    errors.push(`${tokenUrlVar} is not set in .env`);
-  }
 
   if (!OAUTH_CLIENT_ID) {
     const clientIdVar = isFirefoxBuild

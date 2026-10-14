@@ -54,16 +54,10 @@ export default defineConfig(({ mode }) => {
 	const errors: string[] = [];
 	
 	if (isFirefox) {
-		if (!env.VITE_TOKEN_FIREFOX_EXCHANGE_URL) {
-			errors.push('VITE_TOKEN_FIREFOX_EXCHANGE_URL is not set in .env');
-		}
 		if (!env.VITE_OAUTH_FIREFOX_CLIENT_ID) {
 			errors.push('VITE_OAUTH_FIREFOX_CLIENT_ID is not set in .env');
 		}
 	} else {
-		if (!env.VITE_TOKEN_CHROME_EXCHANGE_URL) {
-			errors.push('VITE_TOKEN_CHROME_EXCHANGE_URL is not set in .env');
-		}
 		if (!env.VITE_OAUTH_CHROME_CLIENT_ID) {
 			errors.push('VITE_OAUTH_CHROME_CLIENT_ID is not set in .env');
 		}

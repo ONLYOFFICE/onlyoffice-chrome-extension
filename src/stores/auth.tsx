@@ -8,7 +8,7 @@ import { Storage } from '@utils/storage';
 import { runtime } from '@utils/browser';
 import { retryFetch } from '@utils/retry';
 
-import { TOKEN_EXCHANGE_URL, OAUTH_CLIENT_ID } from '@config';
+import { OAUTH_TOKEN_URL, OAUTH_CLIENT_ID } from '@config';
 
 interface State {
   client: Client;
@@ -68,7 +68,7 @@ function createStore(): Store {
   const refreshToken = async (refreshTokenValue: string): Promise<boolean> => {
     try {
       const response = await retryFetch(
-        () => fetch(TOKEN_EXCHANGE_URL, {
+        () => fetch(OAUTH_TOKEN_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
@@ -98,7 +98,7 @@ function createStore(): Store {
       await storage.set({
         docspace_authentication: {
           accessToken: tokens.access_token,
-          refreshToken: tokens.refresh_token || refreshToken,
+          refreshToken: tokens.refresh_token || refreshTokenValue,
           expiresIn: tokens.expires_in,
           tokenType: tokens.token_type,
           timestamp: Date.now(),
@@ -228,6 +228,7 @@ function createStore(): Store {
             } else if (message.action === 'oauthSuccess') {
               cleanup();
               state.value = { ...state.value, signingIn: false, exchanging: false };
+              await checkAuthentication();
               resolve();
             } else if (message.action === 'oauthError') {
               cleanup();
