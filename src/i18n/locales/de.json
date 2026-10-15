@@ -94,7 +94,8 @@
     "no_knowledge_folder": "This agent has no Knowledge folder DE",
     "no_default_model": "No default AI model is set up on the portal DE",
     "profile_without_model": "The default AI profile has no model DE",
-    "empty_ai_response": "AI returned an empty response DE"
+    "empty_ai_response": "AI returned an empty response DE",
+    "ai_timeout": "The AI stopped responding DE"
   },
   "agents": {
     "select_agent": "AI agent DE",
@@ -126,18 +127,12 @@
     "summarize_page": "Summarize page DE",
     "reading_selection": "Reading the selection... DE",
     "reading_page": "Reading the page... DE",
-    "reading_parts": "Reading part 1 of {total}... DE",
-    "read_parts": "Read {finished} of {total} parts... DE",
     "asking": "Asking AI... DE",
     "saving": "Saving to ONLYOFFICE... DE",
     "summary_saved": "Summary saved to ONLYOFFICE DE",
-    "page_saved": "Page saved to ONLYOFFICE DE",
     "summary_failed": "Summary failed: {message} DE",
-    "page_failed": "Saving the page failed: {message} DE",
     "sign_in": "Sign in to ONLYOFFICE to use AI DE",
-    "part": "Part {index} of {total} DE",
-    "request": "AI request DE",
-    "retrying": "{label} failed, retrying ({attempt} of {total})... DE",
+    "retrying": "AI request failed, retrying ({attempt} of {total})... DE",
     "summary_file": "Summary - {title} DE",
     "untitled_document": "AI document DE"
   }

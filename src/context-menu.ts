@@ -1,7 +1,7 @@
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { extractArticle } from '@utils/article';
-import { Ask, Part, condense } from '@utils/merger';
+import { Ask, condense } from '@utils/merger';
 import { RetryOptions, retryOperation } from '@utils/retry';
 import { getValidAuthentication } from '@utils/token';
 
@@ -10,7 +10,7 @@ import {
 } from '@i18n/translations';
 import { LocalizedError, errorMessage } from '@i18n/errors';
 
-import { LOCALE_KEY } from '@config';
+import { KEEP_ALIVE_INTERVAL, LOCALE_KEY } from '@config';
 
 declare const browser: typeof chrome | undefined;
 const ext: typeof chrome = typeof browser !== 'undefined' ? browser : chrome;
@@ -19,7 +19,7 @@ const MAX_SOURCE_LENGTH = 1_000_000;
 const CHUNK_LENGTH = 24000;
 const MAX_CONDENSE_ROUNDS = 3;
 
-const PARALLEL_REQUESTS = 3;
+const PARALLEL_REQUESTS = 4;
 const MAX_RETRIES = 2;
 const RETRY_OPTIONS: RetryOptions = {
   maxRetries: MAX_RETRIES,
@@ -34,8 +34,9 @@ const MIN_IMAGE_SIZE = 100;
 const MODEL_CACHE_TTL = 5 * 60 * 1000;
 
 const IMAGE_RULES = [
-  'Include relevant images from the provided list as ![alt](url) next to the related content, using the URLs exactly as given.',
-  'Do not invent image URLs. Do not use tables or HTML. Do not wrap the answer in a code block.',
+  'Keep the images that appear in the content as ![alt](url) at the same place relative to the text around them.',
+  'If an image list is provided, add those images next to the related content.',
+  'Use image URLs exactly as given and do not invent any. Do not use tables or HTML. Do not wrap the answer in a code block.',
   'Write in the same language as the source text.',
 ].join(' ');
 
@@ -60,20 +61,18 @@ const MODES = {
     menu: 'ai.summarize_page',
     context: 'page',
     prompt: [
-      'You turn web page content, given as Markdown extracted with Mozilla Readability, into a well-structured document.',
-      'Keep the full substance of the article; restructure and clean it up rather than shortening it.',
-      'Respond with Markdown only: a single "# " title, "## " and "### " section headings, paragraphs,',
-      '"- " bullet lists and "1. " numbered lists, **bold** and *italic* where useful.',
+      'You summarize a web page given as Markdown extracted with Mozilla Readability.',
+      'Respond with Markdown only: a single "# " title, a short overview paragraph, then "## " sections for the main topics',
+      'with concise paragraphs or "- " bullets that keep the key facts, figures, names and conclusions.',
+      'Aim for about a tenth to a fifth of the original length; keep only the most relevant images.',
+      'Do not add facts that are not in the text.',
       IMAGE_RULES,
     ].join(' '),
-    notes: [
-      'Condense it into detailed notes that keep its section structure, arguments, facts, figures, names and examples,',
-      'so a full document can be rebuilt from them.',
-    ].join(' '),
-    request: 'Create a document based on this web page.',
+    notes: 'Condense it into concise notes: the main ideas, key facts, figures, names and conclusions, in order.',
+    request: 'Summarize this web page.',
     reading: 'ai.reading_page',
-    done: 'ai.page_saved',
-    failed: 'ai.page_failed',
+    done: 'ai.summary_saved',
+    failed: 'ai.summary_failed',
   },
 } as const;
 
@@ -252,28 +251,23 @@ const ai = {
     onStage: OnStage,
     t: Translate,
   ): Ask {
-    return (system: string, user: string, part?: Part) => {
-      const label = part
-        ? t('ai.part', { index: String(part.index + 1), total: String(part.total) })
-        : t('ai.request');
+    return (system, user) => retryOperation(
+      () => api.chatCompletion(accessToken, tenant, modelId, [
+        { role: 'system', content: system },
+        { role: 'user', content: user },
+      ]),
+      {
+        ...RETRY_OPTIONS,
+        shouldRetry: ai.isRetryable,
+        onRetry: (_error, attempt) => onStage(
+          t('ai.retrying', { attempt: String(attempt), total: String(MAX_RETRIES) }),
+        ),
+      },
+    );
+  },
 
-      return retryOperation(
-        () => api.chatCompletion(accessToken, tenant, modelId, [
-          { role: 'system', content: system },
-          { role: 'user', content: user },
-        ]),
-        {
-          ...RETRY_OPTIONS,
-          shouldRetry: ai.isRetryable,
-          onRetry: (_error, attempt) => onStage(
-            t('ai.retrying', { label, attempt: String(attempt), total: String(MAX_RETRIES) }),
-          ),
-        },
-      ).catch((error: unknown) => {
-        if (!part) throw error;
-        throw new Error(`${label}: ${errorMessage(error, t)}`);
-      });
-    };
+  unwrap(answer: string): string {
+    return answer.trim().match(/^```(?:markdown|md)?\s*\n([\s\S]*?)\n```$/)?.[1] ?? answer;
   },
 
   async generate(
@@ -284,12 +278,11 @@ const ai = {
     t: Translate,
   ): Promise<string> {
     const escape = (src: string) => src.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
-    const images = page.images.length
-      ? `\n\nImages:\n${page.images.map((image) => `- ![${image.alt.replace(/[[\]]/g, '')}](${escape(image.src)})`).join('\n')}`
-      : '';
 
     const truncated = page.text.length > MAX_SOURCE_LENGTH;
     const source = page.text.slice(0, MAX_SOURCE_LENGTH);
+    const header = `Title: ${page.title}\nURL: ${page.url}${page.details ? `\n${page.details}` : ''}`;
+
     const content = await condense(source, {
       title: page.title,
       instructions: MODES[mode].notes,
@@ -297,11 +290,7 @@ const ai = {
       maxRounds: MAX_CONDENSE_ROUNDS,
       parallel: PARALLEL_REQUESTS,
       ask,
-      onProgress: (finished, total) => onStage(
-        finished === 0
-          ? t('ai.reading_parts', { total: String(total) })
-          : t('ai.read_parts', { finished: String(finished), total: String(total) }),
-      ),
+      onProgress: (finished) => (finished === 0 ? onStage(t('ai.asking')) : Promise.resolve()),
     });
     const notes = [
       content !== source
@@ -312,18 +301,20 @@ const ai = {
       .filter(Boolean)
       .join(' ');
 
+    // Images already in the content keep their place; only the rest (e.g. from a plain-text selection) are listed
+    const unplaced = page.images.filter((image) => !content.includes(image.src));
+    const images = unplaced.length
+      ? `\n\nImages:\n${unplaced.map((image) => `- ![${image.alt.replace(/[[\]]/g, '')}](${escape(image.src)})`).join('\n')}`
+      : '';
+
     await onStage(t('ai.asking'));
 
     const answer = await ask(
       MODES[mode].prompt,
-      `${MODES[mode].request}${notes ? ` ${notes}` : ''}\n\nTitle: ${page.title}\nURL: ${page.url}`
-        + `${page.details ? `\n${page.details}` : ''}\n\nContent:\n${content}${images}`,
+      `${MODES[mode].request}${notes ? ` ${notes}` : ''}\n\n${header}\n\nContent:\n${content}${images}`,
     );
 
-    return (
-      answer.trim().match(/^```(?:markdown|md)?\s*\n([\s\S]*?)\n```$/)?.[1]
-      ?? answer
-    );
+    return ai.unwrap(answer);
   },
 };
 
@@ -500,6 +491,10 @@ const menu = {
     const t = await translator.get();
     const onStage: OnStage = (message) => indicator.progress(target, message);
 
+    const keepAlive = setInterval(() => {
+      ext.runtime.getPlatformInfo().catch(() => {});
+    }, KEEP_ALIVE_INTERVAL);
+
     try {
       const auth = await getValidAuthentication(storage);
       if (!auth?.accessToken || !auth.tenant) {
@@ -518,7 +513,7 @@ const menu = {
 
       await docspace.save(
         markdown,
-        mode === 'summary' ? t('ai.summary_file', { title: page.title }) : page.title,
+        t('ai.summary_file', { title: page.title }),
         t('ai.untitled_document'),
         auth.accessToken,
         auth.tenant,
@@ -526,6 +521,8 @@ const menu = {
       await indicator.done(target, t(done));
     } catch (error) {
       await indicator.fail(target, t(failed, { message: errorMessage(error, t) }));
+    } finally {
+      clearInterval(keepAlive);
     }
   },
 };

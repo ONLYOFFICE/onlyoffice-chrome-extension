@@ -1,5 +1,7 @@
 import { LocalizedError } from '@i18n/errors';
 
+import { AI_IDLE_TIMEOUT } from '@config';
+
 import { Storage } from './storage';
 import { retryFetch } from './retry';
 
@@ -355,11 +357,40 @@ export class DocspaceAPI {
   }
 
   async chatCompletion(accessToken: string, tenant: string, model: string, messages: ChatMessage[]): Promise<string> {
+    const controller = new AbortController();
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const touch = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => controller.abort(), AI_IDLE_TIMEOUT);
+    };
+
+    try {
+      touch();
+      return await this.readCompletion(accessToken, tenant, model, messages, controller.signal, touch);
+    } catch (error) {
+      if (controller.signal.aborted) throw new LocalizedError('error.ai_timeout');
+      throw error;
+    } finally {
+      clearTimeout(idleTimer);
+    }
+  }
+
+  private async readCompletion(
+    accessToken: string,
+    tenant: string,
+    model: string,
+    messages: ChatMessage[],
+    signal: AbortSignal,
+    onData: () => void,
+  ): Promise<string> {
     const response = await this.callAI(accessToken, `${tenant}/api/2.0/ai/gateway/chat/completions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream, application/json' },
       body: JSON.stringify({ model, messages, stream: true }),
+      signal,
     });
+
+    onData();
 
     let content = '';
     if (response.headers.get('Content-Type')?.includes('text/event-stream') && response.body) {
@@ -367,10 +398,11 @@ export class DocspaceAPI {
       const decoder = new TextDecoder();
       let buffer = '';
 
-      // Chunks have to be read in order, so each read starts after the previous one is handled
       const readChunk = async (): Promise<void> => {
         const chunk = await reader.read();
         if (chunk.done) return;
+
+        onData();
 
         buffer += decoder.decode(chunk.value, { stream: true });
         const lines = buffer.split('\n');

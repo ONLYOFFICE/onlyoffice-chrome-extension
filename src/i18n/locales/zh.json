@@ -94,7 +94,8 @@
     "no_knowledge_folder": "This agent has no Knowledge folder ZH",
     "no_default_model": "No default AI model is set up on the portal ZH",
     "profile_without_model": "The default AI profile has no model ZH",
-    "empty_ai_response": "AI returned an empty response ZH"
+    "empty_ai_response": "AI returned an empty response ZH",
+    "ai_timeout": "The AI stopped responding ZH"
   },
   "agents": {
     "select_agent": "AI agent ZH",
@@ -126,18 +127,12 @@
     "summarize_page": "Summarize page ZH",
     "reading_selection": "Reading the selection... ZH",
     "reading_page": "Reading the page... ZH",
-    "reading_parts": "Reading part 1 of {total}... ZH",
-    "read_parts": "Read {finished} of {total} parts... ZH",
     "asking": "Asking AI... ZH",
     "saving": "Saving to ONLYOFFICE... ZH",
     "summary_saved": "Summary saved to ONLYOFFICE ZH",
-    "page_saved": "Page saved to ONLYOFFICE ZH",
     "summary_failed": "Summary failed: {message} ZH",
-    "page_failed": "Saving the page failed: {message} ZH",
     "sign_in": "Sign in to ONLYOFFICE to use AI ZH",
-    "part": "Part {index} of {total} ZH",
-    "request": "AI request ZH",
-    "retrying": "{label} failed, retrying ({attempt} of {total})... ZH",
+    "retrying": "AI request failed, retrying ({attempt} of {total})... ZH",
     "summary_file": "Summary - {title} ZH",
     "untitled_document": "AI document ZH"
   }

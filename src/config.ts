@@ -19,6 +19,10 @@ export const SELECTED_AGENT_KEY = 'ai_agent_id';
 
 export const LOCALE_KEY = 'locale';
 
+export const AI_IDLE_TIMEOUT = 90_000;
+
+export const KEEP_ALIVE_INTERVAL = 20_000;
+
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
