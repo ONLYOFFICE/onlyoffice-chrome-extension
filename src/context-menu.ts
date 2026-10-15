@@ -368,9 +368,12 @@ const indicator = {
             document.documentElement.appendChild(host);
           }
 
-          const toast = host.shadowRoot.querySelector<HTMLElement>('.toast');
+          const toast = host.shadowRoot?.querySelector<HTMLElement>('.toast');
+          const label = toast?.querySelector('.text');
+          if (!toast || !label) return;
+
           toast.dataset.state = toastState;
-          toast.querySelector('.text').textContent = text;
+          label.textContent = text;
 
           clearTimeout(win.docspaceToastTimer);
 

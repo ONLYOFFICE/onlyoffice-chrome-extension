@@ -45,7 +45,7 @@ export function useFileOperations(
 
     try {
       setProcessingFiles((prev) => new Set(prev).add(key));
-      feedback.showError(null);
+      feedback.clearError();
 
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
@@ -106,7 +106,7 @@ export function useFileOperations(
 
     try {
       setProcessingRecentFiles((prev) => new Set(prev).add(fileId));
-      feedback.showError(null);
+      feedback.clearError();
 
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
@@ -151,7 +151,7 @@ export function useFileOperations(
 
     try {
       setProcessingRecentFiles((prev) => new Set(prev).add(fileId));
-      feedback.showError(null);
+      feedback.clearError();
 
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
@@ -189,8 +189,13 @@ export function useFileOperations(
     const { accessToken } = auth.state.value.client;
     const { tenant } = auth.state.value;
 
+    if (!accessToken || !tenant) {
+      feedback.showError(t('files.please_sign_in_to_upload_files'));
+      return;
+    }
+
     try {
-      feedback.showError(null);
+      feedback.clearError();
       setUploading(true);
 
       let last: RecentFile | null = null;

@@ -104,7 +104,7 @@ export function App() {
 
   async function handleSignIn() {
     try {
-      feedback.showError(null);
+      feedback.clearError();
       await auth.startSignIn();
 
       if (auth.state.value.client.accessToken && auth.state.value.tenant) {

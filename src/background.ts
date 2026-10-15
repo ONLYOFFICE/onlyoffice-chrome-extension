@@ -28,7 +28,7 @@ registerContextMenuOptions();
 
 if (typeof browser !== 'undefined' && browser.webRequest) {
   browser.webRequest.onBeforeSendHeaders.addListener(
-    (details) => {
+    (details: chrome.webRequest.WebRequestHeadersDetails) => {
       const headers = details.requestHeaders || [];
       const filtered = headers.filter((header) => header.name.toLowerCase() !== 'origin');
       return { requestHeaders: filtered };

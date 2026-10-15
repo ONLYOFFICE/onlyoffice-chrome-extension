@@ -29,7 +29,7 @@ interface FilesPageProps {
   readonly processingFiles: ReadonlySet<string>;
   readonly processingRecentFiles: ReadonlySet<number>;
   readonly onDetectedFileAction: (action: 'download' | 'edit', url: string, name: string) => void;
-  readonly onRecentFileAction: (action: string, fileId: number, webUrl: string) => void;
+  readonly onRecentFileAction: (action: 'download' | 'delete' | 'edit', fileId: number, webUrl: string) => void;
   readonly onRefresh: () => void;
 }
 

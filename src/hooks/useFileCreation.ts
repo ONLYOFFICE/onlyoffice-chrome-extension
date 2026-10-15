@@ -46,7 +46,7 @@ export function useFileCreation(
     }
 
     try {
-      feedback.showError(null);
+      feedback.clearError();
       const { accessToken } = auth.state.value.client;
       const { tenant } = auth.state.value;
 
