@@ -23,7 +23,8 @@
     "help_center": "Help Center RU",
     "feedback_support": "Feedback & Support RU",
     "about_program": "About this program RU",
-    "log_out": "Log out RU"
+    "log_out": "Log out RU",
+    "ai_agent": "AI agent RU"
   },
   "files": {
     "document": "Document RU",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access RU",
     "sign_in_timed_out": "Sign-in timed out. Please try again. RU",
     "not_authenticated": "Not authenticated RU"
+  },
+  "agents": {
+    "select_agent": "AI agent RU",
+    "save_page": "Save this page to the agent's knowledge RU",
+    "new_agent": "New AI agent RU",
+    "name_placeholder": "Agent name RU",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer RU",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. RU",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. RU",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. RU",
+    "session_expired": "Your session has expired. Sign in again from the extension popup. RU",
+    "agent_failed": "AI agent failed to load: {message} RU",
+    "agents_failed": "Failed to load AI agents: {message} RU",
+    "saving_page": "Saving the page to the agent's knowledge... RU",
+    "page_saved": "Saved \"{name}\" to Knowledge RU",
+    "save_failed": "Saving failed: {message} RU",
+    "loading_settings": "Loading AI settings... RU",
+    "creating": "Creating \"{title}\"... RU",
+    "created": "Agent \"{title}\" created RU",
+    "create_failed": "Failed to create AI agent: {message} RU",
+    "delete_agent": "Delete AI agent RU",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone. RU",
+    "deleting": "Deleting \"{title}\"... RU",
+    "deleted": "Agent \"{title}\" deleted RU",
+    "delete_failed": "Failed to delete AI agent: {message} RU"
   }
 }

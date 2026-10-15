@@ -23,7 +23,8 @@
     "help_center": "Help Center",
     "feedback_support": "Feedback & Support",
     "about_program": "About this program",
-    "log_out": "Log out"
+    "log_out": "Log out",
+    "ai_agent": "AI agent"
   },
   "files": {
     "document": "Document",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access",
     "sign_in_timed_out": "Sign-in timed out. Please try again.",
     "not_authenticated": "Not authenticated"
+  },
+  "agents": {
+    "select_agent": "AI agent",
+    "save_page": "Save this page to the agent's knowledge",
+    "new_agent": "New AI agent",
+    "name_placeholder": "Agent name",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents.",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base.",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal.",
+    "session_expired": "Your session has expired. Sign in again from the extension popup.",
+    "agent_failed": "AI agent failed to load: {message}",
+    "agents_failed": "Failed to load AI agents: {message}",
+    "saving_page": "Saving the page to the agent's knowledge...",
+    "page_saved": "Saved \"{name}\" to Knowledge",
+    "save_failed": "Saving failed: {message}",
+    "loading_settings": "Loading AI settings...",
+    "creating": "Creating \"{title}\"...",
+    "created": "Agent \"{title}\" created",
+    "create_failed": "Failed to create AI agent: {message}",
+    "delete_agent": "Delete AI agent",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone.",
+    "deleting": "Deleting \"{title}\"...",
+    "deleted": "Agent \"{title}\" deleted",
+    "delete_failed": "Failed to delete AI agent: {message}"
   }
 }

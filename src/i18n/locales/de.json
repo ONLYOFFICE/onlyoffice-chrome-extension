@@ -23,7 +23,8 @@
     "help_center": "Help Center DE",
     "feedback_support": "Feedback & Support DE",
     "about_program": "About this program DE",
-    "log_out": "Log out DE"
+    "log_out": "Log out DE",
+    "ai_agent": "AI agent DE"
   },
   "files": {
     "document": "Document DE",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access DE",
     "sign_in_timed_out": "Sign-in timed out. Please try again. DE",
     "not_authenticated": "Not authenticated DE"
+  },
+  "agents": {
+    "select_agent": "AI agent DE",
+    "save_page": "Save this page to the agent's knowledge DE",
+    "new_agent": "New AI agent DE",
+    "name_placeholder": "Agent name DE",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer DE",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. DE",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. DE",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. DE",
+    "session_expired": "Your session has expired. Sign in again from the extension popup. DE",
+    "agent_failed": "AI agent failed to load: {message} DE",
+    "agents_failed": "Failed to load AI agents: {message} DE",
+    "saving_page": "Saving the page to the agent's knowledge... DE",
+    "page_saved": "Saved \"{name}\" to Knowledge DE",
+    "save_failed": "Saving failed: {message} DE",
+    "loading_settings": "Loading AI settings... DE",
+    "creating": "Creating \"{title}\"... DE",
+    "created": "Agent \"{title}\" created DE",
+    "create_failed": "Failed to create AI agent: {message} DE",
+    "delete_agent": "Delete AI agent DE",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone. DE",
+    "deleting": "Deleting \"{title}\"... DE",
+    "deleted": "Agent \"{title}\" deleted DE",
+    "delete_failed": "Failed to delete AI agent: {message} DE"
   }
 }

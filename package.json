@@ -43,8 +43,13 @@
     "clean": "rm -rf dist-chrome dist-firefox"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@onlyoffice/docspace-sdk-js": "^2.2.0",
     "@preact/signals": "^2.5.1",
+    "linkedom": "^0.18.13",
     "preact": "^10.26.9",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
     "typescript-eslint": "^8.54.0"
   },
   "devDependencies": {
@@ -54,6 +59,7 @@
     "@stylistic/eslint-plugin": "^3.1.0",
     "@types/chrome": "^0.0.256",
     "@types/node": "^22.10.2",
+    "@types/turndown": "^5.0.6",
     "eslint": "^9.39.2",
     "eslint-config-airbnb-extended": "^2.3.3",
     "eslint-config-preact": "^2.0.0",

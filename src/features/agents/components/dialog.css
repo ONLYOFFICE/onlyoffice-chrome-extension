@@ -1,0 +1,9 @@
+.agent-dialog__textarea {
+  min-height: 88px;
+
+  line-height: 1.5;
+
+  resize: vertical;
+
+  color: var(--color-input-text-filled);
+}

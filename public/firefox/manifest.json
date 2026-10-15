@@ -5,6 +5,7 @@
   "description": "Access and manage your ONLYOFFICE DocSpace files directly from Firefox",
   "permissions": [
     "storage",
+    "contextMenus",
     "activeTab",
     "identity",
     "scripting",
@@ -29,6 +30,10 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     }
+  },
+  "sidebar_action": {
+    "default_panel": "sidepanel.html",
+    "open_at_install": false
   },
   "background": {
     "scripts": ["background.js"],

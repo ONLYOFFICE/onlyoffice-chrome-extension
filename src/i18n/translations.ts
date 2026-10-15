@@ -16,7 +16,8 @@ export type TranslationKey =
     | `auth.${keyof Translations['auth']}`
     | `menu.${keyof Translations['menu']}`
     | `files.${keyof Translations['files']}`
-    | `error.${keyof Translations['error']}`;
+    | `error.${keyof Translations['error']}`
+    | `agents.${keyof Translations['agents']}`;
 
 const translations: Record<Locale, Translations> = {
   en,

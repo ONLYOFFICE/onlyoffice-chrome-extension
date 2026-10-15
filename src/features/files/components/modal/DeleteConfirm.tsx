@@ -12,6 +12,9 @@ import './delete-confirm.css';
 interface DeleteConfirmProps {
   readonly isOpen: boolean;
   readonly fileName?: string;
+  readonly title?: string;
+  readonly message?: string;
+  readonly confirmLabel?: string;
   readonly onConfirm: () => void;
   readonly onCancel: () => void;
 }
@@ -19,6 +22,9 @@ interface DeleteConfirmProps {
 export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
   isOpen,
   fileName,
+  title,
+  message,
+  confirmLabel,
   onConfirm,
   onCancel,
 }) => {
@@ -68,14 +74,13 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
           aria-describedby="delete-confirm-message"
         >
           <h3 id="delete-confirm-title" className="delete-confirm__title">
-            {t('files.move_to_trash')}
-            ?
+            {title ?? `${t('files.move_to_trash')}?`}
           </h3>
 
           <p id="delete-confirm-message" className="delete-confirm__message">
-            {fileName
+            {message ?? (fileName
               ? t('files.move_to_trash_confirm', { fileName })
-              : t('files.move_to_trash_confirm_generic')}
+              : t('files.move_to_trash_confirm_generic'))}
           </p>
 
           <div className="delete-confirm__actions">
@@ -84,7 +89,7 @@ export const DeleteConfirm: FunctionalComponent<DeleteConfirmProps> = ({
               className="delete-confirm__btn delete-confirm__btn--primary"
               onClick={onConfirm}
             >
-              {t('files.move_to_trash')}
+              {confirmLabel ?? t('files.move_to_trash')}
             </button>
             <button
               type="button"

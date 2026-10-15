@@ -23,7 +23,8 @@
     "help_center": "Help Center FR",
     "feedback_support": "Feedback & Support FR",
     "about_program": "About this program FR",
-    "log_out": "Log out FR"
+    "log_out": "Log out FR",
+    "ai_agent": "AI agent FR"
   },
   "files": {
     "document": "Document FR",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access FR",
     "sign_in_timed_out": "Sign-in timed out. Please try again. FR",
     "not_authenticated": "Not authenticated FR"
+  },
+  "agents": {
+    "select_agent": "AI agent FR",
+    "save_page": "Save this page to the agent's knowledge FR",
+    "new_agent": "New AI agent FR",
+    "name_placeholder": "Agent name FR",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer FR",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. FR",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. FR",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. FR",
+    "session_expired": "Your session has expired. Sign in again from the extension popup. FR",
+    "agent_failed": "AI agent failed to load: {message} FR",
+    "agents_failed": "Failed to load AI agents: {message} FR",
+    "saving_page": "Saving the page to the agent's knowledge... FR",
+    "page_saved": "Saved \"{name}\" to Knowledge FR",
+    "save_failed": "Saving failed: {message} FR",
+    "loading_settings": "Loading AI settings... FR",
+    "creating": "Creating \"{title}\"... FR",
+    "created": "Agent \"{title}\" created FR",
+    "create_failed": "Failed to create AI agent: {message} FR",
+    "delete_agent": "Delete AI agent FR",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone. FR",
+    "deleting": "Deleting \"{title}\"... FR",
+    "deleted": "Agent \"{title}\" deleted FR",
+    "delete_failed": "Failed to delete AI agent: {message} FR"
   }
 }

@@ -13,6 +13,10 @@ export const HELP_LINK = import.meta.env.VITE_HELP_LINK ?? 'https://helpcenter.o
 export const FEEDBACK_LINK = import.meta.env.VITE_FEEDBACK_LINK ?? 'https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288';
 export const ABOUT_LINK = import.meta.env.VITE_ABOUT_LINK ?? 'https://github.com/ONLYOFFICE/onlyoffice-chrome-extension';
 
+export const KNOWLEDGE_FOLDER_TYPE = 32;
+
+export const SELECTED_AGENT_KEY = 'ai_agent_id';
+
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 

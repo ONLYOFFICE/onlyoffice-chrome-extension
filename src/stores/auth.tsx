@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
-import { signal, computed } from '@preact/signals';
+import { signal, computed, type Signal } from '@preact/signals';
 
 import { Client } from '@utils/client';
 import { decodeJWT } from '@utils/jwt';
@@ -21,7 +21,7 @@ interface State {
 }
 
 interface Store {
-  state: ReturnType<typeof signal<State>>;
+  state: Signal<State>;
   isAuthenticated: ReturnType<typeof computed<boolean>>;
   isLoading: ReturnType<typeof computed<boolean>>;
   isSigningIn: ReturnType<typeof computed<boolean>>;

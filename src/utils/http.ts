@@ -21,6 +21,22 @@ export interface ProfileInfo {
   avatar?: string;
 }
 
+export interface AIAgent {
+  id: number;
+  title: string;
+}
+
+export interface FolderEntry {
+  id: number;
+  title: string;
+  type?: number | string;
+}
+
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
 export interface RecentFilesResponse {
   files: FileInfo[];
   total: number;
@@ -76,6 +92,28 @@ export class DocspaceAPI {
           );
         }
       }
+    }
+
+    return response;
+  }
+
+  private async callAI(accessToken: string, url: string, init: RequestInit = {}): Promise<Response> {
+    const response = await fetch(url, {
+      ...init,
+      referrerPolicy: 'no-referrer',
+      headers: { Authorization: `Bearer ${accessToken}`, Accept: 'application/json', ...init.headers },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      let message = text;
+      try {
+        const { error } = JSON.parse(text);
+        message = (typeof error === 'string' ? error : error?.message) || text;
+      } catch {
+      }
+
+      throw new Error(`${response.status}: ${message}`);
     }
 
     return response;
@@ -262,12 +300,13 @@ export class DocspaceAPI {
     file: Blob,
     fileName: string,
     refreshToken?: () => Promise<boolean>,
+    folderId: number | '@my' = '@my',
   ): Promise<FileInfo> {
     const formData = new FormData();
     formData.append('file', file, fileName);
 
     const response = await this.fetchWithRetry(
-      `${tenant}/api/2.0/files/@my/upload`,
+      `${tenant}/api/2.0/files/${folderId}/upload`,
       {
         method: 'POST',
         headers: {
@@ -310,5 +349,104 @@ export class DocspaceAPI {
 
     const data = await response.json();
     return data.response;
+  }
+
+  async chatCompletion(accessToken: string, tenant: string, model: string, messages: ChatMessage[]): Promise<string> {
+    const response = await this.callAI(accessToken, `${tenant}/api/2.0/ai/gateway/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream, application/json' },
+      body: JSON.stringify({ model, messages, stream: true }),
+    });
+
+    let content = '';
+    if (response.headers.get('Content-Type')?.includes('text/event-stream') && response.body) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
+        buffer += decoder.decode(chunk.value, { stream: true });
+        const lines = buffer.split('\n');
+
+        buffer = lines.pop() ?? '';
+        for (const line of lines.map((item) => item.trim())) {
+          const payload = line.startsWith('data:') ? line.slice(5).trim() : '';
+          if (payload && payload !== '[DONE]') {
+            let data;
+            try {
+              data = JSON.parse(payload);
+            } catch {
+              data = null;
+            }
+
+            if (data?.error) throw new Error(`AI request failed: ${data.error.message || JSON.stringify(data.error)}`);
+            content += data?.choices?.[0]?.delta?.content ?? '';
+          }
+        }
+      }
+    } else {
+      const data = await response.json();
+      content = (data?.response ?? data)?.choices?.[0]?.message?.content ?? '';
+    }
+
+    if (!content.trim()) throw new Error('AI returned an empty response');
+    return content;
+  }
+
+  async getChatAgents(accessToken: string, tenant: string): Promise<AIAgent[]> {
+    const response = await this.callAI(accessToken, `${tenant}/api/2.0/files/rooms?searchArea=AiAgents&count=100`);
+    const data = await response.json();
+    return (data.response?.folders || []).map((room: AIAgent) => ({ id: room.id, title: room.title }));
+  }
+
+  async getDefaultChatProfileId(accessToken: string, tenant: string): Promise<string> {
+    const response = await this.callAI(accessToken, `${tenant}/api/2.0/ai/assignments/get-all-assignments`);
+    const data = await response.json();
+    const profileId = (data?.response ?? data)?.Default;
+    if (typeof profileId !== 'string' || !profileId) throw new Error('No default AI model is set up on the portal');
+    return profileId;
+  }
+
+  async getProfileModel(accessToken: string, tenant: string, profileId: string): Promise<string> {
+    const response = await this.callAI(
+      accessToken,
+      `${tenant}/api/2.0/ai/profiles/get-by-id?id=${encodeURIComponent(profileId)}`,
+    );
+    const data = await response.json();
+    const profile = data?.response ?? data;
+    const model = profile?.modelId ?? profile?.model?.id ?? profile?.model;
+
+    if (typeof model !== 'string' || !model) throw new Error('The default AI profile has no model');
+    return model;
+  }
+
+  async createAgent(
+    accessToken: string,
+    tenant: string,
+    title: string,
+    profileId: string,
+    prompt: string,
+  ): Promise<AIAgent> {
+    const response = await this.callAI(accessToken, `${tenant}/api/2.0/ai/agents`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, profileId, prompt }),
+    });
+    const data = await response.json();
+    return { id: data.response.id, title: data.response.title };
+  }
+
+  async deleteAgent(accessToken: string, tenant: string, agentId: number): Promise<void> {
+    await this.callAI(accessToken, `${tenant}/api/2.0/ai/agents/${agentId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+  }
+
+  async getSubfolders(accessToken: string, tenant: string, folderId: number): Promise<FolderEntry[]> {
+    const response = await this.callAI(accessToken, `${tenant}/api/2.0/files/${folderId}`);
+    const data = await response.json();
+    return (data.response?.folders || []).map(({ id, title, type }: FolderEntry) => ({ id, title, type }));
   }
 }

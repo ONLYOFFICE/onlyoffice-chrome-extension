@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
-import { signal } from '@preact/signals';
+import { signal, type Signal } from '@preact/signals';
 
 interface FeedbackState {
   errorMessage: string | null;
@@ -8,7 +8,7 @@ interface FeedbackState {
 }
 
 export interface FeedbackStore {
-  state: ReturnType<typeof signal<FeedbackState>>;
+  state: Signal<FeedbackState>;
   showError: (message: string, duration?: number) => void;
   showSuccess: (message: string, duration?: number) => void;
   clearError: () => void;

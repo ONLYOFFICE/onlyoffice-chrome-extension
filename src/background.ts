@@ -3,6 +3,7 @@ import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { downloadFile } from '@utils/url';
 import { createPKCE } from '@utils/pkce';
+import { getValidAuthentication } from '@utils/token';
 import {
   runtime, identity, declarativeNetRequest,
 } from '@utils/browser';
@@ -10,6 +11,8 @@ import {
 import {
   OAUTH_AUTHORIZE_URL, OAUTH_CLIENT_ID, OAUTH_SCOPES, OAUTH_TOKEN_URL, validateConfig,
 } from '@config';
+
+import { registerContextMenuOptions } from './context-menu';
 
 declare const browser: any;
 
@@ -20,6 +23,8 @@ if (!configValidation.valid) {
 
 const storage = new Storage();
 const api = new DocspaceAPI(storage);
+
+registerContextMenuOptions();
 
 if (typeof browser !== 'undefined' && browser.webRequest) {
   browser.webRequest.onBeforeSendHeaders.addListener(
@@ -221,6 +226,13 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
       },
     ));
 
+    return true;
+  }
+
+  if (request.action === 'getAccessToken') {
+    getValidAuthentication(storage)
+      .then((auth) => sendResponse(auth ? { accessToken: auth.accessToken, tenant: auth.tenant } : null))
+      .catch(() => sendResponse(null));
     return true;
   }
 

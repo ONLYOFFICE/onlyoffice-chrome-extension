@@ -23,7 +23,8 @@
     "help_center": "Help Center ZH",
     "feedback_support": "Feedback & Support ZH",
     "about_program": "About this program ZH",
-    "log_out": "Log out ZH"
+    "log_out": "Log out ZH",
+    "ai_agent": "AI agent ZH"
   },
   "files": {
     "document": "Document ZH",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access ZH",
     "sign_in_timed_out": "Sign-in timed out. Please try again. ZH",
     "not_authenticated": "Not authenticated ZH"
+  },
+  "agents": {
+    "select_agent": "AI agent ZH",
+    "save_page": "Save this page to the agent's knowledge ZH",
+    "new_agent": "New AI agent ZH",
+    "name_placeholder": "Agent name ZH",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer ZH",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. ZH",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. ZH",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. ZH",
+    "session_expired": "Your session has expired. Sign in again from the extension popup. ZH",
+    "agent_failed": "AI agent failed to load: {message} ZH",
+    "agents_failed": "Failed to load AI agents: {message} ZH",
+    "saving_page": "Saving the page to the agent's knowledge... ZH",
+    "page_saved": "Saved \"{name}\" to Knowledge ZH",
+    "save_failed": "Saving failed: {message} ZH",
+    "loading_settings": "Loading AI settings... ZH",
+    "creating": "Creating \"{title}\"... ZH",
+    "created": "Agent \"{title}\" created ZH",
+    "create_failed": "Failed to create AI agent: {message} ZH",
+    "delete_agent": "Delete AI agent ZH",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone. ZH",
+    "deleting": "Deleting \"{title}\"... ZH",
+    "deleted": "Agent \"{title}\" deleted ZH",
+    "delete_failed": "Failed to delete AI agent: {message} ZH"
   }
 }

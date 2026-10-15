@@ -184,3 +184,11 @@ export const i18n = {
     return navigator.language || 'en';
   },
 };
+
+export const sidePanel = {
+  supported: Boolean((typeof browser !== 'undefined' && browser.sidebarAction) || chrome?.sidePanel),
+  getWindowId: async (): Promise<number> => (await (browserAPI as any).windows.getCurrent()).id,
+  open: (windowId: number): Promise<void> => (typeof browser !== 'undefined' && browser.sidebarAction
+    ? browser.sidebarAction.open()
+    : chrome.sidePanel.open({ windowId })),
+};

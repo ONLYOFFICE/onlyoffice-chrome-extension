@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
-import { signal, computed } from '@preact/signals';
+import { signal, computed, type Signal } from '@preact/signals';
 
 import { Format } from '@utils/formats';
 import { Storage } from '@utils/storage';
@@ -46,7 +46,7 @@ interface State {
 }
 
 export interface Store {
-  state: ReturnType<typeof signal<State>>;
+  state: Signal<State>;
   isLoading: ReturnType<typeof computed<boolean>>;
   hasFolderId: ReturnType<typeof computed<boolean>>;
   fetchMyDocumentsFolder: (token: string, tenant: string, refresh?: () => Promise<boolean>) => Promise<void>;

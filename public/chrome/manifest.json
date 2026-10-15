@@ -5,6 +5,8 @@
   "description": "Access and manage your ONLYOFFICE DocSpace files directly from Chrome",
   "permissions": [
     "storage",
+    "contextMenus",
+    "sidePanel",
     "activeTab",
     "identity",
     "scripting",
@@ -28,6 +30,9 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
   },
   "background": {
     "service_worker": "background.js",

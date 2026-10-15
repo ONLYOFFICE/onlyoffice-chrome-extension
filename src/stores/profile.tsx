@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
-import { signal, computed } from '@preact/signals';
+import { signal, computed, type Signal } from '@preact/signals';
 
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
@@ -14,7 +14,7 @@ interface ProfileState {
 }
 
 interface ProfileStore {
-  state: ReturnType<typeof signal<ProfileState>>;
+  state: Signal<ProfileState>;
   isLoading: ReturnType<typeof computed<boolean>>;
   fetchProfile: (accessToken: string, tenant: string, refreshTokenIfNeeded?: () => Promise<boolean>) => Promise<void>;
   clearProfile: () => void;

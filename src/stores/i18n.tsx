@@ -1,6 +1,6 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
-import { signal } from '@preact/signals';
+import { signal, type Signal } from '@preact/signals';
 
 import {
   Locale, detectLocale, getTranslation, TranslationKey,
@@ -11,7 +11,7 @@ import { Storage } from '@utils/storage';
 const STORAGE_KEY = 'locale';
 
 interface I18nStore {
-  locale: ReturnType<typeof signal<Locale>>;
+  locale: Signal<Locale>;
   t: (key: TranslationKey, params?: Record<string, string>) => string;
   setLocale: (locale: Locale) => Promise<void>;
 }

@@ -5,6 +5,7 @@ export interface RetryOptions {
   backoffMultiplier?: number;
   useJitter?: boolean;
   shouldRetry?: (error: any, attempt: number) => boolean;
+  onRetry?: (error: any, attempt: number) => void | Promise<void>;
 }
 
 function defaultShouldRetry(error: any, _attempt: number): boolean {
@@ -62,6 +63,7 @@ export async function retryFetch(
     backoffMultiplier = 2,
     useJitter = true,
     shouldRetry = defaultShouldRetry,
+    onRetry,
   } = options;
 
   let lastError: any;
@@ -84,6 +86,7 @@ export async function retryFetch(
 
           const delay = calculateDelay(attempt, initialDelay, maxDelay, backoffMultiplier, useJitter);
 
+          await onRetry?.(error, attempt);
           await sleep(delay);
 
           continue;
@@ -101,6 +104,7 @@ export async function retryFetch(
 
         const delay = calculateDelay(attempt, initialDelay, maxDelay, backoffMultiplier, useJitter);
 
+        await onRetry?.(error, attempt);
         await sleep(delay);
 
         continue;
@@ -124,6 +128,7 @@ export async function retryOperation<T>(
     backoffMultiplier = 2,
     useJitter = true,
     shouldRetry = defaultShouldRetry,
+    onRetry,
   } = options;
 
   let lastError: any;
@@ -140,6 +145,7 @@ export async function retryOperation<T>(
 
         const delay = calculateDelay(attempt, initialDelay, maxDelay, backoffMultiplier, useJitter);
 
+        await onRetry?.(error, attempt);
         await sleep(delay);
 
         continue;

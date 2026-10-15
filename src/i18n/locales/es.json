@@ -23,7 +23,8 @@
     "help_center": "Help Center ES",
     "feedback_support": "Feedback & Support ES",
     "about_program": "About this program ES",
-    "log_out": "Log out ES"
+    "log_out": "Log out ES",
+    "ai_agent": "AI agent ES"
   },
   "files": {
     "document": "Document ES",
@@ -79,5 +80,30 @@
     "access_not_approved": "You didn't approve the access ES",
     "sign_in_timed_out": "Sign-in timed out. Please try again. ES",
     "not_authenticated": "Not authenticated ES"
+  },
+  "agents": {
+    "select_agent": "AI agent ES",
+    "save_page": "Save this page to the agent's knowledge ES",
+    "new_agent": "New AI agent ES",
+    "name_placeholder": "Agent name ES",
+    "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer ES",
+    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. ES",
+    "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. ES",
+    "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. ES",
+    "session_expired": "Your session has expired. Sign in again from the extension popup. ES",
+    "agent_failed": "AI agent failed to load: {message} ES",
+    "agents_failed": "Failed to load AI agents: {message} ES",
+    "saving_page": "Saving the page to the agent's knowledge... ES",
+    "page_saved": "Saved \"{name}\" to Knowledge ES",
+    "save_failed": "Saving failed: {message} ES",
+    "loading_settings": "Loading AI settings... ES",
+    "creating": "Creating \"{title}\"... ES",
+    "created": "Agent \"{title}\" created ES",
+    "create_failed": "Failed to create AI agent: {message} ES",
+    "delete_agent": "Delete AI agent ES",
+    "delete_confirm": "Are you sure you want to delete \"{title}\"? This can't be undone. ES",
+    "deleting": "Deleting \"{title}\"... ES",
+    "deleted": "Agent \"{title}\" deleted ES",
+    "delete_failed": "Failed to delete AI agent: {message} ES"
   }
 }
