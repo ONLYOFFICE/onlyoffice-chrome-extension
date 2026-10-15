@@ -10,6 +10,7 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
 		"skipLibCheck": true,
+		"types": ["chrome", "node", "vite/client"],
 		"paths": {
 			"react": ["./node_modules/preact/compat/"],
 			"react-dom": ["./node_modules/preact/compat/"],
@@ -26,5 +27,6 @@
 			"@vendor/*": ["./vendor/*"]
 		}
 	},
-	"include": ["node_modules/vite/client.d.ts", "**/*"]
+	"include": ["**/*"],
+	"exclude": ["node_modules", "dist-chrome", "dist-firefox"]
 }
