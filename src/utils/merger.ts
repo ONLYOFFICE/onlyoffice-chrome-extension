@@ -1,9 +1,14 @@
 import { split } from './chunker';
 
+export interface Part {
+  index: number;
+  total: number;
+}
+
 export type Ask = (
   system: string,
   user: string,
-  label: string,
+  part?: Part,
 ) => Promise<string>;
 
 export interface CondenseOptions {
@@ -13,7 +18,7 @@ export interface CondenseOptions {
   maxRounds: number;
   parallel: number;
   ask: Ask;
-  onStage: (message: string) => Promise<void>;
+  onProgress: (finished: number, total: number) => Promise<void>;
 }
 
 async function mapLimit<T, R>(
@@ -55,7 +60,7 @@ export async function condense(
     maxRounds,
     parallel,
     ask,
-    onStage,
+    onProgress,
   } = options;
 
   let content = text;
@@ -67,21 +72,18 @@ export async function condense(
     const chunks = split(content, chunkLength);
     let finished = 0;
 
-    await onStage(`Reading part 1 of ${chunks.length}...`);
+    await onProgress(0, chunks.length);
     // eslint-disable-next-line no-await-in-loop
     const notes = await mapLimit(chunks, parallel, async (chunk, index) => {
-      const label = `Part ${index + 1} of ${chunks.length}`;
       const note = await ask(
         `You are reading one part of a longer text. ${instructions} Respond with Markdown only. `
           + 'Do not add facts that are not in the text. Write in the same language as the text.',
-        `${label} of "${title}":\n\n${chunk}`,
-        label,
-      ).catch((error: Error) => {
-        throw new Error(`${label.toLowerCase()}: ${error.message}`);
-      });
+        `Part ${index + 1} of ${chunks.length} of "${title}":\n\n${chunk}`,
+        { index, total: chunks.length },
+      );
 
       finished += 1;
-      await onStage(`Read ${finished} of ${chunks.length} parts...`);
+      await onProgress(finished, chunks.length);
 
       return note.trim();
     });

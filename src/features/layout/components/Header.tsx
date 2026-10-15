@@ -68,7 +68,7 @@ export const Header: FunctionalComponent<HeaderProps> = ({
           type="button"
           className="header__profile-btn"
           onClick={onProfileClick}
-          aria-label="Open account menu"
+          aria-label={t('menu.open_account_menu')}
           title={t('menu.account')}
           disabled={isProfileDisabled}
         >

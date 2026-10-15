@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ONLYOFFICE DocSpace",
+  "name": "ONLYOFFICE",
   "version": "1.0.0",
-  "description": "Access and manage your ONLYOFFICE DocSpace files directly from Chrome",
+  "description": "Access and manage your ONLYOFFICE files directly from Chrome",
   "permissions": [
     "storage",
     "contextMenus",

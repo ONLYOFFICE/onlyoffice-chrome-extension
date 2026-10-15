@@ -31,7 +31,7 @@ export const MenuOptions: FunctionalComponent<MenuOptionsProps> = ({ tenant, onG
   const currentInfoIcon = isDarkMode ? infoDarkIcon : infoIcon;
 
   return (
-    <nav className="account-menu__options" aria-label="Account options">
+    <nav className="account-menu__options" aria-label={t('menu.account_options')}>
       <Button
         onClick={onGoTo}
         disabled={!tenant}

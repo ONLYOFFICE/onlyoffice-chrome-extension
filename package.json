@@ -1,7 +1,7 @@
 {
   "name": "onlyoffice-docspace-chrome",
   "version": "1.0.0",
-  "description": "Chrome extension for ONLYOFFICE DocSpace",
+  "description": "Chrome extension for ONLYOFFICE",
   "license": "Apache-2.0",
   "homepage": "https://github.com/ONLYOFFICE/onlyoffice-chrome-extension",
   "author": "Ascensio System SIA",

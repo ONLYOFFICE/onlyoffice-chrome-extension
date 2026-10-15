@@ -19,6 +19,6 @@ export const CloseButton: FunctionalComponent<CloseButtonProps> = ({
     onClick={onClick}
     aria-label={ariaLabel}
   >
-    <img src={crossIcon} alt="Close" width="17" height="17" />
+    <img src={crossIcon} alt="" width="17" height="17" />
   </button>
 );

@@ -13,18 +13,22 @@
   "auth": {
     "welcome": "Welcome to ONLYOFFICE! DE",
     "welcome_description": "This extension helps to view, download and edit files on the webpage. For editing files and viewing version history please Sign in. DE",
-    "sign_in_with_doc_space": "Sign in with DocSpace DE",
+    "sign_in_with_doc_space": "Sign in with ONLYOFFICE DE",
     "signing_in": "Signing in... DE",
     "exchanging_tokens": "Exchanging tokens... DE"
   },
   "menu": {
     "account": "Account DE",
-    "go_to_doc_space": "Go to DocSpace DE",
+    "go_to_doc_space": "Go to ONLYOFFICE DE",
     "help_center": "Help Center DE",
     "feedback_support": "Feedback & Support DE",
     "about_program": "About this program DE",
     "log_out": "Log out DE",
-    "ai_agent": "AI agent DE"
+    "ai_agent": "AI agent DE",
+    "open_account_menu": "Open account menu DE",
+    "account_menu": "Account menu DE",
+    "account_options": "Account options DE",
+    "user_information": "User information DE"
   },
   "files": {
     "document": "Document DE",
@@ -53,7 +57,7 @@
     "no_recent_docs_subtitle": "Your recently edited documents will appear here DE",
     "enter_file_name": "Enter file name DE",
     "download": "Download DE",
-    "edit_in_doc_space": "Edit in DocSpace DE",
+    "edit_in_doc_space": "Edit in ONLYOFFICE DE",
     "sign_in_to_edit_files": "Sign in to edit files DE",
     "delete_file": "Delete {fileName} DE",
     "download_file": "Download {fileName} DE",
@@ -65,7 +69,10 @@
     "file_opened_in_new_tab": "File opened in new tab DE",
     "file_uploaded_and_opened_in_new_tab": "File uploaded and opened in new tab DE",
     "file_deleted_successfully": "File deleted successfully DE",
-    "successfully_uploaded_files": "Successfully uploaded {count} file(s) DE"
+    "successfully_uploaded_files": "Successfully uploaded {count} file(s) DE",
+    "create_new_file": "Create new file DE",
+    "close_menu": "Close menu DE",
+    "close_creation_menu": "Close creation menu DE"
   },
   "error": {
     "something_went_wrong": "Something went wrong DE",
@@ -79,7 +86,15 @@
     "authentication_cancelled": "Authentication cancelled DE",
     "access_not_approved": "You didn't approve the access DE",
     "sign_in_timed_out": "Sign-in timed out. Please try again. DE",
-    "not_authenticated": "Not authenticated DE"
+    "not_authenticated": "Not authenticated DE",
+    "page_unreadable": "This page can't be read DE",
+    "no_readable_content": "No readable content found on this page DE",
+    "no_selected_text": "No selected text found DE",
+    "no_active_page": "No active page to save DE",
+    "no_knowledge_folder": "This agent has no Knowledge folder DE",
+    "no_default_model": "No default AI model is set up on the portal DE",
+    "profile_without_model": "The default AI profile has no model DE",
+    "empty_ai_response": "AI returned an empty response DE"
   },
   "agents": {
     "select_agent": "AI agent DE",
@@ -87,7 +102,7 @@
     "new_agent": "New AI agent DE",
     "name_placeholder": "Agent name DE",
     "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer DE",
-    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. DE",
+    "sign_in": "Sign in from the ONLYOFFICE extension popup to use AI agents. DE",
     "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. DE",
     "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. DE",
     "session_expired": "Your session has expired. Sign in again from the extension popup. DE",
@@ -105,5 +120,25 @@
     "deleting": "Deleting \"{title}\"... DE",
     "deleted": "Agent \"{title}\" deleted DE",
     "delete_failed": "Failed to delete AI agent: {message} DE"
+  },
+  "ai": {
+    "summarize_section": "Summarize section DE",
+    "summarize_page": "Summarize page DE",
+    "reading_selection": "Reading the selection... DE",
+    "reading_page": "Reading the page... DE",
+    "reading_parts": "Reading part 1 of {total}... DE",
+    "read_parts": "Read {finished} of {total} parts... DE",
+    "asking": "Asking AI... DE",
+    "saving": "Saving to ONLYOFFICE... DE",
+    "summary_saved": "Summary saved to ONLYOFFICE DE",
+    "page_saved": "Page saved to ONLYOFFICE DE",
+    "summary_failed": "Summary failed: {message} DE",
+    "page_failed": "Saving the page failed: {message} DE",
+    "sign_in": "Sign in to ONLYOFFICE to use AI DE",
+    "part": "Part {index} of {total} DE",
+    "request": "AI request DE",
+    "retrying": "{label} failed, retrying ({attempt} of {total})... DE",
+    "summary_file": "Summary - {title} DE",
+    "untitled_document": "AI document DE"
   }
 }

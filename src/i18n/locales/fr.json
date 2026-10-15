@@ -13,18 +13,22 @@
   "auth": {
     "welcome": "Welcome to ONLYOFFICE! FR",
     "welcome_description": "This extension helps to view, download and edit files on the webpage. For editing files and viewing version history please Sign in. FR",
-    "sign_in_with_doc_space": "Sign in with DocSpace FR",
+    "sign_in_with_doc_space": "Sign in with ONLYOFFICE FR",
     "signing_in": "Signing in... FR",
     "exchanging_tokens": "Exchanging tokens... FR"
   },
   "menu": {
     "account": "Account FR",
-    "go_to_doc_space": "Go to DocSpace FR",
+    "go_to_doc_space": "Go to ONLYOFFICE FR",
     "help_center": "Help Center FR",
     "feedback_support": "Feedback & Support FR",
     "about_program": "About this program FR",
     "log_out": "Log out FR",
-    "ai_agent": "AI agent FR"
+    "ai_agent": "AI agent FR",
+    "open_account_menu": "Open account menu FR",
+    "account_menu": "Account menu FR",
+    "account_options": "Account options FR",
+    "user_information": "User information FR"
   },
   "files": {
     "document": "Document FR",
@@ -53,7 +57,7 @@
     "no_recent_docs_subtitle": "Your recently edited documents will appear here FR",
     "enter_file_name": "Enter file name FR",
     "download": "Download FR",
-    "edit_in_doc_space": "Edit in DocSpace FR",
+    "edit_in_doc_space": "Edit in ONLYOFFICE FR",
     "sign_in_to_edit_files": "Sign in to edit files FR",
     "delete_file": "Delete {fileName} FR",
     "download_file": "Download {fileName} FR",
@@ -65,7 +69,10 @@
     "file_opened_in_new_tab": "File opened in new tab FR",
     "file_uploaded_and_opened_in_new_tab": "File uploaded and opened in new tab FR",
     "file_deleted_successfully": "File deleted successfully FR",
-    "successfully_uploaded_files": "Successfully uploaded {count} file(s) FR"
+    "successfully_uploaded_files": "Successfully uploaded {count} file(s) FR",
+    "create_new_file": "Create new file FR",
+    "close_menu": "Close menu FR",
+    "close_creation_menu": "Close creation menu FR"
   },
   "error": {
     "something_went_wrong": "Something went wrong FR",
@@ -79,7 +86,15 @@
     "authentication_cancelled": "Authentication cancelled FR",
     "access_not_approved": "You didn't approve the access FR",
     "sign_in_timed_out": "Sign-in timed out. Please try again. FR",
-    "not_authenticated": "Not authenticated FR"
+    "not_authenticated": "Not authenticated FR",
+    "page_unreadable": "This page can't be read FR",
+    "no_readable_content": "No readable content found on this page FR",
+    "no_selected_text": "No selected text found FR",
+    "no_active_page": "No active page to save FR",
+    "no_knowledge_folder": "This agent has no Knowledge folder FR",
+    "no_default_model": "No default AI model is set up on the portal FR",
+    "profile_without_model": "The default AI profile has no model FR",
+    "empty_ai_response": "AI returned an empty response FR"
   },
   "agents": {
     "select_agent": "AI agent FR",
@@ -87,7 +102,7 @@
     "new_agent": "New AI agent FR",
     "name_placeholder": "Agent name FR",
     "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer FR",
-    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. FR",
+    "sign_in": "Sign in from the ONLYOFFICE extension popup to use AI agents. FR",
     "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. FR",
     "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. FR",
     "session_expired": "Your session has expired. Sign in again from the extension popup. FR",
@@ -105,5 +120,25 @@
     "deleting": "Deleting \"{title}\"... FR",
     "deleted": "Agent \"{title}\" deleted FR",
     "delete_failed": "Failed to delete AI agent: {message} FR"
+  },
+  "ai": {
+    "summarize_section": "Summarize section FR",
+    "summarize_page": "Summarize page FR",
+    "reading_selection": "Reading the selection... FR",
+    "reading_page": "Reading the page... FR",
+    "reading_parts": "Reading part 1 of {total}... FR",
+    "read_parts": "Read {finished} of {total} parts... FR",
+    "asking": "Asking AI... FR",
+    "saving": "Saving to ONLYOFFICE... FR",
+    "summary_saved": "Summary saved to ONLYOFFICE FR",
+    "page_saved": "Page saved to ONLYOFFICE FR",
+    "summary_failed": "Summary failed: {message} FR",
+    "page_failed": "Saving the page failed: {message} FR",
+    "sign_in": "Sign in to ONLYOFFICE to use AI FR",
+    "part": "Part {index} of {total} FR",
+    "request": "AI request FR",
+    "retrying": "{label} failed, retrying ({attempt} of {total})... FR",
+    "summary_file": "Summary - {title} FR",
+    "untitled_document": "AI document FR"
   }
 }

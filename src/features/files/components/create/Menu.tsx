@@ -115,9 +115,9 @@ export const CreateMenu: FunctionalComponent<CreateMenuProps> = ({
           type="button"
           className="create-menu__fab"
           onClick={onClose}
-          aria-label="Close menu"
+          aria-label={t('files.close_menu')}
         >
-          <img src={minusIcon} alt="Close" width="48" height="48" />
+          <img src={minusIcon} alt="" width="48" height="48" />
         </button>
       </div>
     </div>

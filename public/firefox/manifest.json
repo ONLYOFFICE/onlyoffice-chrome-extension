@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ONLYOFFICE DocSpace",
+  "name": "ONLYOFFICE",
   "version": "1.0.0",
-  "description": "Access and manage your ONLYOFFICE DocSpace files directly from Firefox",
+  "description": "Access and manage your ONLYOFFICE files directly from Firefox",
   "permissions": [
     "storage",
     "contextMenus",

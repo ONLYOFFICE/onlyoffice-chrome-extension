@@ -17,6 +17,8 @@ export const KNOWLEDGE_FOLDER_TYPE = 32;
 
 export const SELECTED_AGENT_KEY = 'ai_agent_id';
 
+export const LOCALE_KEY = 'locale';
+
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 

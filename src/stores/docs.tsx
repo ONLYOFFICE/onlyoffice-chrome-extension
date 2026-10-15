@@ -114,7 +114,7 @@ function createStore(): Store {
 
       let errorMessage = 'Failed to fetch documents folder';
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = 'Unable to connect to DocSpace. Please check your internet connection.';
+        errorMessage = 'Unable to connect to ONLYOFFICE. Please check your internet connection.';
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -175,7 +175,7 @@ function createStore(): Store {
 
       let errorMessage = 'Failed to fetch recent files';
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = 'Unable to connect to DocSpace. Please check your internet connection.';
+        errorMessage = 'Unable to connect to ONLYOFFICE. Please check your internet connection.';
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -243,7 +243,7 @@ function createStore(): Store {
 
       let errorMessage = 'Failed to upload file';
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = 'Unable to connect to DocSpace. Please check your internet connection and try again.';
+        errorMessage = 'Unable to connect to ONLYOFFICE. Please check your internet connection and try again.';
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -335,7 +335,7 @@ function createStore(): Store {
 
       let errorMessage = 'Failed to create file';
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = 'Unable to connect to DocSpace. Please check your internet connection and try again.';
+        errorMessage = 'Unable to connect to ONLYOFFICE. Please check your internet connection and try again.';
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }

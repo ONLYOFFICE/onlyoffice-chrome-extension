@@ -4,6 +4,7 @@ import { gfm } from 'turndown-plugin-gfm';
 import { Readability } from '@mozilla/readability';
 
 import { scripting } from '@utils/browser';
+import { LocalizedError } from '@i18n/errors';
 
 const MAX_IMAGES = 30;
 const MIN_IMAGE_SIZE = 100;
@@ -87,7 +88,7 @@ export function parseArticle({ html, url, baseURI }: PageSource): Article {
   });
 
   const markdown = turndown.turndown(root).replace(/\n{3,}/g, '\n\n').trim();
-  if (!markdown) throw new Error('No readable content found on this page');
+  if (!markdown) throw new LocalizedError('error.no_readable_content');
 
   return {
     title: parsed?.title || document.title,
@@ -111,11 +112,11 @@ export async function extractArticle(tabId: number): Promise<Article> {
       baseURI: document.baseURI,
     }),
   }).catch(() => {
-    throw new Error('This page can\'t be read');
+    throw new LocalizedError('error.page_unreadable');
   });
 
   const source: PageSource | undefined = injection?.result;
-  if (!source?.html) throw new Error('No readable content found on this page');
+  if (!source?.html) throw new LocalizedError('error.no_readable_content');
 
   return parseArticle(source);
 }

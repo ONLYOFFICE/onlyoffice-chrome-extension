@@ -3,6 +3,7 @@ import { DocspaceAPI } from '@utils/http';
 import { extractArticle } from '@utils/article';
 
 import { KNOWLEDGE_FOLDER_TYPE } from '@config';
+import { LocalizedError } from '@i18n/errors';
 
 export async function saveKnowledge(
   api: DocspaceAPI,
@@ -11,7 +12,7 @@ export async function saveKnowledge(
   agentId: number,
 ): Promise<string> {
   const [tab] = await tabs.query({ active: true, currentWindow: true });
-  if (!tab?.id) throw new Error('No active page to save');
+  if (!tab?.id) throw new LocalizedError('error.no_active_page');
 
   const article = await extractArticle(tab.id);
 
@@ -19,7 +20,7 @@ export async function saveKnowledge(
   const knowledge = folders.find(
     (folder) => folder.type === KNOWLEDGE_FOLDER_TYPE || folder.type === 'Knowledge',
   ) ?? folders.find((folder) => folder.title === 'Knowledge');
-  if (!knowledge) throw new Error('This agent has no Knowledge folder');
+  if (!knowledge) throw new LocalizedError('error.no_knowledge_folder');
 
   const title = article.title || tab.title || article.url;
   const meta = [

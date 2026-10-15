@@ -1,5 +1,7 @@
 import { FunctionalComponent } from 'preact';
 
+import { useI18n } from '@stores/i18n';
+
 import './spinner.css';
 
 export type SpinnerSize = 'small' | 'medium' | 'large';
@@ -15,10 +17,14 @@ export const Spinner: FunctionalComponent<SpinnerProps> = ({
   size = 'medium',
   color = 'primary',
   className,
-}) => (
-  <div
-    className={`spinner spinner--${size} spinner--${color}${className ? ` ${className}` : ''}`}
-    role="status"
-    aria-label="Loading"
-  />
-);
+}) => {
+  const { t } = useI18n();
+
+  return (
+    <div
+      className={`spinner spinner--${size} spinner--${color}${className ? ` ${className}` : ''}`}
+      role="status"
+      aria-label={t('common.loading')}
+    />
+  );
+};

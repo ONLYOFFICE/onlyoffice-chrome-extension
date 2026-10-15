@@ -8,7 +8,7 @@ import {
 
 import { Storage } from '@utils/storage';
 
-const STORAGE_KEY = 'locale';
+import { LOCALE_KEY } from '@config';
 
 interface I18nStore {
   locale: Signal<Locale>;
@@ -28,19 +28,19 @@ function createI18nStore(): I18nStore {
 
   const setLocale = async (newLocale: Locale): Promise<void> => {
     locale.value = newLocale;
-    await storage.set({ [STORAGE_KEY]: newLocale });
+    await storage.set({ [LOCALE_KEY]: newLocale });
   };
 
   (async () => {
     try {
-      const saved = await storage.get<{ locale: Locale }>([STORAGE_KEY]);
+      const saved = await storage.get<{ locale: Locale }>([LOCALE_KEY]);
       const supportedLocales: Locale[] = ['en', 'ru', 'de', 'es', 'fr', 'zh'];
       if (saved.locale && supportedLocales.includes(saved.locale)) {
         locale.value = saved.locale;
       } else {
         const detected = detectLocale();
         locale.value = detected;
-        await storage.set({ [STORAGE_KEY]: locale.value });
+        await storage.set({ [LOCALE_KEY]: locale.value });
       }
     } catch {
       const detected = detectLocale();

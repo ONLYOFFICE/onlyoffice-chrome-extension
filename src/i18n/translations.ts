@@ -9,6 +9,10 @@ import zh from '@i18n/locales/zh.json';
 
 export type Locale = 'en' | 'ru' | 'de' | 'es' | 'fr' | 'zh';
 
+export const LOCALES: Locale[] = ['en', 'ru', 'de', 'es', 'fr', 'zh'];
+
+export type Translate = (key: TranslationKey, params?: Record<string, string>) => string;
+
 type Translations = typeof en;
 
 export type TranslationKey =
@@ -17,7 +21,8 @@ export type TranslationKey =
     | `menu.${keyof Translations['menu']}`
     | `files.${keyof Translations['files']}`
     | `error.${keyof Translations['error']}`
-    | `agents.${keyof Translations['agents']}`;
+    | `agents.${keyof Translations['agents']}`
+    | `ai.${keyof Translations['ai']}`;
 
 const translations: Record<Locale, Translations> = {
   en,

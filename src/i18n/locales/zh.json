@@ -13,18 +13,22 @@
   "auth": {
     "welcome": "Welcome to ONLYOFFICE! ZH",
     "welcome_description": "This extension helps to view, download and edit files on the webpage. For editing files and viewing version history please Sign in. ZH",
-    "sign_in_with_doc_space": "Sign in with DocSpace ZH",
+    "sign_in_with_doc_space": "Sign in with ONLYOFFICE ZH",
     "signing_in": "Signing in... ZH",
     "exchanging_tokens": "Exchanging tokens... ZH"
   },
   "menu": {
     "account": "Account ZH",
-    "go_to_doc_space": "Go to DocSpace ZH",
+    "go_to_doc_space": "Go to ONLYOFFICE ZH",
     "help_center": "Help Center ZH",
     "feedback_support": "Feedback & Support ZH",
     "about_program": "About this program ZH",
     "log_out": "Log out ZH",
-    "ai_agent": "AI agent ZH"
+    "ai_agent": "AI agent ZH",
+    "open_account_menu": "Open account menu ZH",
+    "account_menu": "Account menu ZH",
+    "account_options": "Account options ZH",
+    "user_information": "User information ZH"
   },
   "files": {
     "document": "Document ZH",
@@ -53,7 +57,7 @@
     "no_recent_docs_subtitle": "Your recently edited documents will appear here ZH",
     "enter_file_name": "Enter file name ZH",
     "download": "Download ZH",
-    "edit_in_doc_space": "Edit in DocSpace ZH",
+    "edit_in_doc_space": "Edit in ONLYOFFICE ZH",
     "sign_in_to_edit_files": "Sign in to edit files ZH",
     "delete_file": "Delete {fileName} ZH",
     "download_file": "Download {fileName} ZH",
@@ -65,7 +69,10 @@
     "file_opened_in_new_tab": "File opened in new tab ZH",
     "file_uploaded_and_opened_in_new_tab": "File uploaded and opened in new tab ZH",
     "file_deleted_successfully": "File deleted successfully ZH",
-    "successfully_uploaded_files": "Successfully uploaded {count} file(s) ZH"
+    "successfully_uploaded_files": "Successfully uploaded {count} file(s) ZH",
+    "create_new_file": "Create new file ZH",
+    "close_menu": "Close menu ZH",
+    "close_creation_menu": "Close creation menu ZH"
   },
   "error": {
     "something_went_wrong": "Something went wrong ZH",
@@ -79,7 +86,15 @@
     "authentication_cancelled": "Authentication cancelled ZH",
     "access_not_approved": "You didn't approve the access ZH",
     "sign_in_timed_out": "Sign-in timed out. Please try again. ZH",
-    "not_authenticated": "Not authenticated ZH"
+    "not_authenticated": "Not authenticated ZH",
+    "page_unreadable": "This page can't be read ZH",
+    "no_readable_content": "No readable content found on this page ZH",
+    "no_selected_text": "No selected text found ZH",
+    "no_active_page": "No active page to save ZH",
+    "no_knowledge_folder": "This agent has no Knowledge folder ZH",
+    "no_default_model": "No default AI model is set up on the portal ZH",
+    "profile_without_model": "The default AI profile has no model ZH",
+    "empty_ai_response": "AI returned an empty response ZH"
   },
   "agents": {
     "select_agent": "AI agent ZH",
@@ -87,7 +102,7 @@
     "new_agent": "New AI agent ZH",
     "name_placeholder": "Agent name ZH",
     "instructions_placeholder": "Instructions (optional): what the agent should do and how to answer ZH",
-    "sign_in": "Sign in from the ONLYOFFICE DocSpace extension popup to use AI agents. ZH",
+    "sign_in": "Sign in from the ONLYOFFICE extension popup to use AI agents. ZH",
     "no_agents": "You have no AI agents yet. Create one with \"+\" to start chatting with your knowledge base. ZH",
     "no_access": "This AI agent is not available for your account. Guests cannot use AI agents, and AI must be enabled on the portal. ZH",
     "session_expired": "Your session has expired. Sign in again from the extension popup. ZH",
@@ -105,5 +120,25 @@
     "deleting": "Deleting \"{title}\"... ZH",
     "deleted": "Agent \"{title}\" deleted ZH",
     "delete_failed": "Failed to delete AI agent: {message} ZH"
+  },
+  "ai": {
+    "summarize_section": "Summarize section ZH",
+    "summarize_page": "Summarize page ZH",
+    "reading_selection": "Reading the selection... ZH",
+    "reading_page": "Reading the page... ZH",
+    "reading_parts": "Reading part 1 of {total}... ZH",
+    "read_parts": "Read {finished} of {total} parts... ZH",
+    "asking": "Asking AI... ZH",
+    "saving": "Saving to ONLYOFFICE... ZH",
+    "summary_saved": "Summary saved to ONLYOFFICE ZH",
+    "page_saved": "Page saved to ONLYOFFICE ZH",
+    "summary_failed": "Summary failed: {message} ZH",
+    "page_failed": "Saving the page failed: {message} ZH",
+    "sign_in": "Sign in to ONLYOFFICE to use AI ZH",
+    "part": "Part {index} of {total} ZH",
+    "request": "AI request ZH",
+    "retrying": "{label} failed, retrying ({attempt} of {total})... ZH",
+    "summary_file": "Summary - {title} ZH",
+    "untitled_document": "AI document ZH"
   }
 }

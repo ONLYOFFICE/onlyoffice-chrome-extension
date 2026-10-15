@@ -1,9 +1,16 @@
 import { Storage } from '@utils/storage';
 import { DocspaceAPI } from '@utils/http';
 import { extractArticle } from '@utils/article';
-import { Ask, condense } from '@utils/merger';
+import { Ask, Part, condense } from '@utils/merger';
 import { RetryOptions, retryOperation } from '@utils/retry';
 import { getValidAuthentication } from '@utils/token';
+
+import {
+  LOCALES, Locale, Translate, detectLocale, getTranslation,
+} from '@i18n/translations';
+import { LocalizedError, errorMessage } from '@i18n/errors';
+
+import { LOCALE_KEY } from '@config';
 
 declare const browser: typeof chrome | undefined;
 const ext: typeof chrome = typeof browser !== 'undefined' ? browser : chrome;
@@ -34,7 +41,7 @@ const IMAGE_RULES = [
 
 const MODES = {
   summary: {
-    menu: 'Summarize section',
+    menu: 'ai.summarize_section',
     context: 'selection',
     prompt: [
       'You summarize text selected on a web page.',
@@ -45,12 +52,12 @@ const MODES = {
     notes:
       'Condense it into concise notes: the main ideas, key facts, names, numbers and dates.',
     request: 'Summarize this text selected on a web page.',
-    reading: 'Reading the selection...',
-    done: 'Summary saved to DocSpace',
-    failed: 'Summary failed',
+    reading: 'ai.reading_selection',
+    done: 'ai.summary_saved',
+    failed: 'ai.summary_failed',
   },
   document: {
-    menu: 'Summarize page',
+    menu: 'ai.summarize_page',
     context: 'page',
     prompt: [
       'You turn web page content, given as Markdown extracted with Mozilla Readability, into a well-structured document.',
@@ -64,9 +71,9 @@ const MODES = {
       'so a full document can be rebuilt from them.',
     ].join(' '),
     request: 'Create a document based on this web page.',
-    reading: 'Reading the page...',
-    done: 'Page saved to DocSpace',
-    failed: 'Saving the page failed',
+    reading: 'ai.reading_page',
+    done: 'ai.page_saved',
+    failed: 'ai.page_failed',
   },
 } as const;
 
@@ -90,6 +97,20 @@ type OnStage = (message: string) => Promise<void>;
 
 const storage = new Storage();
 const api = new DocspaceAPI(storage);
+
+const translator = {
+  async locale(): Promise<Locale> {
+    const { [LOCALE_KEY]: saved } = await storage
+      .get<Record<string, Locale>>([LOCALE_KEY])
+      .catch(() => ({} as Partial<Record<string, Locale>>));
+    return saved && LOCALES.includes(saved) ? saved : detectLocale();
+  },
+
+  async get(): Promise<Translate> {
+    const locale = await translator.locale();
+    return (key, params) => getTranslation(locale, key, params);
+  },
+};
 
 const model = {
   cache: null as { tenant: string; model: string; expires: number } | null,
@@ -184,7 +205,7 @@ const reader = {
       (a, b) => b.text.length - a.text.length,
     )[0];
 
-    if (!page) throw new Error('No selected text found');
+    if (!page) throw new LocalizedError('error.no_selected_text');
 
     const topFrame: PageContent | undefined = results.find(
       (result) => result.frameId === 0,
@@ -212,7 +233,7 @@ const reader = {
         }),
       );
 
-    if (!page.text) throw new Error('No selected text found');
+    if (!page.text) throw new LocalizedError('error.no_selected_text');
 
     return page;
   },
@@ -229,20 +250,30 @@ const ai = {
     tenant: string,
     modelId: string,
     onStage: OnStage,
+    t: Translate,
   ): Ask {
-    return (system, user, label) => retryOperation(
-      () => api.chatCompletion(accessToken, tenant, modelId, [
-        { role: 'system', content: system },
-        { role: 'user', content: user },
-      ]),
-      {
-        ...RETRY_OPTIONS,
-        shouldRetry: ai.isRetryable,
-        onRetry: (_error, attempt) => onStage(
-          `${label} failed, retrying (${attempt} of ${MAX_RETRIES})...`,
-        ),
-      },
-    );
+    return (system: string, user: string, part?: Part) => {
+      const label = part
+        ? t('ai.part', { index: String(part.index + 1), total: String(part.total) })
+        : t('ai.request');
+
+      return retryOperation(
+        () => api.chatCompletion(accessToken, tenant, modelId, [
+          { role: 'system', content: system },
+          { role: 'user', content: user },
+        ]),
+        {
+          ...RETRY_OPTIONS,
+          shouldRetry: ai.isRetryable,
+          onRetry: (_error, attempt) => onStage(
+            t('ai.retrying', { label, attempt: String(attempt), total: String(MAX_RETRIES) }),
+          ),
+        },
+      ).catch((error: unknown) => {
+        if (!part) throw error;
+        throw new Error(`${label}: ${errorMessage(error, t)}`);
+      });
+    };
   },
 
   async generate(
@@ -250,6 +281,7 @@ const ai = {
     mode: AIMode,
     ask: Ask,
     onStage: OnStage,
+    t: Translate,
   ): Promise<string> {
     const escape = (src: string) => src.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
     const images = page.images.length
@@ -265,7 +297,11 @@ const ai = {
       maxRounds: MAX_CONDENSE_ROUNDS,
       parallel: PARALLEL_REQUESTS,
       ask,
-      onStage,
+      onProgress: (finished, total) => onStage(
+        finished === 0
+          ? t('ai.reading_parts', { total: String(total) })
+          : t('ai.read_parts', { finished: String(finished), total: String(total) }),
+      ),
     });
     const notes = [
       content !== source
@@ -276,13 +312,12 @@ const ai = {
       .filter(Boolean)
       .join(' ');
 
-    await onStage('Asking AI...');
+    await onStage(t('ai.asking'));
 
     const answer = await ask(
       MODES[mode].prompt,
       `${MODES[mode].request}${notes ? ` ${notes}` : ''}\n\nTitle: ${page.title}\nURL: ${page.url}`
         + `${page.details ? `\n${page.details}` : ''}\n\nContent:\n${content}${images}`,
-      'AI request',
     );
 
     return (
@@ -293,23 +328,24 @@ const ai = {
 };
 
 const docspace = {
-  fileName(markdown: string, fallback: string): string {
+  fileName(markdown: string, fallback: string, untitled: string): string {
     const title = markdown.match(/^#\s+(.+)$/m)?.[1] || fallback;
     const clean = title
       .replace(/[*_`#]/g, '')
       .replace(/[\\/:*?"<>|]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
-    return `${clean.slice(0, 100) || 'AI document'}.md`;
+    return `${clean.slice(0, 100) || untitled}.md`;
   },
 
   async save(
     markdown: string,
     fallbackTitle: string,
+    untitled: string,
     accessToken: string,
     tenant: string,
   ) {
-    const name = docspace.fileName(markdown, fallbackTitle);
+    const name = docspace.fileName(markdown, fallbackTitle, untitled);
     const file = await api.uploadFile(
       accessToken,
       tenant,
@@ -404,7 +440,7 @@ const indicator = {
   },
 
   async done(target: Target, message: string) {
-    await indicator.badge(target.tabId, '', 'ONLYOFFICE DocSpace');
+    await indicator.badge(target.tabId, '', 'ONLYOFFICE');
     await indicator.toast(target, message, 'done');
   },
 
@@ -415,17 +451,33 @@ const indicator = {
 };
 
 const menu = {
-  register() {
-    ext.runtime.onInstalled.addListener(() => {
-      ext.contextMenus.removeAll(() => {
-        Object.entries(MODES).forEach(([id, mode]) => {
-          ext.contextMenus.create({
-            id,
-            title: mode.menu,
-            contexts: [mode.context],
-          });
+  async create() {
+    const t = await translator.get();
+    ext.contextMenus.removeAll(() => {
+      Object.entries(MODES).forEach(([id, mode]) => {
+        ext.contextMenus.create({
+          id,
+          title: t(mode.menu),
+          contexts: [mode.context],
         });
       });
+    });
+  },
+
+  async retitle() {
+    const t = await translator.get();
+    Object.entries(MODES).forEach(([id, mode]) => {
+      ext.contextMenus.update(id, { title: t(mode.menu) });
+    });
+  },
+
+  register() {
+    ext.runtime.onInstalled.addListener(() => {
+      menu.create();
+    });
+
+    ext.storage.onChanged.addListener((changes, area) => {
+      if (area === 'local' && LOCALE_KEY in changes) menu.retitle();
     });
 
     ext.contextMenus.onClicked.addListener((info, tab) => {
@@ -445,36 +497,35 @@ const menu = {
     };
 
     const { reading, done, failed } = MODES[mode];
+    const t = await translator.get();
     const onStage: OnStage = (message) => indicator.progress(target, message);
 
     try {
       const auth = await getValidAuthentication(storage);
       if (!auth?.accessToken || !auth.tenant) {
-        await indicator.fail(
-          target,
-          'Sign in to ONLYOFFICE DocSpace to use AI',
-        );
+        await indicator.fail(target, t('ai.sign_in'));
         return;
       }
 
-      await onStage(reading);
+      await onStage(t(reading));
       const page = await reader.read(info, tab, target, mode);
 
       const modelId = await model.getDefault(auth.accessToken, auth.tenant);
-      const ask = ai.client(auth.accessToken, auth.tenant, modelId, onStage);
-      const markdown = await ai.generate(page, mode, ask, onStage);
+      const ask = ai.client(auth.accessToken, auth.tenant, modelId, onStage, t);
+      const markdown = await ai.generate(page, mode, ask, onStage, t);
 
-      await onStage('Saving to DocSpace...');
+      await onStage(t('ai.saving'));
 
       await docspace.save(
         markdown,
-        mode === 'summary' ? `Summary - ${page.title}` : page.title,
+        mode === 'summary' ? t('ai.summary_file', { title: page.title }) : page.title,
+        t('ai.untitled_document'),
         auth.accessToken,
         auth.tenant,
       );
-      await indicator.done(target, done);
+      await indicator.done(target, t(done));
     } catch (error) {
-      await indicator.fail(target, `${failed}: ${(error as Error).message}`);
+      await indicator.fail(target, t(failed, { message: errorMessage(error, t) }));
     }
   },
 };

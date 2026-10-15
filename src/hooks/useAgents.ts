@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 
 import { useI18n } from '@stores/i18n';
+import { errorMessage } from '@i18n/errors';
 
 import { runtime } from '@utils/browser';
 import { Storage } from '@utils/storage';
@@ -76,7 +77,7 @@ export function useAgents(
         if (agent) await storage.set({ [SELECTED_AGENT_KEY]: agent.id });
       } catch (error) {
         setStatus(
-          t('agents.agents_failed', { message: (error as Error).message }),
+          t('agents.agents_failed', { message: errorMessage(error, t) }),
         );
       } finally {
         setLoading(false);
@@ -129,7 +130,7 @@ export function useAgents(
       showToast(t('agents.page_saved', { name }), 'done');
     } catch (error) {
       showToast(
-        t('agents.save_failed', { message: (error as Error).message }),
+        t('agents.save_failed', { message: errorMessage(error, t) }),
         'error',
       );
     } finally {
@@ -166,7 +167,7 @@ export function useAgents(
       return true;
     } catch (error) {
       showToast(
-        t('agents.create_failed', { message: (error as Error).message }),
+        t('agents.create_failed', { message: errorMessage(error, t) }),
         'error',
       );
       return false;
@@ -200,7 +201,7 @@ export function useAgents(
       showToast(t('agents.deleted', { title: agent.title }), 'done');
     } catch (error) {
       showToast(
-        t('agents.delete_failed', { message: (error as Error).message }),
+        t('agents.delete_failed', { message: errorMessage(error, t) }),
         'error',
       );
     } finally {

@@ -1,3 +1,5 @@
+import { LocalizedError } from '@i18n/errors';
+
 import { Storage } from './storage';
 import { retryFetch } from './retry';
 
@@ -397,7 +399,7 @@ export class DocspaceAPI {
       content = (data?.response ?? data)?.choices?.[0]?.message?.content ?? '';
     }
 
-    if (!content.trim()) throw new Error('AI returned an empty response');
+    if (!content.trim()) throw new LocalizedError('error.empty_ai_response');
     return content;
   }
 
@@ -411,7 +413,7 @@ export class DocspaceAPI {
     const response = await this.callAI(accessToken, `${tenant}/api/2.0/ai/assignments/get-all-assignments`);
     const data = await response.json();
     const profileId = (data?.response ?? data)?.Default;
-    if (typeof profileId !== 'string' || !profileId) throw new Error('No default AI model is set up on the portal');
+    if (typeof profileId !== 'string' || !profileId) throw new LocalizedError('error.no_default_model');
     return profileId;
   }
 
@@ -424,7 +426,7 @@ export class DocspaceAPI {
     const profile = data?.response ?? data;
     const model = profile?.modelId ?? profile?.model?.id ?? profile?.model;
 
-    if (typeof model !== 'string' || !model) throw new Error('The default AI profile has no model');
+    if (typeof model !== 'string' || !model) throw new LocalizedError('error.profile_without_model');
     return model;
   }
 
