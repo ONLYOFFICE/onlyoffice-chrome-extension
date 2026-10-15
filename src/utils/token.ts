@@ -1,7 +1,6 @@
+import { OAUTH_CLIENT_ID, OAUTH_TOKEN_URL } from '@config';
 import { decodeJWT } from './jwt';
 import { Storage } from './storage';
-
-import { OAUTH_CLIENT_ID, OAUTH_TOKEN_URL } from '@config';
 
 export interface StoredAuthentication {
   accessToken: string;

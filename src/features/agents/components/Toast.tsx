@@ -1,8 +1,8 @@
-import { FunctionalComponent } from "preact";
+import { FunctionalComponent } from 'preact';
 
-import type { ToastData } from "@features/agents/hooks/useToast";
+import type { ToastData } from '@features/agents/hooks/useToast';
 
-import "./toast.css";
+import './toast.css';
 
 export const Toast: FunctionalComponent<{
   readonly toast: ToastData | null;
@@ -11,7 +11,7 @@ export const Toast: FunctionalComponent<{
 
   return (
     <div
-      className={`toast toast--${toast.state}${toast.exiting ? " toast--exiting" : ""}`}
+      className={`toast toast--${toast.state}${toast.exiting ? ' toast--exiting' : ''}`}
       role="status"
       aria-live="polite"
     >

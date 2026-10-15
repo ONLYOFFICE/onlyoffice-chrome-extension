@@ -1,4 +1,4 @@
-import { split } from "./chunker";
+import { split } from './chunker';
 
 export type Ask = (
   system: string,
@@ -72,8 +72,8 @@ export async function condense(
     const notes = await mapLimit(chunks, parallel, async (chunk, index) => {
       const label = `Part ${index + 1} of ${chunks.length}`;
       const note = await ask(
-        `You are reading one part of a longer text. ${instructions} Respond with Markdown only. ` +
-          "Do not add facts that are not in the text. Write in the same language as the text.",
+        `You are reading one part of a longer text. ${instructions} Respond with Markdown only. `
+          + 'Do not add facts that are not in the text. Write in the same language as the text.',
         `${label} of "${title}":\n\n${chunk}`,
         label,
       ).catch((error: Error) => {
@@ -86,7 +86,7 @@ export async function condense(
       return note.trim();
     });
 
-    content = notes.join("\n\n---\n\n");
+    content = notes.join('\n\n---\n\n');
   }
 
   return content.slice(0, chunkLength);

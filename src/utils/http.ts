@@ -111,6 +111,7 @@ export class DocspaceAPI {
         const { error } = JSON.parse(text);
         message = (typeof error === 'string' ? error : error?.message) || text;
       } catch {
+        // Not JSON: the raw text is the message
       }
 
       throw new Error(`${response.status}: ${message}`);
@@ -364,7 +365,11 @@ export class DocspaceAPI {
       const decoder = new TextDecoder();
       let buffer = '';
 
-      for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
+      // Chunks have to be read in order, so each read starts after the previous one is handled
+      const readChunk = async (): Promise<void> => {
+        const chunk = await reader.read();
+        if (chunk.done) return;
+
         buffer += decoder.decode(chunk.value, { stream: true });
         const lines = buffer.split('\n');
 
@@ -383,7 +388,10 @@ export class DocspaceAPI {
             content += data?.choices?.[0]?.delta?.content ?? '';
           }
         }
-      }
+
+        await readChunk();
+      };
+      await readChunk();
     } else {
       const data = await response.json();
       content = (data?.response ?? data)?.choices?.[0]?.message?.content ?? '';

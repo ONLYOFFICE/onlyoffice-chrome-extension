@@ -1,12 +1,12 @@
-import { Storage } from "@utils/storage";
-import { DocspaceAPI } from "@utils/http";
-import { extractArticle } from "@utils/article";
-import { Ask, condense } from "@utils/merger";
-import { RetryOptions, retryOperation } from "@utils/retry";
-import { getValidAuthentication } from "@utils/token";
+import { Storage } from '@utils/storage';
+import { DocspaceAPI } from '@utils/http';
+import { extractArticle } from '@utils/article';
+import { Ask, condense } from '@utils/merger';
+import { RetryOptions, retryOperation } from '@utils/retry';
+import { getValidAuthentication } from '@utils/token';
 
 declare const browser: typeof chrome | undefined;
-const ext: typeof chrome = typeof browser !== "undefined" ? browser : chrome;
+const ext: typeof chrome = typeof browser !== 'undefined' ? browser : chrome;
 
 const MAX_SOURCE_LENGTH = 1_000_000;
 const CHUNK_LENGTH = 24000;
@@ -27,51 +27,51 @@ const MIN_IMAGE_SIZE = 100;
 const MODEL_CACHE_TTL = 5 * 60 * 1000;
 
 const IMAGE_RULES = [
-  "Include relevant images from the provided list as ![alt](url) next to the related content, using the URLs exactly as given.",
-  "Do not invent image URLs. Do not use tables or HTML. Do not wrap the answer in a code block.",
-  "Write in the same language as the source text.",
-].join(" ");
+  'Include relevant images from the provided list as ![alt](url) next to the related content, using the URLs exactly as given.',
+  'Do not invent image URLs. Do not use tables or HTML. Do not wrap the answer in a code block.',
+  'Write in the same language as the source text.',
+].join(' ');
 
 const MODES = {
   summary: {
-    menu: "Summarize section",
-    context: "selection",
+    menu: 'Summarize section',
+    context: 'selection',
     prompt: [
-      "You summarize text selected on a web page.",
+      'You summarize text selected on a web page.',
       'Respond with Markdown only: a single "# " title describing the topic, a short overview paragraph,',
       'then a "## Key points" section with "- " bullets. Keep it concise and do not add facts that are not in the text.',
       IMAGE_RULES,
-    ].join(" "),
+    ].join(' '),
     notes:
-      "Condense it into concise notes: the main ideas, key facts, names, numbers and dates.",
-    request: "Summarize this text selected on a web page.",
-    reading: "Reading the selection...",
-    done: "Summary saved to DocSpace",
-    failed: "Summary failed",
+      'Condense it into concise notes: the main ideas, key facts, names, numbers and dates.',
+    request: 'Summarize this text selected on a web page.',
+    reading: 'Reading the selection...',
+    done: 'Summary saved to DocSpace',
+    failed: 'Summary failed',
   },
   document: {
-    menu: "Summarize page",
-    context: "page",
+    menu: 'Summarize page',
+    context: 'page',
     prompt: [
-      "You turn web page content, given as Markdown extracted with Mozilla Readability, into a well-structured document.",
-      "Keep the full substance of the article; restructure and clean it up rather than shortening it.",
+      'You turn web page content, given as Markdown extracted with Mozilla Readability, into a well-structured document.',
+      'Keep the full substance of the article; restructure and clean it up rather than shortening it.',
       'Respond with Markdown only: a single "# " title, "## " and "### " section headings, paragraphs,',
       '"- " bullet lists and "1. " numbered lists, **bold** and *italic* where useful.',
       IMAGE_RULES,
-    ].join(" "),
+    ].join(' '),
     notes: [
-      "Condense it into detailed notes that keep its section structure, arguments, facts, figures, names and examples,",
-      "so a full document can be rebuilt from them.",
-    ].join(" "),
-    request: "Create a document based on this web page.",
-    reading: "Reading the page...",
-    done: "Page saved to DocSpace",
-    failed: "Saving the page failed",
+      'Condense it into detailed notes that keep its section structure, arguments, facts, figures, names and examples,',
+      'so a full document can be rebuilt from them.',
+    ].join(' '),
+    request: 'Create a document based on this web page.',
+    reading: 'Reading the page...',
+    done: 'Page saved to DocSpace',
+    failed: 'Saving the page failed',
   },
 } as const;
 
 type AIMode = keyof typeof MODES;
-type ToastState = "progress" | "done" | "error";
+type ToastState = 'progress' | 'done' | 'error';
 
 interface PageContent {
   title: string;
@@ -95,8 +95,7 @@ const model = {
   cache: null as { tenant: string; model: string; expires: number } | null,
 
   async getDefault(accessToken: string, tenant: string): Promise<string> {
-    if (model.cache?.tenant === tenant && model.cache.expires > Date.now())
-      return model.cache.model;
+    if (model.cache?.tenant === tenant && model.cache.expires > Date.now()) return model.cache.model;
 
     const profileId = await api.getDefaultChatProfileId(accessToken, tenant);
     const id = await api.getProfileModel(accessToken, tenant, profileId);
@@ -114,11 +113,11 @@ const reader = {
       article.siteName && `Site: ${article.siteName}`,
       article.byline && `Author: ${article.byline}`,
       article.publishedTime && `Published: ${article.publishedTime}`,
-      article.excerpt &&
-        `Excerpt: ${article.excerpt.replace(/\s+/g, " ").trim()}`,
+      article.excerpt
+        && `Excerpt: ${article.excerpt.replace(/\s+/g, ' ').trim()}`,
     ]
       .filter(Boolean)
-      .join("\n");
+      .join('\n');
 
     return {
       title: article.title,
@@ -142,15 +141,14 @@ const reader = {
 
           const field = document.activeElement;
           if (
-            field instanceof HTMLTextAreaElement ||
-            field instanceof HTMLInputElement
+            field instanceof HTMLTextAreaElement
+            || field instanceof HTMLInputElement
           ) {
             const { selectionStart: start, selectionEnd: end, value } = field;
-            if (start !== null && end !== null && start !== end)
-              return value.slice(start, end).trim();
+            if (start !== null && end !== null && start !== end) return value.slice(start, end).trim();
           }
 
-          return "";
+          return '';
         };
 
         Array.from(document.images)
@@ -158,21 +156,19 @@ const reader = {
           .forEach((img) => {
             const src = img.currentSrc || img.src;
             if (
-              images.length >= maxImages ||
-              !/^https?:/i.test(src) ||
-              images.some((image) => image.src === src)
-            )
-              return;
+              images.length >= maxImages
+              || !/^https?:/i.test(src)
+              || images.some((image) => image.src === src)
+            ) return;
             if (
-              (img.naturalWidth || img.width) < minSize ||
-              (img.naturalHeight || img.height) < minSize
-            )
-              return;
-            images.push({ src, alt: (img.alt || img.title || "").trim() });
+              (img.naturalWidth || img.width) < minSize
+              || (img.naturalHeight || img.height) < minSize
+            ) return;
+            images.push({ src, alt: (img.alt || img.title || '').trim() });
           });
 
         return {
-          title: window.top === window ? document.title : "",
+          title: window.top === window ? document.title : '',
           url: window.location.href,
           text: selectedText(),
           images,
@@ -188,13 +184,13 @@ const reader = {
       (a, b) => b.text.length - a.text.length,
     )[0];
 
-    if (!page) throw new Error("No selected text found");
+    if (!page) throw new Error('No selected text found');
 
     const topFrame: PageContent | undefined = results.find(
       (result) => result.frameId === 0,
     )?.result;
 
-    const title = page.title || topFrame?.title || "";
+    const title = page.title || topFrame?.title || '';
 
     return { ...page, title };
   },
@@ -205,19 +201,18 @@ const reader = {
     target: Target,
     mode: AIMode,
   ): Promise<PageContent> {
-    const page =
-      mode === "document"
-        ? await reader.article(target.tabId)
-        : await reader.selection(target.tabId, target.frameId).catch(
-            (): PageContent => ({
-              title: tab.title || "",
-              url: info.pageUrl || tab.url || "",
-              text: info.selectionText || "",
-              images: [],
-            }),
-          );
+    const page = mode === 'document'
+      ? await reader.article(target.tabId)
+      : await reader.selection(target.tabId, target.frameId).catch(
+        (): PageContent => ({
+          title: tab.title || '',
+          url: info.pageUrl || tab.url || '',
+          text: info.selectionText || '',
+          images: [],
+        }),
+      );
 
-    if (!page.text) throw new Error("No selected text found");
+    if (!page.text) throw new Error('No selected text found');
 
     return page;
   },
@@ -235,22 +230,19 @@ const ai = {
     modelId: string,
     onStage: OnStage,
   ): Ask {
-    return (system, user, label) =>
-      retryOperation(
-        () =>
-          api.chatCompletion(accessToken, tenant, modelId, [
-            { role: "system", content: system },
-            { role: "user", content: user },
-          ]),
-        {
-          ...RETRY_OPTIONS,
-          shouldRetry: ai.isRetryable,
-          onRetry: (_error, attempt) =>
-            onStage(
-              `${label} failed, retrying (${attempt} of ${MAX_RETRIES})...`,
-            ),
-        },
-      );
+    return (system, user, label) => retryOperation(
+      () => api.chatCompletion(accessToken, tenant, modelId, [
+        { role: 'system', content: system },
+        { role: 'user', content: user },
+      ]),
+      {
+        ...RETRY_OPTIONS,
+        shouldRetry: ai.isRetryable,
+        onRetry: (_error, attempt) => onStage(
+          `${label} failed, retrying (${attempt} of ${MAX_RETRIES})...`,
+        ),
+      },
+    );
   },
 
   async generate(
@@ -259,11 +251,10 @@ const ai = {
     ask: Ask,
     onStage: OnStage,
   ): Promise<string> {
-    const escape = (src: string) =>
-      src.replace(/ /g, "%20").replace(/\(/g, "%28").replace(/\)/g, "%29");
+    const escape = (src: string) => src.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
     const images = page.images.length
-      ? `\n\nImages:\n${page.images.map((image) => `- ![${image.alt.replace(/[[\]]/g, "")}](${escape(image.src)})`).join("\n")}`
-      : "";
+      ? `\n\nImages:\n${page.images.map((image) => `- ![${image.alt.replace(/[[\]]/g, '')}](${escape(image.src)})`).join('\n')}`
+      : '';
 
     const truncated = page.text.length > MAX_SOURCE_LENGTH;
     const source = page.text.slice(0, MAX_SOURCE_LENGTH);
@@ -277,26 +268,26 @@ const ai = {
       onStage,
     });
     const notes = [
-      content !== source &&
-        "The content below is notes condensed from consecutive parts of a longer text.",
-      truncated &&
-        "The source was too long, so only its beginning was processed; mention that briefly.",
+      content !== source
+        && 'The content below is notes condensed from consecutive parts of a longer text.',
+      truncated
+        && 'The source was too long, so only its beginning was processed; mention that briefly.',
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
-    await onStage("Asking AI...");
+    await onStage('Asking AI...');
 
     const answer = await ask(
       MODES[mode].prompt,
-      `${MODES[mode].request}${notes ? ` ${notes}` : ""}\n\nTitle: ${page.title}\nURL: ${page.url}` +
-        `${page.details ? `\n${page.details}` : ""}\n\nContent:\n${content}${images}`,
-      "AI request",
+      `${MODES[mode].request}${notes ? ` ${notes}` : ''}\n\nTitle: ${page.title}\nURL: ${page.url}`
+        + `${page.details ? `\n${page.details}` : ''}\n\nContent:\n${content}${images}`,
+      'AI request',
     );
 
     return (
-      answer.trim().match(/^```(?:markdown|md)?\s*\n([\s\S]*?)\n```$/)?.[1] ??
-      answer
+      answer.trim().match(/^```(?:markdown|md)?\s*\n([\s\S]*?)\n```$/)?.[1]
+      ?? answer
     );
   },
 };
@@ -305,11 +296,11 @@ const docspace = {
   fileName(markdown: string, fallback: string): string {
     const title = markdown.match(/^#\s+(.+)$/m)?.[1] || fallback;
     const clean = title
-      .replace(/[*_`#]/g, "")
-      .replace(/[\\/:*?"<>|]/g, " ")
-      .replace(/\s+/g, " ")
+      .replace(/[*_`#]/g, '')
+      .replace(/[\\/:*?"<>|]/g, ' ')
+      .replace(/\s+/g, ' ')
       .trim();
-    return `${clean.slice(0, 100) || "AI document"}.md`;
+    return `${clean.slice(0, 100) || 'AI document'}.md`;
   },
 
   async save(
@@ -322,7 +313,7 @@ const docspace = {
     const file = await api.uploadFile(
       accessToken,
       tenant,
-      new Blob([markdown], { type: "text/markdown" }),
+      new Blob([markdown], { type: 'text/markdown' }),
       name,
     );
     if (file?.webUrl) ext.tabs.create({ url: file.webUrl, active: true });
@@ -330,7 +321,7 @@ const docspace = {
 };
 
 const indicator = {
-  async badge(tabId: number, text: string, title: string, color = "#5299E0") {
+  async badge(tabId: number, text: string, title: string, color = '#5299E0') {
     await ext.action.setBadgeBackgroundColor({ tabId, color });
     await ext.action.setBadgeText({ tabId, text });
     await ext.action.setTitle({ tabId, title });
@@ -342,14 +333,13 @@ const indicator = {
         target: { tabId, frameIds: [frameId] },
         func: (text: string, toastState: ToastState) => {
           const win = window as typeof window & { docspaceToastTimer?: number };
-          let host = document.getElementById("docspace-ai-toast");
+          let host = document.getElementById('docspace-ai-toast');
 
           if (!host) {
-            host = document.createElement("div");
-            host.id = "docspace-ai-toast";
-            host.style.cssText =
-              "position:fixed;right:16px;bottom:16px;z-index:2147483647;";
-            host.attachShadow({ mode: "open" }).innerHTML = `
+            host = document.createElement('div');
+            host.id = 'docspace-ai-toast';
+            host.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:2147483647;';
+            host.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
               .toast { display: flex; align-items: center; gap: 10px; max-width: 320px; padding: 12px 16px;
                 border-radius: 8px; background: #333; color: #fff; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
@@ -378,23 +368,23 @@ const indicator = {
             document.documentElement.appendChild(host);
           }
 
-          const toast = host.shadowRoot.querySelector<HTMLElement>(".toast");
+          const toast = host.shadowRoot.querySelector<HTMLElement>('.toast');
           toast.dataset.state = toastState;
-          toast.querySelector(".text").textContent = text;
+          toast.querySelector('.text').textContent = text;
 
           clearTimeout(win.docspaceToastTimer);
 
-          toast.classList.remove("exiting");
-          if (toastState !== "progress") {
+          toast.classList.remove('exiting');
+          if (toastState !== 'progress') {
             win.docspaceToastTimer = window.setTimeout(
               () => {
-                toast.classList.add("exiting");
+                toast.classList.add('exiting');
                 win.docspaceToastTimer = window.setTimeout(
                   () => host.remove(),
                   300,
                 );
               },
-              toastState === "error" ? 8000 : 3000,
+              toastState === 'error' ? 8000 : 3000,
             );
           }
         },
@@ -405,19 +395,19 @@ const indicator = {
 
   async progress(target: Target, message: string) {
     await Promise.all([
-      indicator.badge(target.tabId, "...", message),
-      indicator.toast(target, message, "progress"),
+      indicator.badge(target.tabId, '...', message),
+      indicator.toast(target, message, 'progress'),
     ]);
   },
 
   async done(target: Target, message: string) {
-    await indicator.badge(target.tabId, "", "ONLYOFFICE DocSpace");
-    await indicator.toast(target, message, "done");
+    await indicator.badge(target.tabId, '', 'ONLYOFFICE DocSpace');
+    await indicator.toast(target, message, 'done');
   },
 
   async fail(target: Target, message: string) {
-    await indicator.badge(target.tabId, "", message);
-    await indicator.toast(target, message, "error");
+    await indicator.badge(target.tabId, '', message);
+    await indicator.toast(target, message, 'error');
   },
 };
 
@@ -436,8 +426,7 @@ const menu = {
     });
 
     ext.contextMenus.onClicked.addListener((info, tab) => {
-      if (tab?.id !== undefined && info.menuItemId in MODES)
-        menu.run(info, tab, tab.id, info.menuItemId as AIMode);
+      if (tab?.id !== undefined && info.menuItemId in MODES) menu.run(info, tab, tab.id, info.menuItemId as AIMode);
     });
   },
 
@@ -449,7 +438,7 @@ const menu = {
   ) {
     const target: Target = {
       tabId,
-      frameId: mode === "summary" ? (info.frameId ?? 0) : 0,
+      frameId: mode === 'summary' ? (info.frameId ?? 0) : 0,
     };
 
     const { reading, done, failed } = MODES[mode];
@@ -460,7 +449,7 @@ const menu = {
       if (!auth?.accessToken || !auth.tenant) {
         await indicator.fail(
           target,
-          "Sign in to ONLYOFFICE DocSpace to use AI",
+          'Sign in to ONLYOFFICE DocSpace to use AI',
         );
         return;
       }
@@ -472,11 +461,11 @@ const menu = {
       const ask = ai.client(auth.accessToken, auth.tenant, modelId, onStage);
       const markdown = await ai.generate(page, mode, ask, onStage);
 
-      await onStage("Saving to DocSpace...");
+      await onStage('Saving to DocSpace...');
 
       await docspace.save(
         markdown,
-        mode === "summary" ? `Summary - ${page.title}` : page.title,
+        mode === 'summary' ? `Summary - ${page.title}` : page.title,
         auth.accessToken,
         auth.tenant,
       );

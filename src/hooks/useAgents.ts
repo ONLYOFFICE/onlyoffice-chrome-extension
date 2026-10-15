@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useState } from "preact/hooks";
+import { useCallback, useEffect, useState } from 'preact/hooks';
 
-import { useI18n } from "@stores/i18n";
+import { useI18n } from '@stores/i18n';
 
-import { runtime } from "@utils/browser";
-import { Storage } from "@utils/storage";
-import { AIAgent, DocspaceAPI } from "@utils/http";
+import { runtime } from '@utils/browser';
+import { Storage } from '@utils/storage';
+import { AIAgent, DocspaceAPI } from '@utils/http';
 
-import { saveKnowledge } from "@features/agents/api/knowledge";
-import type { ToastState } from "@features/agents/hooks/useToast";
+import { saveKnowledge } from '@features/agents/api/knowledge';
+import type { ToastState } from '@features/agents/hooks/useToast';
 
-import { SELECTED_AGENT_KEY } from "@config";
+import { SELECTED_AGENT_KEY } from '@config';
 
 interface Authentication {
   accessToken: string;
@@ -21,7 +21,7 @@ const api = new DocspaceAPI(storage);
 
 async function requestAuthentication(): Promise<Authentication | null> {
   const authentication = await runtime
-    .sendMessage({ action: "getAccessToken" })
+    .sendMessage({ action: 'getAccessToken' })
     .catch(() => null);
   return authentication?.accessToken && authentication.tenant
     ? authentication
@@ -36,7 +36,7 @@ export function useAgents(
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
   const [agents, setAgents] = useState<AIAgent[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [authentication, setAuthentication] = useState<Authentication | null>(
@@ -45,7 +45,7 @@ export function useAgents(
 
   const load = useCallback(
     async (preferredId?: number) => {
-      setStatus("");
+      setStatus('');
       setAgents([]);
       setLoading(true);
       setSelectedId(null);
@@ -54,7 +54,7 @@ export function useAgents(
       setAuthentication(currentAuthentication);
 
       if (!currentAuthentication) {
-        setStatus(t("agents.sign_in"));
+        setStatus(t('agents.sign_in'));
         setLoading(false);
         return;
       }
@@ -67,17 +67,16 @@ export function useAgents(
         const { [SELECTED_AGENT_KEY]: savedId } = await storage.get<
           Record<string, number>
         >([SELECTED_AGENT_KEY]);
-        const agent =
-          list.find((item) => item.id === (preferredId ?? savedId)) ?? list[0];
+        const agent = list.find((item) => item.id === (preferredId ?? savedId)) ?? list[0];
 
         setAgents(list);
         setSelectedId(agent?.id ?? null);
-        setStatus(agent ? "" : t("agents.no_agents"));
+        setStatus(agent ? '' : t('agents.no_agents'));
 
         if (agent) await storage.set({ [SELECTED_AGENT_KEY]: agent.id });
       } catch (error) {
         setStatus(
-          t("agents.agents_failed", { message: (error as Error).message }),
+          t('agents.agents_failed', { message: (error as Error).message }),
         );
       } finally {
         setLoading(false);
@@ -95,10 +94,10 @@ export function useAgents(
     ) => {
       const change = changes.docspace_authentication;
       if (
-        area === "local" &&
-        change &&
-        Boolean(change.oldValue?.accessToken) !==
-          Boolean(change.newValue?.accessToken)
+        area === 'local'
+        && change
+        && Boolean(change.oldValue?.accessToken)
+          !== Boolean(change.newValue?.accessToken)
       ) {
         load();
       }
@@ -118,7 +117,7 @@ export function useAgents(
     if (!currentAuthentication || selectedId === null) return;
 
     setBusy(true);
-    showToast(t("agents.saving_page"), "progress");
+    showToast(t('agents.saving_page'), 'progress');
 
     try {
       const name = await saveKnowledge(
@@ -127,11 +126,11 @@ export function useAgents(
         currentAuthentication.tenant,
         selectedId,
       );
-      showToast(t("agents.page_saved", { name }), "done");
+      showToast(t('agents.page_saved', { name }), 'done');
     } catch (error) {
       showToast(
-        t("agents.save_failed", { message: (error as Error).message }),
-        "error",
+        t('agents.save_failed', { message: (error as Error).message }),
+        'error',
       );
     } finally {
       setBusy(false);
@@ -142,16 +141,16 @@ export function useAgents(
     setBusy(true);
     try {
       const currentAuthentication = await requestAuthentication();
-      if (!currentAuthentication) throw new Error(t("agents.sign_in"));
+      if (!currentAuthentication) throw new Error(t('agents.sign_in'));
 
-      showToast(t("agents.loading_settings"), "progress");
+      showToast(t('agents.loading_settings'), 'progress');
 
       const profileId = await api.getDefaultChatProfileId(
         currentAuthentication.accessToken,
         currentAuthentication.tenant,
       );
 
-      showToast(t("agents.creating", { title }), "progress");
+      showToast(t('agents.creating', { title }), 'progress');
 
       const agent = await api.createAgent(
         currentAuthentication.accessToken,
@@ -161,14 +160,14 @@ export function useAgents(
         prompt,
       );
 
-      showToast(t("agents.created", { title: agent.title }), "done");
+      showToast(t('agents.created', { title: agent.title }), 'done');
 
       await load(agent.id);
       return true;
     } catch (error) {
       showToast(
-        t("agents.create_failed", { message: (error as Error).message }),
-        "error",
+        t('agents.create_failed', { message: (error as Error).message }),
+        'error',
       );
       return false;
     } finally {
@@ -182,7 +181,7 @@ export function useAgents(
     if (!agent || !currentAuthentication) return;
 
     setBusy(true);
-    showToast(t("agents.deleting", { title: agent.title }), "progress");
+    showToast(t('agents.deleting', { title: agent.title }), 'progress');
     try {
       await api.deleteAgent(
         currentAuthentication.accessToken,
@@ -194,15 +193,15 @@ export function useAgents(
 
       setAgents(rest);
       setSelectedId(rest[0]?.id ?? null);
-      setStatus(rest.length ? "" : t("agents.no_agents"));
+      setStatus(rest.length ? '' : t('agents.no_agents'));
 
       if (rest[0]) await storage.set({ [SELECTED_AGENT_KEY]: rest[0].id });
 
-      showToast(t("agents.deleted", { title: agent.title }), "done");
+      showToast(t('agents.deleted', { title: agent.title }), 'done');
     } catch (error) {
       showToast(
-        t("agents.delete_failed", { message: (error as Error).message }),
-        "error",
+        t('agents.delete_failed', { message: (error as Error).message }),
+        'error',
       );
     } finally {
       setBusy(false);
@@ -211,7 +210,7 @@ export function useAgents(
 
   const getToken = useCallback(async () => {
     const fresh = await requestAuthentication();
-    if (!fresh) throw new Error("not_signed_in");
+    if (!fresh) throw new Error('not_signed_in');
     return fresh.accessToken;
   }, []);
 

@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState } from 'preact/hooks';
 
 import {
   AgentBar,
@@ -6,15 +6,15 @@ import {
   AgentDialog,
   Toast,
   useToast,
-} from "@features/agents";
-import { DeleteConfirm } from "@features/files";
+} from '@features/agents';
+import { DeleteConfirm } from '@features/files';
 
-import { useAgents } from "@hooks/useAgents";
+import { useAgents } from '@hooks/useAgents';
 
-import { useI18n } from "@stores/i18n";
+import { useI18n } from '@stores/i18n';
 
-import "@styles/extension.css";
-import "@styles/sidepanel.css";
+import '@styles/extension.css';
+import '@styles/sidepanel.css';
 
 export function SidePanel() {
   const { t } = useI18n();
@@ -52,9 +52,9 @@ export function SidePanel() {
       />
       <DeleteConfirm
         isOpen={confirmOpen}
-        title={`${t("agents.delete_agent")}?`}
-        message={t("agents.delete_confirm", { title: selected?.title ?? "" })}
-        confirmLabel={t("common.delete")}
+        title={`${t('agents.delete_agent')}?`}
+        message={t('agents.delete_confirm', { title: selected?.title ?? '' })}
+        confirmLabel={t('common.delete')}
         onConfirm={() => {
           setConfirmOpen(false);
           agents.deleteAgent();

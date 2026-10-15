@@ -1,14 +1,14 @@
-import { FunctionalComponent } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
-import { SDK } from "@onlyoffice/docspace-sdk-js";
+import { FunctionalComponent } from 'preact';
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { SDK } from '@onlyoffice/docspace-sdk-js';
 
-import { Spinner } from "@components/Spinner";
+import { Spinner } from '@components/Spinner';
 
-import { useI18n } from "@stores/i18n";
+import { useI18n } from '@stores/i18n';
 
-import "./chat.css";
+import './chat.css';
 
-const FRAME_ID = "ds-chat";
+const FRAME_ID = 'ds-chat';
 
 interface AgentChatProps {
   readonly tenant: string | null;
@@ -26,7 +26,7 @@ export const AgentChat: FunctionalComponent<AgentChatProps> = ({
   getToken,
 }) => {
   const { t } = useI18n();
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
   const [frameLoading, setFrameLoading] = useState(false);
   const frame = useRef<HTMLDivElement>(null);
 
@@ -34,11 +34,11 @@ export const AgentChat: FunctionalComponent<AgentChatProps> = ({
     const container = frame.current;
     if (!container || !tenant || agentId === null) return undefined;
 
-    const placeholder = document.createElement("div");
+    const placeholder = document.createElement('div');
     placeholder.id = FRAME_ID;
     container.replaceChildren(placeholder);
 
-    setStatus("");
+    setStatus('');
     setFrameLoading(true);
     const fail = (text: string) => {
       setFrameLoading(false);
@@ -49,15 +49,14 @@ export const AgentChat: FunctionalComponent<AgentChatProps> = ({
       frameId: FRAME_ID,
       src: tenant,
       agentId,
-      theme: "System",
+      theme: 'System',
       checkCSP: false,
       getToken,
       events: {
         onContentReady: () => setFrameLoading(false),
-        onNoAccess: () => fail(t("agents.no_access")),
-        onAuthError: () => fail(t("agents.session_expired")),
-        onAppError: (error: string) =>
-          fail(t("agents.agent_failed", { message: error })),
+        onNoAccess: () => fail(t('agents.no_access')),
+        onAuthError: () => fail(t('agents.session_expired')),
+        onAppError: (error: string) => fail(t('agents.agent_failed', { message: error })),
       },
     });
 

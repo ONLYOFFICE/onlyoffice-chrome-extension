@@ -1,6 +1,6 @@
-import { useCallback, useRef, useState } from "preact/hooks";
+import { useCallback, useRef, useState } from 'preact/hooks';
 
-export type ToastState = "progress" | "done" | "error";
+export type ToastState = 'progress' | 'done' | 'error';
 
 export interface ToastData {
   readonly message: string;
@@ -18,7 +18,7 @@ export function useToast() {
   const showToast = useCallback((message: string, state: ToastState) => {
     clearTimeout(timer.current);
     setToast({ message, state });
-    if (state !== "progress") {
+    if (state !== 'progress') {
       timer.current = window.setTimeout(
         () => {
           setToast((current) => current && { ...current, exiting: true });
@@ -27,7 +27,7 @@ export function useToast() {
             EXIT_DURATION,
           );
         },
-        state === "error" ? DURATION * 2 : DURATION,
+        state === 'error' ? DURATION * 2 : DURATION,
       );
     }
   }, []);
