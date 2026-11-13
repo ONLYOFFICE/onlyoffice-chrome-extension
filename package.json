@@ -40,7 +40,8 @@
     "package": "npm run package:chrome && npm run package:firefox",
     "package:chrome": "npm run build:chrome && cd dist-chrome && zip -r ../docspace-chrome.zip . && cd ..",
     "package:firefox": "npm run build:firefox && cd dist-firefox && zip -r ../docspace-firefox.zip . && cd ..",
-    "clean": "rm -rf dist-chrome dist-firefox"
+    "clean": "rm -rf dist-chrome dist-firefox",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
     "@preact/signals": "^2.5.1",
