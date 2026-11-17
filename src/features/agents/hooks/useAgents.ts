@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 
 import { useI18n } from '@stores/i18n';
-import { errorMessage } from '@i18n/errors';
+import { LocalizedError, errorMessage } from '@i18n/errors';
 
 import { runtime } from '@utils/browser';
 import { Storage } from '@utils/storage';
@@ -29,6 +29,14 @@ async function requestAuthentication(): Promise<Authentication | null> {
     : null;
 }
 
+async function requireAuthentication(): Promise<Authentication> {
+  const authentication = await requestAuthentication();
+  if (!authentication) throw new LocalizedError('agents.sign_in');
+  return authentication;
+}
+
+const rememberAgent = (agentId: number) => storage.set({ [SELECTED_AGENT_KEY]: agentId });
+
 export function useAgents(
   showToast: (message: string, state: ToastState) => void,
 ) {
@@ -40,9 +48,14 @@ export function useAgents(
   const [status, setStatus] = useState('');
   const [agents, setAgents] = useState<AIAgent[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [authentication, setAuthentication] = useState<Authentication | null>(
-    null,
-  );
+  const [authentication, setAuthentication] = useState<Authentication | null>(null);
+
+  const showAgents = useCallback((list: AIAgent[], agent: AIAgent | undefined) => {
+    setAgents(list);
+    setSelectedId(agent?.id ?? null);
+    setStatus(agent ? '' : t('agents.no_agents'));
+    if (agent) rememberAgent(agent.id);
+  }, [t]);
 
   const load = useCallback(
     async (preferredId?: number) => {
@@ -51,55 +64,34 @@ export function useAgents(
       setLoading(true);
       setSelectedId(null);
 
-      const currentAuthentication = await requestAuthentication();
-      setAuthentication(currentAuthentication);
+      const current = await requestAuthentication();
+      setAuthentication(current);
 
-      if (!currentAuthentication) {
+      if (!current) {
         setStatus(t('agents.sign_in'));
         setLoading(false);
         return;
       }
 
       try {
-        const list = await api.getChatAgents(
-          currentAuthentication.accessToken,
-          currentAuthentication.tenant,
-        );
-        const { [SELECTED_AGENT_KEY]: savedId } = await storage.get<
-          Record<string, number>
-        >([SELECTED_AGENT_KEY]);
-        const agent = list.find((item) => item.id === (preferredId ?? savedId)) ?? list[0];
-
-        setAgents(list);
-        setSelectedId(agent?.id ?? null);
-        setStatus(agent ? '' : t('agents.no_agents'));
-
-        if (agent) await storage.set({ [SELECTED_AGENT_KEY]: agent.id });
+        const list = await api.getChatAgents(current.accessToken, current.tenant);
+        const { [SELECTED_AGENT_KEY]: savedId } = await storage.get<Record<string, number>>([SELECTED_AGENT_KEY]);
+        showAgents(list, list.find((item) => item.id === (preferredId ?? savedId)) ?? list[0]);
       } catch (error) {
-        setStatus(
-          t('agents.agents_failed', { message: errorMessage(error, t) }),
-        );
+        setStatus(t('agents.agents_failed', { message: errorMessage(error, t) }));
       } finally {
         setLoading(false);
       }
     },
-    [t],
+    [t, showAgents],
   );
 
   useEffect(() => {
     load();
 
-    const onChanged = (
-      changes: Record<string, chrome.storage.StorageChange>,
-      area: string,
-    ) => {
+    const onChanged = (changes: Record<string, chrome.storage.StorageChange>, area: string) => {
       const change = changes.docspace_authentication;
-      if (
-        area === 'local'
-        && change
-        && Boolean(change.oldValue?.accessToken)
-          !== Boolean(change.newValue?.accessToken)
-      ) {
+      if (area === 'local' && change && Boolean(change.oldValue?.accessToken) !== Boolean(change.newValue?.accessToken)) {
         load();
       }
     };
@@ -108,112 +100,71 @@ export function useAgents(
     return () => chrome.storage.onChanged.removeListener(onChanged);
   }, [load]);
 
-  const select = (agentId: number) => {
-    setSelectedId(agentId);
-    storage.set({ [SELECTED_AGENT_KEY]: agentId });
-  };
-
-  const savePage = async () => {
-    const currentAuthentication = await requestAuthentication();
-    if (!currentAuthentication || selectedId === null) return;
-
+  const perform = async <T>(
+    progress: string,
+    action: (auth: Authentication) => Promise<T>,
+    done: (result: T) => string,
+    failed: 'agents.save_failed' | 'agents.create_failed' | 'agents.delete_failed',
+  ): Promise<boolean> => {
     setBusy(true);
-    showToast(t('agents.saving_page'), 'progress');
-
+    showToast(progress, 'progress');
     try {
-      const name = await saveKnowledge(
-        api,
-        currentAuthentication.accessToken,
-        currentAuthentication.tenant,
-        selectedId,
-      );
-      showToast(t('agents.page_saved', { name }), 'done');
-    } catch (error) {
-      showToast(
-        t('agents.save_failed', { message: errorMessage(error, t) }),
-        'error',
-      );
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const create = async (title: string, prompt: string): Promise<boolean> => {
-    setBusy(true);
-    try {
-      const currentAuthentication = await requestAuthentication();
-      if (!currentAuthentication) throw new Error(t('agents.sign_in'));
-
-      showToast(t('agents.loading_settings'), 'progress');
-
-      const profileId = await api.getDefaultChatProfileId(
-        currentAuthentication.accessToken,
-        currentAuthentication.tenant,
-      );
-
-      showToast(t('agents.creating', { title }), 'progress');
-
-      const agent = await api.createAgent(
-        currentAuthentication.accessToken,
-        currentAuthentication.tenant,
-        title,
-        profileId,
-        prompt,
-      );
-
-      showToast(t('agents.created', { title: agent.title }), 'done');
-
-      await load(agent.id);
+      const result = await action(await requireAuthentication());
+      showToast(done(result), 'done');
       return true;
     } catch (error) {
-      showToast(
-        t('agents.create_failed', { message: errorMessage(error, t) }),
-        'error',
-      );
+      showToast(t(failed, { message: errorMessage(error, t) }), 'error');
       return false;
     } finally {
       setBusy(false);
     }
   };
 
-  const deleteAgent = async () => {
-    const agent = agents.find((item) => item.id === selectedId);
-    const currentAuthentication = await requestAuthentication();
-    if (!agent || !currentAuthentication) return;
-
-    setBusy(true);
-    showToast(t('agents.deleting', { title: agent.title }), 'progress');
-    try {
-      await api.deleteAgent(
-        currentAuthentication.accessToken,
-        currentAuthentication.tenant,
-        agent.id,
-      );
-
-      const rest = agents.filter((item) => item.id !== agent.id);
-
-      setAgents(rest);
-      setSelectedId(rest[0]?.id ?? null);
-      setStatus(rest.length ? '' : t('agents.no_agents'));
-
-      if (rest[0]) await storage.set({ [SELECTED_AGENT_KEY]: rest[0].id });
-
-      showToast(t('agents.deleted', { title: agent.title }), 'done');
-    } catch (error) {
-      showToast(
-        t('agents.delete_failed', { message: errorMessage(error, t) }),
-        'error',
-      );
-    } finally {
-      setBusy(false);
-    }
+  const select = (agentId: number) => {
+    setSelectedId(agentId);
+    rememberAgent(agentId);
   };
 
-  const getToken = useCallback(async () => {
-    const fresh = await requestAuthentication();
-    if (!fresh) throw new Error('not_signed_in');
-    return fresh.accessToken;
-  }, []);
+  const savePage = async () => {
+    if (selectedId === null) return;
+    await perform(
+      t('agents.saving_page'),
+      (auth) => saveKnowledge(api, auth.accessToken, auth.tenant, selectedId),
+      (name) => t('agents.page_saved', { name }),
+      'agents.save_failed',
+    );
+  };
+
+  const create = (title: string, prompt: string): Promise<boolean> => perform(
+    t('agents.loading_settings'),
+    async (auth) => {
+      const profileId = await api.getDefaultChatProfileId(auth.accessToken, auth.tenant);
+      showToast(t('agents.creating', { title }), 'progress');
+      const agent = await api.createAgent(auth.accessToken, auth.tenant, title, profileId, prompt);
+      await load(agent.id);
+      return agent;
+    },
+    (agent) => t('agents.created', { title: agent.title }),
+    'agents.create_failed',
+  );
+
+  const deleteAgent = async () => {
+    const agent = agents.find((item) => item.id === selectedId);
+    if (!agent) return;
+
+    await perform(
+      t('agents.deleting', { title: agent.title }),
+      async (auth) => {
+        await api.deleteAgent(auth.accessToken, auth.tenant, agent.id);
+        const rest = agents.filter((item) => item.id !== agent.id);
+        showAgents(rest, rest[0]);
+      },
+      () => t('agents.deleted', { title: agent.title }),
+      'agents.delete_failed',
+    );
+  };
+
+  const getToken = useCallback(async () => (await requireAuthentication()).accessToken, []);
 
   return {
     authentication,

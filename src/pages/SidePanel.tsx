@@ -5,11 +5,10 @@ import {
   AgentChat,
   AgentDialog,
   Toast,
+  useAgents,
   useToast,
 } from '@features/agents';
 import { DeleteConfirm } from '@features/files';
-
-import { useAgents } from '@hooks/useAgents';
 
 import { useI18n } from '@stores/i18n';
 
