@@ -1,6 +1,7 @@
 import { tabs } from '@utils/browser';
 import { DocspaceAPI } from '@utils/http';
 import { extractArticle } from '@utils/article';
+import { markdownFileName } from '@utils/filename';
 
 import { KNOWLEDGE_FOLDER_TYPE } from '@config';
 import { LocalizedError } from '@i18n/errors';
@@ -39,13 +40,7 @@ export async function saveKnowledge(
 
   const markdown = `# ${title}\n\n${meta}${excerpt}\n\n---\n\n${article.markdown}\n`;
 
-  const name = `${
-    title
-      .replace(/[\\/:*?"<>|#]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-      .slice(0, 100) || 'Web page'
-  }.md`;
+  const name = markdownFileName(title, 'Web page');
 
   await api.uploadFile(
     accessToken,

@@ -6,8 +6,8 @@ import { Readability } from '@mozilla/readability';
 import { scripting } from '@utils/browser';
 import { LocalizedError } from '@i18n/errors';
 
-const MAX_IMAGES = 30;
-const MIN_IMAGE_SIZE = 100;
+export const MAX_IMAGES = 30;
+export const MIN_IMAGE_SIZE = 100;
 
 export interface Article {
   title: string;

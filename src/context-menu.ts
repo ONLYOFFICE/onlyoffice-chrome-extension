@@ -1,7 +1,8 @@
 import { Storage } from '@utils/storage';
-import { DocspaceAPI } from '@utils/http';
-import { extractArticle } from '@utils/article';
-import { Ask, condense } from '@utils/merger';
+import { DocspaceAPI, HttpError } from '@utils/http';
+import { MAX_IMAGES, MIN_IMAGE_SIZE, extractArticle } from '@utils/article';
+import { Ask, condense } from '@utils/condense';
+import { markdownFileName } from '@utils/filename';
 import { RetryOptions, retryOperation } from '@utils/retry';
 import { getValidAuthentication } from '@utils/token';
 
@@ -11,6 +12,8 @@ import {
 import { LocalizedError, errorMessage } from '@i18n/errors';
 
 import { KEEP_ALIVE_INTERVAL, LOCALE_KEY } from '@config';
+
+import type { ToastState } from '@features/agents/hooks/useToast';
 
 declare const browser: typeof chrome | undefined;
 const ext: typeof chrome = typeof browser !== 'undefined' ? browser : chrome;
@@ -27,9 +30,6 @@ const RETRY_OPTIONS: RetryOptions = {
   backoffMultiplier: 3,
   maxDelay: 6000,
 };
-
-const MAX_PAGE_IMAGES = 30;
-const MIN_IMAGE_SIZE = 100;
 
 const MODEL_CACHE_TTL = 5 * 60 * 1000;
 
@@ -54,8 +54,6 @@ const MODES = {
       'Condense it into concise notes: the main ideas, key facts, names, numbers and dates.',
     request: 'Summarize this text selected on a web page.',
     reading: 'ai.reading_selection',
-    done: 'ai.summary_saved',
-    failed: 'ai.summary_failed',
   },
   document: {
     menu: 'ai.summarize_page',
@@ -71,13 +69,10 @@ const MODES = {
     notes: 'Condense it into concise notes: the main ideas, key facts, figures, names and conclusions, in order.',
     request: 'Summarize this web page.',
     reading: 'ai.reading_page',
-    done: 'ai.summary_saved',
-    failed: 'ai.summary_failed',
   },
 } as const;
 
 type AIMode = keyof typeof MODES;
-type ToastState = 'progress' | 'done' | 'error';
 
 interface PageContent {
   title: string;
@@ -97,34 +92,25 @@ type OnStage = (message: string) => Promise<void>;
 const storage = new Storage();
 const api = new DocspaceAPI(storage);
 
-const translator = {
-  async locale(): Promise<Locale> {
-    const { [LOCALE_KEY]: saved } = await storage
-      .get<Record<string, Locale>>([LOCALE_KEY])
-      .catch(() => ({} as Partial<Record<string, Locale>>));
-    return saved && LOCALES.includes(saved) ? saved : detectLocale();
-  },
+async function getTranslator(): Promise<Translate> {
+  const { [LOCALE_KEY]: saved } = await storage
+    .get<Record<string, Locale>>([LOCALE_KEY])
+    .catch(() => ({} as Partial<Record<string, Locale>>));
+  const locale = saved && LOCALES.includes(saved) ? saved : detectLocale();
+  return (key, params) => getTranslation(locale, key, params);
+}
 
-  async get(): Promise<Translate> {
-    const locale = await translator.locale();
-    return (key, params) => getTranslation(locale, key, params);
-  },
-};
+let modelCache: { tenant: string; model: string; expires: number } | null = null;
 
-const model = {
-  cache: null as { tenant: string; model: string; expires: number } | null,
+async function getDefaultModel(accessToken: string, tenant: string): Promise<string> {
+  if (modelCache?.tenant === tenant && modelCache.expires > Date.now()) return modelCache.model;
 
-  async getDefault(accessToken: string, tenant: string): Promise<string> {
-    if (model.cache?.tenant === tenant && model.cache.expires > Date.now()) return model.cache.model;
+  const profileId = await api.getDefaultChatProfileId(accessToken, tenant);
+  const model = await api.getProfileModel(accessToken, tenant, profileId);
+  modelCache = { tenant, model, expires: Date.now() + MODEL_CACHE_TTL };
 
-    const profileId = await api.getDefaultChatProfileId(accessToken, tenant);
-    const id = await api.getProfileModel(accessToken, tenant, profileId);
-
-    model.cache = { tenant, model: id, expires: Date.now() + MODEL_CACHE_TTL };
-
-    return id;
-  },
-};
+  return model;
+}
 
 const reader = {
   async article(tabId: number): Promise<PageContent> {
@@ -194,7 +180,7 @@ const reader = {
           images,
         };
       },
-      args: [MAX_PAGE_IMAGES, MIN_IMAGE_SIZE],
+      args: [MAX_IMAGES, MIN_IMAGE_SIZE],
     });
 
     const pages = results
@@ -240,8 +226,8 @@ const reader = {
 
 const ai = {
   isRetryable(error: unknown): boolean {
-    const status = Number((error as Error)?.message?.match(/^(\d{3}):/)?.[1]);
-    return !status || status === 408 || status === 429 || status >= 500;
+    if (!(error instanceof HttpError)) return true;
+    return error.status === 408 || error.status === 429 || error.status >= 500;
   },
 
   client(
@@ -279,6 +265,8 @@ const ai = {
   ): Promise<string> {
     const escape = (src: string) => src.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
 
+    await onStage(t('ai.asking'));
+
     const truncated = page.text.length > MAX_SOURCE_LENGTH;
     const source = page.text.slice(0, MAX_SOURCE_LENGTH);
     const header = `Title: ${page.title}\nURL: ${page.url}${page.details ? `\n${page.details}` : ''}`;
@@ -290,7 +278,6 @@ const ai = {
       maxRounds: MAX_CONDENSE_ROUNDS,
       parallel: PARALLEL_REQUESTS,
       ask,
-      onProgress: (finished) => (finished === 0 ? onStage(t('ai.asking')) : Promise.resolve()),
     });
     const notes = [
       content !== source
@@ -307,8 +294,6 @@ const ai = {
       ? `\n\nImages:\n${unplaced.map((image) => `- ![${image.alt.replace(/[[\]]/g, '')}](${escape(image.src)})`).join('\n')}`
       : '';
 
-    await onStage(t('ai.asking'));
-
     const answer = await ask(
       MODES[mode].prompt,
       `${MODES[mode].request}${notes ? ` ${notes}` : ''}\n\n${header}\n\nContent:\n${content}${images}`,
@@ -321,12 +306,7 @@ const ai = {
 const docspace = {
   fileName(markdown: string, fallback: string, untitled: string): string {
     const title = markdown.match(/^#\s+(.+)$/m)?.[1] || fallback;
-    const clean = title
-      .replace(/[*_`#]/g, '')
-      .replace(/[\\/:*?"<>|]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    return `${clean.slice(0, 100) || untitled}.md`;
+    return markdownFileName(title.replace(/[*_`]/g, ''), untitled);
   },
 
   async save(
@@ -443,7 +423,7 @@ const indicator = {
 
 const menu = {
   async create() {
-    const t = await translator.get();
+    const t = await getTranslator();
     ext.contextMenus.removeAll(() => {
       Object.entries(MODES).forEach(([id, mode]) => {
         ext.contextMenus.create({
@@ -456,7 +436,7 @@ const menu = {
   },
 
   async retitle() {
-    const t = await translator.get();
+    const t = await getTranslator();
     Object.entries(MODES).forEach(([id, mode]) => {
       ext.contextMenus.update(id, { title: t(mode.menu) });
     });
@@ -476,19 +456,13 @@ const menu = {
     });
   },
 
-  async run(
-    info: chrome.contextMenus.OnClickData,
-    tab: chrome.tabs.Tab,
-    tabId: number,
-    mode: AIMode,
-  ) {
+  async run(info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab, tabId: number, mode: AIMode) {
     const target: Target = {
       tabId,
       frameId: mode === 'summary' ? (info.frameId ?? 0) : 0,
     };
 
-    const { reading, done, failed } = MODES[mode];
-    const t = await translator.get();
+    const t = await getTranslator();
     const onStage: OnStage = (message) => indicator.progress(target, message);
 
     const keepAlive = setInterval(() => {
@@ -502,10 +476,10 @@ const menu = {
         return;
       }
 
-      await onStage(t(reading));
+      await onStage(t(MODES[mode].reading));
       const page = await reader.read(info, tab, target, mode);
 
-      const modelId = await model.getDefault(auth.accessToken, auth.tenant);
+      const modelId = await getDefaultModel(auth.accessToken, auth.tenant);
       const ask = ai.client(auth.accessToken, auth.tenant, modelId, onStage, t);
       const markdown = await ai.generate(page, mode, ask, onStage, t);
 
@@ -518,9 +492,9 @@ const menu = {
         auth.accessToken,
         auth.tenant,
       );
-      await indicator.done(target, t(done));
+      await indicator.done(target, t('ai.summary_saved'));
     } catch (error) {
-      await indicator.fail(target, t(failed, { message: errorMessage(error, t) }));
+      await indicator.fail(target, t('ai.summary_failed', { message: errorMessage(error, t) }));
     } finally {
       clearInterval(keepAlive);
     }
