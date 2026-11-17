@@ -3,7 +3,7 @@ import { useContext } from 'preact/hooks';
 import { signal, type Signal } from '@preact/signals';
 
 import {
-  Locale, detectLocale, getTranslation, TranslationKey,
+  LOCALES, Locale, Translate, detectLocale, getTranslation,
 } from '@i18n/translations';
 
 import { Storage } from '@utils/storage';
@@ -12,7 +12,7 @@ import { LOCALE_KEY } from '@config';
 
 interface I18nStore {
   locale: Signal<Locale>;
-  t: (key: TranslationKey, params?: Record<string, string>) => string;
+  t: Translate;
   setLocale: (locale: Locale) => Promise<void>;
 }
 
@@ -20,11 +20,7 @@ function createI18nStore(): I18nStore {
   const storage = new Storage();
   const locale = signal<Locale>('en');
 
-  const t = (key: TranslationKey, params?: Record<string, string>): string => {
-    const currentLocale = locale.value;
-    const result = getTranslation(currentLocale, key, params);
-    return result;
-  };
+  const t: Translate = (key, params) => getTranslation(locale.value, key, params);
 
   const setLocale = async (newLocale: Locale): Promise<void> => {
     locale.value = newLocale;
@@ -33,10 +29,9 @@ function createI18nStore(): I18nStore {
 
   (async () => {
     try {
-      const saved = await storage.get<{ locale: Locale }>([LOCALE_KEY]);
-      const supportedLocales: Locale[] = ['en', 'ru', 'de', 'es', 'fr', 'zh'];
-      if (saved.locale && supportedLocales.includes(saved.locale)) {
-        locale.value = saved.locale;
+      const { [LOCALE_KEY]: saved } = await storage.get<Record<string, Locale>>([LOCALE_KEY]);
+      if (saved && LOCALES.includes(saved)) {
+        locale.value = saved;
       } else {
         const detected = detectLocale();
         locale.value = detected;

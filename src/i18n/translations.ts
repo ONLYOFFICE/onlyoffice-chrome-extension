@@ -60,12 +60,10 @@ export function getTranslation(
 }
 
 export function detectLocale(): Locale {
-  const supportedLocales: Locale[] = ['en', 'ru', 'de', 'es', 'fr', 'zh'];
-
   try {
     const uiLang = browserI18n.getUILanguage();
     const langCode = uiLang.split('-')[0].toLowerCase();
-    if (supportedLocales.includes(langCode as Locale)) {
+    if (LOCALES.includes(langCode as Locale)) {
       return langCode as Locale;
     }
   } catch {
@@ -75,7 +73,7 @@ export function detectLocale(): Locale {
   if (typeof navigator !== 'undefined') {
     const navLang = navigator.language || navigator.languages?.[0] || 'en';
     const langCode = navLang.split('-')[0].toLowerCase();
-    if (supportedLocales.includes(langCode as Locale)) {
+    if (LOCALES.includes(langCode as Locale)) {
       return langCode as Locale;
     }
   }
